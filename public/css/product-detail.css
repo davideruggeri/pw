@@ -1,0 +1,105 @@
+/* --- Product Detail Layout --- */
+.detail-card {
+    background-color: white;
+    border-radius: 2.5rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f5f9;
+}
+
+.dark .detail-card {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.product-hero-image {
+    background: linear-gradient(to bottom right, #f1f5f9, #eef2ff);
+    border-radius: 1.875rem;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6rem;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.dark .product-hero-image {
+    background: linear-gradient(to bottom right, #0f172a, #1e293b);
+}
+
+.detail-info-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+    .detail-info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.price-stock-bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dark .price-stock-bar {
+    border-color: #334155;
+}
+
+.detail-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+}
+
+.dark .detail-label { color: #94a3b8; }
+
+.detail-value-price {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #0f172a;
+}
+
+.dark .detail-value-price { color: white; }
+
+.action-btn-main {
+    flex: 1;
+    background-color: #4f46e5;
+    color: white;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border-radius: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.action-btn-main:hover {
+    background-color: #4338ca;
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    transform: translateY(-2px);
+}
+
+.action-btn-secondary {
+    padding: 1rem;
+    background-color: #f8fafc;
+    color: #94a3b8;
+    border-radius: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.dark .action-btn-secondary {
+    background-color: #0f172a;
+    color: #475569;
+}
+
+.action-btn-secondary:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}

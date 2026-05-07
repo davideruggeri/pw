@@ -1,0 +1,55 @@
+/* --- Guest Access Page --- */
+.guest-access-card {
+    background-color: white;
+    border-radius: 3rem;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f5f9;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark .guest-access-card {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.icon-box-large {
+    width: 6rem;
+    height: 6rem;
+    background-color: #f8fafc;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem auto;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.dark .icon-box-large {
+    background-color: #0f172a;
+}
+
+.guest-title {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+}
+
+.dark .guest-title { color: white; }
+
+.guest-description {
+    color: #64748b;
+    font-size: 1.125rem;
+    margin-bottom: 3rem;
+    max-width: 32rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.625;
+}
+
+.dark .guest-description { color: #94a3b8; }

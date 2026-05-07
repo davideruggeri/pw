@@ -1,0 +1,177 @@
+/* --- Hero Section --- */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    background-color: #0f172a;
+    border-radius: 2.5rem;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+    .hero-section {
+        padding: 3.5rem 5rem;
+    }
+}
+
+/* Gradiente di sfondo per l'effetto di profondità del banner */
+.hero-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, #4f46e5, #4338ca, #0f172a);
+    opacity: 0.9;
+}
+
+/* Luci soffuse (glow) create con blur per un'estetica premium */
+.hero-glow-1 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: -5rem;
+    margin-top: -5rem;
+    width: 24rem;
+    height: 24rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    filter: blur(100px);
+}
+
+.hero-glow-2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-left: -5rem;
+    margin-bottom: -5rem;
+    width: 20rem;
+    height: 20rem;
+    background-color: rgba(129, 140, 248, 0.2);
+    border-radius: 9999px;
+    filter: blur(80px);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: 1.75rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 2.25rem;
+    }
+}
+
+.hero-subtitle {
+    color: #eef2ff;
+    font-size: 1rem;
+    max-width: 40rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+/* --- Bestsellers --- */
+.trending-badge {
+    padding: 0.35rem 0.85rem;
+    background-color: rgba(79, 70, 229, 0.1);
+    color: #4f46e5;
+    border: 1px solid rgba(79, 70, 229, 0.2);
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.dark .trending-badge {
+    background-color: rgba(129, 140, 248, 0.1);
+    color: #818cf8;
+    border-color: rgba(129, 140, 248, 0.2);
+}
+
+.bestseller-header {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+}
+
+.bestseller-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.75rem;
+    padding-bottom: 2rem;
+}
+
+/* Griglia responsiva: 1 colonna su mobile, 2 su tablet, 4 su desktop largo */
+@media (min-width: 640px) {
+    .bestseller-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1280px) {
+    .bestseller-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.bestseller-card {
+    background-color: white;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.125rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dark .bestseller-card {
+    background-color: #1e293b;
+    border-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Effetto di sollevamento della card al passaggio del mouse */
+.bestseller-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.bestseller-image-box {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dark .bestseller-image-box {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.bestseller-emoji {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.bestseller-card:hover .bestseller-emoji {
+    transform: scale(1.2) rotate(5deg);
+}

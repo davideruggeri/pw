@@ -1,0 +1,347 @@
+.account-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    padding: 1.5rem;
+    overflow: hidden;
+}
+
+.account-container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    overflow: hidden;
+    height: 600px;
+}
+
+/* Sidebar */
+.account-sidebar {
+    width: 280px;
+    background: rgba(99, 102, 241, 0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+.account-sidebar h2 {
+    color: white;
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+    font-weight: 800;
+}
+
+.role-badge {
+    background: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+}
+
+.sidebar-nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-nav button {
+    background: none;
+    border: none;
+    padding: 1rem;
+    color: #94a3b8;
+    text-align: left;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.sidebar-nav button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.sidebar-nav button.active {
+    background: white;
+    color: #4f46e5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    width: 100%;
+}
+
+.btn-back-lobby {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.8rem;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.btn-back-lobby:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.role-switcher-mini {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    text-align: left;
+}
+
+.role-switcher-mini p {
+    color: #f59e0b;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.role-switcher-mini select {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.6rem;
+    border-radius: 12px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.role-switcher-mini select:hover {
+    border-color: #f59e0b;
+}
+
+/* Main Content */
+.account-main {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-header {
+    margin-bottom: 2.5rem;
+}
+
+.main-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.4rem;
+}
+
+.main-header p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+.content-section h3 {
+    color: #6366f1;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.data-item label {
+    display: block;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin-bottom: 0.2rem;
+}
+
+.data-item span {
+    color: white;
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.compact-form {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 0.8rem;
+    padding-right: 2.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.toggle-eye {
+    position: absolute;
+    right: 0.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.1rem;
+    opacity: 0.5;
+}
+
+.btn-save {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-save:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.guest-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    color: #64748b;
+}
+
+.flex-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.btn-sm {
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.btn-sm.primary {
+    background: #6366f1;
+    color: white;
+}
+
+.btn-sm.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.alert-mini {
+    padding: 0.8rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.alert-mini.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.alert-mini.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.error-msg-mini {
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 0.4rem;
+    display: block;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .account-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .account-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+}

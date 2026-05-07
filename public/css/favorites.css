@@ -1,0 +1,134 @@
+/* --- Favorites List Styles --- */
+.favorites-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 2rem;
+    transition: all 0.3s ease;
+}
+
+@media (min-width: 640px) {
+    .favorites-row {
+        flex-direction: row;
+        align-items: center;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+
+.favorites-row:hover {
+    background-color: rgba(30, 41, 59, 0.2);
+}
+
+.favorite-id-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .favorite-id-group { width: 50%; }
+}
+
+.favorite-icon-box {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1.25rem;
+    background-color: rgba(30, 41, 59, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.favorites-row:hover .favorite-icon-box {
+    transform: scale(1.1);
+}
+
+.favorite-price {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: white;
+}
+
+.favorite-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .favorite-actions {
+        width: 25%;
+        justify-content: flex-end;
+    }
+}
+
+.heart-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background-color: rgba(30, 41, 59, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ec4899; /* Pink-500 */
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.heart-button:hover {
+    background-color: #ec4899;
+    color: white;
+}
+
+.view-btn {
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.75rem;
+    background-color: #4f46e5;
+    color: white;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+    transition: all 0.3s ease;
+}
+
+.view-btn:hover {
+    background-color: #6366f1;
+}
+
+/* --- Stats Summary --- */
+.stats-summary-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2.5rem;
+    margin-bottom: 4.5rem;
+    padding-bottom: 3rem;
+}
+
+.stats-group {
+    display: flex;
+    gap: 6rem;
+}
+
+.pagination-centered-column {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    margin-top: 2.5rem;
+    border-top: 1px solid rgba(30, 41, 59, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}

@@ -1,0 +1,111 @@
+/* --- Cart Layout --- */
+.cart-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+    .cart-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.cart-items-column {
+    grid-column: span 1;
+}
+
+@media (min-width: 1024px) {
+    .cart-items-column { grid-column: span 2; }
+}
+
+/* --- Item Card --- */
+.cart-item-card {
+    padding: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.cart-item-card:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-image-box {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1rem;
+    background-color: rgba(99, 102, 241, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.875rem;
+}
+
+.item-price {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: white;
+}
+
+/* --- Summary Card --- */
+.summary-card {
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    position: sticky;
+    top: 2rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.summary-total-row {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(30, 41, 59, 0.6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.total-price {
+    font-size: 1.875rem;
+    font-weight: 900;
+    color: #818cf8;
+    letter-spacing: -0.05em;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: #4f46e5;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+}
+
+.checkout-btn:hover {
+    background-color: #6366f1;
+}
+
+.checkout-btn-disabled {
+    background-color: #1e293b;
+    color: #64748b;
+    cursor: not-allowed;
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    box-shadow: none;
+}

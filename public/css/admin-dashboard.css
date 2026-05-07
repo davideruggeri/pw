@@ -1,0 +1,131 @@
+/* --- Admin KPI Cards --- */
+.admin-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) { .admin-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .admin-kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.kpi-card {
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.dark .kpi-card {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+}
+
+.kpi-card-dark {
+    background-color: #0f172a;
+    color: white;
+}
+
+.kpi-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dark .kpi-label { color: #94a3b8; }
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: #1e293b;
+}
+
+.dark .kpi-value { color: white; }
+
+/* --- Financial Statement --- */
+.financial-container {
+    margin-top: 2rem;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 2rem;
+}
+
+.dark .financial-container {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+}
+
+.financial-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dark .financial-row {
+    background-color: #0f172a;
+}
+
+.final-net-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background-color: #0f172a;
+    border-radius: 1.875rem;
+    color: white;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Admin Tables --- */
+.admin-table-container {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+}
+
+.dark .admin-table-container {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+}
+
+.admin-table {
+    width: 100%;
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+.admin-table thead tr {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dark .admin-table thead tr {
+    border-color: #334155;
+}
+
+.admin-table th {
+    padding-bottom: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+}
+
+.admin-table td {
+    padding: 1rem 0;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.dark .admin-table tbody tr:hover {
+    background-color: #0f172a;
+}
