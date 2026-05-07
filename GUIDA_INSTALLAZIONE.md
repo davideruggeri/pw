@@ -1,67 +1,83 @@
-# Guida all'Installazione del Progetto
+# 🏭 Progetto ERP Industriale - Guida Installazione e Demo
 
-Segui questi passaggi per configurare il progetto sul tuo PC locale.
+Benvenuti nel sistema ERP per la gestione di un'industria ceramica. Questo progetto è stato realizzato per l'esame di **[Nome Esame]** (6 CFU) e implementa una gestione multi-reparto con dashboard dedicate e flussi di dati integrati.
 
-## 1. Prerequisiti
-Assicurati di avere installato:
-- PHP (>= 8.2)
-- Composer
-- Node.js & NPM
-- MySQL (XAMPP, WAMP o Docker)
+---
 
-## 2. Download e Installazione
-Apri il terminale nella cartella dove vuoi salvare il progetto:
+## 🚀 1. Installazione e Configurazione
 
-```bash
-# 1. Clona il repository
-git clone https://github.com/davideruggeri/pw.git
-cd pw
+Segui questi passaggi per avviare il progetto in locale:
 
-# 2. Installa le dipendenze PHP
-composer install
+### Requisiti
+*   PHP >= 8.1
+*   Composer
+*   Node.js & NPM
+*   SQLite (configurazione di default)
 
-# 3. Installa le dipendenze JS
-npm install
-```
+### Passaggi
+1.  **Clona il repository** e posizionati nella cartella del progetto.
+2.  **Installa le dipendenze PHP**:
+    ```bash
+    composer install
+    ```
+3.  **Installa le dipendenze Frontend**:
+    ```bash
+    npm install
+    npm run dev
+    ```
+4.  **Configura l'ambiente**:
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+5.  **Inizializza il Database**:
+    Assicurati che il file `database/database.sqlite` esista (puoi crearlo vuoto se necessario).
+    ```bash
+    php artisan migrate --seed
+    ```
 
-## 3. Configurazione Ambiente
-1. Crea un file chiamato `.env` partendo da `.env.example` (puoi rinominarlo o copiarlo).
-2. Apri il file `.env` e configura i dati del tuo database locale:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=nome_del_tuo_db
-   DB_USERNAME=root
-   DB_PASSWORD=la_tua_password
-   ```
+---
 
-## 4. Database e Chiavi
-Esegui questi comandi per inizializzare il sistema:
+## 🔑 2. Credenziali di Accesso (Demo)
 
-```bash
-# Genera la chiave dell'applicazione
-php artisan key:generate
+Per testare le diverse funzionalità del sistema, utilizza i seguenti account predefiniti.  
+**Password per tutti gli account:** `password`
 
-# Crea le tabelle e inserisci i dati di test
-php artisan migrate --seed
-```
+| Reparto | Ruolo / Email | Funzionalità Principale |
+| :--- | :--- | :--- |
+| **Amministrazione** | `admin@azienda.it` | Dashboard Finanziaria (EBITDA), Gestione HR e Reparti |
+| **Commerciale** | `sales@azienda.it` | Gestione Vendite, Creazione Ordini, Bestsellers |
+| **Produzione** | `produzione@azienda.it` | Registrazione Lotti (Input), Monitoraggio Output |
+| **Manutenzione** | `manutenzione@azienda.it` | Registro Interventi, Monitoraggio Downtime Macchine |
+| **Qualità** | `qualita@azienda.it` | Test di Conformità, Gestione Scarti e Difetti |
+| **Logistica** | `logistica@azienda.it` | Gestione Inventario, Alert Sotto Scorta |
+| **Cliente** | `cliente@test.it` | Catalogo Prodotti, Carrello, I Miei Ordini |
 
-## 5. Account di Test
-Puoi accedere al sistema usando questi account predefiniti (password: `password`):
-- **Admin:** `admin@azienda.it`
-- **Venditore:** `sales@azienda.it`
-- **Cliente:** `cliente@test.it`
+---
 
-## 6. Avvio del Progetto
-Esegui questi due comandi (in due terminali separati o in background):
+## 🛠️ 3. Struttura dei Reparti Operativi
 
-```bash
-# Terminale 1 (Compilazione asset)
-npm run dev
+Il sistema è suddiviso in moduli specializzati per garantire ordine e scalabilità:
 
-# Terminale 2 (Server PHP)
-php artisan serve
-```
+### Reparto 1 & 3: Produzione e Qualità
+*   La **Produzione** permette di registrare i lotti realizzati. Il sistema calcola automaticamente i costi energetici stimati.
+*   Il **Controllo Qualità** interviene sui lotti prodotti per approvarli o scartarli, generando statistiche sui difetti.
 
-L'applicazione sarà disponibile su `http://localhost:8000`.
+### Reparto 2: Manutenzione
+*   Gestisce gli interventi tecnici (ordinari e straordinari).
+*   Traccia le ore di fermo macchina (Downtime) e i costi dei ricambi, che influiscono direttamente sul bilancio aziendale.
+
+### Reparto 4: Logistica
+*   Monitora le giacenze di magazzino in tempo reale.
+*   Ogni vendita effettuata dal reparto commerciale scala automaticamente le quantità disponibili.
+
+### Reparto 5: Amministrazione
+*   Dashboard "Master" che consolida i dati di tutti i reparti.
+*   Calcolo automatico dell'**EBITDA** sottraendo dai ricavi i costi di produzione, manutenzione, lavoro e scarti.
+
+### Reparto 6: Commerciale
+*   Hub per la creazione di ordini di vendita per i clienti registrati.
+*   Analisi dei prodotti più redditizi (Margine Lordo).
+
+---
+*Progetto realizzato da [Tuo Nome e Cognome]*
