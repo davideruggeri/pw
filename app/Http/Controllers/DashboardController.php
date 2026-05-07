@@ -31,10 +31,19 @@ class DashboardController extends Controller
         $customerStats = $this->analytics->getTopCustomers();
         $recentOrders = $this->ordineRepo->getRecent(5);
 
+        // Statistiche Reparti per l'Admin
+        $deptStats = [
+            'production' => \App\Models\ProduzioneLog::whereMonth('DataProduzione', now()->month)->sum('QuantitaProdotta'),
+            'maintenance' => \App\Models\ManutenzioneLog::whereMonth('DataIntervento', now()->month)->sum('OreFermoMacchina'),
+            'quality' => $kpis['totalRevenue'] > 0 ? ($kpis['qualityLosses'] / $kpis['totalRevenue']) * 100 : 0,
+            'logistics' => $kpis['lowStockCount']
+        ];
+
         return view('admin.dashboard', array_merge($kpis, [
             'recentOrders' => $recentOrders,
             'employeeStats' => $employeeStats,
-            'customerStats' => $customerStats
+            'customerStats' => $customerStats,
+            'deptStats' => $deptStats
         ]));
     }
 
@@ -68,7 +77,14 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('sales.dashboard', compact('monthlyRevenue', 'monthlyMargin', 'newClients', 'topProducts'));
+        $recentOrders = \App\Models\OrdineVendita::with('cliente')
+            ->orderBy('Data', 'desc')
+            ->limit(5)
+            ->get();
+
+        $clienti = \App\Models\Cliente::all();
+
+        return view('sales.dashboard', compact('monthlyRevenue', 'monthlyMargin', 'newClients', 'topProducts', 'recentOrders', 'clienti'));
     }
 
     // Dashboard Logistica: monitoraggio giacenze, valore magazzino e prodotti sotto scorta

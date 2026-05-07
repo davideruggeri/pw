@@ -93,8 +93,31 @@ Route::middleware(['auth', 'role:sales', 'password.changed'])->prefix('sales')->
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 });
 
-Route::middleware(['auth', 'role:logistics', 'password.changed'])->prefix('logistics')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'logistics'])->name('logistics.dashboard');
+
+Route::middleware(['auth', 'role:admin,production', 'password.changed'])->prefix('production')->group(function () {
+    Route::get('/', [App\Http\Controllers\ProductionController::class, 'index'])->name('production.index');
+    Route::get('/create', [App\Http\Controllers\ProductionController::class, 'create'])->name('production.create');
+    Route::post('/store', [App\Http\Controllers\ProductionController::class, 'store'])->name('production.store');
+    Route::get('/history', [App\Http\Controllers\ProductionController::class, 'history'])->name('production.history');
+});
+
+Route::middleware(['auth', 'role:admin,production', 'password.changed'])->prefix('maintenance')->group(function () {
+    Route::get('/', [App\Http\Controllers\MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::get('/create', [App\Http\Controllers\MaintenanceController::class, 'create'])->name('maintenance.create');
+    Route::post('/store', [App\Http\Controllers\MaintenanceController::class, 'store'])->name('maintenance.store');
+    Route::get('/history', [App\Http\Controllers\MaintenanceController::class, 'history'])->name('maintenance.history');
+});
+
+Route::middleware(['auth', 'role:admin,production', 'password.changed'])->prefix('quality')->group(function () {
+    Route::get('/', [App\Http\Controllers\QualityController::class, 'index'])->name('quality.index');
+    Route::get('/create', [App\Http\Controllers\QualityController::class, 'create'])->name('quality.create');
+    Route::post('/store', [App\Http\Controllers\QualityController::class, 'store'])->name('quality.store');
+    Route::get('/history', [App\Http\Controllers\QualityController::class, 'history'])->name('quality.history');
+});
+
+Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix('logistics')->group(function () {
+    Route::get('/', [App\Http\Controllers\LogisticsController::class, 'index'])->name('logistics.index');
+    Route::post('/update-stock', [App\Http\Controllers\LogisticsController::class, 'updateStock'])->name('logistics.update-stock');
 });
 
 Route::middleware(['auth', 'role:production', 'password.changed'])->prefix('operations')->group(function () {

@@ -1,76 +1,118 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Commerciale - Overview')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}?v={{ time() }}">
-@endpush
+@section('title', 'Commerciale - Hub Vendite')
 
 @section('content')
-<div class="admin-kpi-grid animate-fade-in">
-    <!-- KPI Card: Vendite -->
-    <div class="kpi-card shadow-sm">
-        <p class="kpi-label">Fatturato Mese Corrente</p>
-        <h3 class="kpi-value">€ {{ number_format($monthlyRevenue, 2, ',', '.') }}</h3>
-        <p class="text-xs text-emerald-500 font-bold mt-2 flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
-            </svg>
-            In crescita
-        </p>
-    </div>
+<div class="max-w-7xl mx-auto py-10 animate-fade-in px-4">
 
-    <!-- KPI Card: Clienti -->
-    <div class="kpi-card shadow-sm">
-        <p class="kpi-label">Nuovi Clienti</p>
-        <h3 class="kpi-value">{{ $newClients }}</h3>
-        <p class="text-xs text-indigo-500 font-bold mt-2">Acquisizioni recenti</p>
-    </div>
-
-    <!-- KPI Card: Margine Mensile -->
-    <div class="kpi-card shadow-sm group">
-        <div class="relative z-10">
-            <p class="kpi-label">Margine Lordo</p>
-            <h3 class="kpi-value text-emerald-600 dark:text-emerald-400">€ {{ number_format($monthlyMargin, 2, ',', '.') }}</h3>
-            <p class="text-xs text-emerald-500 font-bold mt-2">
-                {{ number_format(($monthlyMargin / ($monthlyRevenue ?: 1)) * 100, 1) }}% redditività
-            </p>
+    <!-- KPI Header -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Fatturato Mensile</p>
+            <h3 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+                € {{ number_format($monthlyRevenue, 0, ',', '.') }}
+            </h3>
+            <p class="text-[10px] text-emerald-500 font-bold mt-2 uppercase tracking-widest">Target Raggiunto</p>
         </div>
-        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-50 dark:bg-emerald-900/20 rounded-full opacity-50"></div>
-    </div>
-</div>
 
-<div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in">
-    <!-- Top Products -->
-    <div class="admin-table-container shadow-sm">
-        <h4 class="text-lg font-bold text-slate-800 dark:text-white mb-6">Prodotti più Redditizi</h4>
-        <div class="space-y-4">
-            @foreach($topProducts as $index => $product)
-            <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900 transition">
-                <div class="flex items-center gap-4">
-                    <span class="w-8 h-8 flex items-center justify-center {{ $index == 0 ? 'bg-amber-100 text-amber-600' : 'bg-white dark:bg-slate-800 text-slate-500' }} rounded-xl text-xs font-black shadow-sm">{{ $index + 1 }}</span>
-                    <div>
-                        <p class="font-bold text-slate-700 dark:text-slate-200 text-sm">{{ $product->NomeProdotto }}</p>
-                        <p class="text-[10px] text-slate-400 font-black uppercase">{{ $product->total_sold }} unità vendute</p>
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Margine Lordo</p>
+            <h3 class="text-4xl font-black text-emerald-500 tracking-tighter">
+                € {{ number_format($monthlyMargin, 0, ',', '.') }}
+            </h3>
+            <p class="text-[10px] text-slate-500 font-bold mt-2 uppercase tracking-widest">{{ number_format(($monthlyMargin / ($monthlyRevenue ?: 1)) * 100, 1) }}% Redditività</p>
+        </div>
+
+        <div class="bg-indigo-600 p-8 rounded-3xl shadow-xl shadow-indigo-500/20 flex flex-col justify-between">
+            <div>
+                <p class="text-[10px] font-black text-white/70 uppercase tracking-widest mb-2">Azioni Rapide</p>
+                <h3 class="text-xl font-black text-white tracking-tight">Pronto per una vendita?</h3>
+            </div>
+            <a href="{{ route('orders.create') }}" class="bg-white text-indigo-600 px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-slate-100 transition-all text-center mt-4">
+                Nuovo Ordine
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Tabella Ultimi Ordini -->
+        <div class="lg:col-span-2 bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden shadow-sm">
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800/50 flex justify-between items-center">
+                <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter">Ordini Recenti</h4>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tutte le zone</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-50 dark:bg-black/20">
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Ordine</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Cliente</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Stato</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Valore</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                        @foreach($recentOrders as $ordine)
+                        <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                            <td class="px-6 py-4">
+                                <p class="text-sm font-black text-slate-900 dark:text-white">#{{ $ordine->IDOrdineVendita }}</p>
+                                <p class="text-[10px] text-slate-500">{{ date('d/m/Y', strtotime($ordine->Data)) }}</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="text-sm font-bold text-slate-700 dark:text-slate-200">{{ $ordine->cliente->Nome }}</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest {{ $ordine->Stato == 'Completato' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600' }}">
+                                    {{ $ordine->Stato }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <p class="text-sm font-black text-slate-900 dark:text-white">€ {{ number_format($ordine->dettagliVendita->sum(fn($d) => $d->QuantitaRichiesta * $d->PrezzoApplicato), 2, ',', '.') }}</p>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Classifica Prodotti -->
+        <div class="bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 p-6 shadow-sm">
+            <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter mb-6">Bestsellers</h4>
+            <div class="space-y-6">
+                @foreach($topProducts as $index => $product)
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-black flex items-center justify-center">{{ $index + 1 }}</span>
+                        <div>
+                            <p class="text-sm font-black text-slate-800 dark:text-white leading-tight">{{ $product->NomeProdotto }}</p>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{{ number_format($product->total_sold, 0, ',', '.') }} Venduti</p>
+                        </div>
                     </div>
+                    <p class="text-sm font-black text-emerald-500">+€{{ number_format($product->profit / 1000, 1) }}k</p>
                 </div>
-                <div class="text-right">
-                    <p class="font-black text-emerald-600 dark:text-emerald-400 text-lg">€ {{ number_format($product->profit, 0, ',', '.') }}</p>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase">Profitto Totale</p>
+                @endforeach
+            </div>
+            
+            <div class="mt-10 pt-6 border-t border-slate-100 dark:border-slate-800/50">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Portafoglio Clienti ({{ $clienti->count() }})</p>
+                <div class="flex -space-x-2">
+                    @foreach($clienti->take(8) as $cliente)
+                        <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-black text-slate-600 dark:text-slate-400">
+                            {{ substr($cliente->Nome, 0, 1) }}
+                        </div>
+                    @endforeach
+                    @if($clienti->count() > 8)
+                        <div class="w-8 h-8 rounded-full bg-indigo-600 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-black text-white">
+                            +{{ $clienti->count() - 8 }}
+                        </div>
+                    @endif
                 </div>
             </div>
-            @endforeach
         </div>
+
     </div>
 
-    <!-- Quick Action Card -->
-    <div class="kpi-card kpi-card-dark shadow-xl flex flex-col justify-center p-12">
-        <div class="relative z-10 text-center">
-            <h4 class="text-3xl font-black mb-4 tracking-tighter">Nuova Vendita</h4>
-            <p class="text-slate-400 text-lg mb-10 max-w-sm mx-auto">Inserisci un nuovo ordine nel sistema legacy con decremento automatico di magazzino.</p>
-            <a href="{{ route('orders.create') }}" class="btn-premium w-full py-5 text-center text-sm shadow-2xl">Crea Ordine di Vendita</a>
-        </div>
-        <div class="absolute -right-8 -bottom-8 w-48 h-48 bg-indigo-500/10 rounded-full"></div>
-    </div>
 </div>
 @endsection
