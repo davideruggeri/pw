@@ -233,7 +233,7 @@
                 <div class="flex-1"></div>
                 <div class="sidebar-footer-area">
                     <!-- Info Utente Sidebar -->
-                    @if(Auth::check())
+                    @if(Auth::check() && !Auth::user()->isCustomer())
                         <div class="px-4 py-3 mx-4 bg-slate-50/50 dark:bg-black/20 rounded-xl border border-slate-100 dark:border-slate-800">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 shrink-0 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-black shadow-sm">
