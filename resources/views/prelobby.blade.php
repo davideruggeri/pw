@@ -22,10 +22,10 @@
                     <p class="text-slate-400 text-sm leading-relaxed mb-4">Accedi per consultare il catalogo prodotti, gestire i tuoi ordini e i tuoi preferiti.</p>
                 </div>
                 <div class="flex flex-col gap-4 mt-auto">
-                    <div class="flex flex-col gap-2 min-h-[130px] justify-center">
-                        <a href="{{ route('login.customer') }}" class="btn-lobby primary">Accedi</a>
+                    <div class="flex flex-col gap-2 min-h-[140px] justify-center">
+                        <a href="{{ route('customer.dashboard') }}" class="btn-lobby guest">Accedi come Ospite</a>
                         <div class="divider"><span>oppure</span></div>
-                        <a href="{{ route('register') }}" class="btn-lobby secondary">Registrati Ora</a>
+                        <a href="{{ route('login.customer') }}" class="btn-lobby primary">Accedi / Registrati</a>
                     </div>
                 </div>
 

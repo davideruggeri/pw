@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <div class="animate-fade-in">
+    <div class="max-w-[1440px] mx-auto py-10 px-4 sm:px-6 lg:px-8 animate-fade-in">
         @if(session('success'))
             <div class="max-w-7xl mx-auto mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 rounded-2xl text-sm font-bold text-center">
                 {{ session('success') }}
@@ -55,6 +55,21 @@
                             class="bg-transparent border-0 focus:ring-0 text-sm text-slate-600 dark:text-slate-300 placeholder-slate-400 w-full p-0">
                     </form>
                 </div>
+            </div>
+
+            <!-- Selettore Per Pagina -->
+            <div class="per-page-container ml-auto">
+                <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest pl-1">Visualizza</span>
+                <form action="{{ route('catalog.index') }}" method="GET" id="perPageForm">
+                    @if(request('category')) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
+                    @if(request('search')) <input type="hidden" name="search" value="{{ request('search') }}"> @endif
+                    <select name="per_page" onchange="this.form.submit()"
+                        class="bg-slate-900/50 border border-slate-800 rounded-xl text-[11px] font-black text-white focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer py-1 pr-8 pl-3">
+                        @foreach([12, 24, 48, 96] as $val)
+                            <option value="{{ $val }}" {{ ($perPage ?? 12) == $val ? 'selected' : '' }}>{{ $val }}</option>
+                        @endforeach
+                    </select>
+                </form>
             </div>
         </div>
 
@@ -140,11 +155,16 @@
             @endforelse
         </div>
 
-        <!-- Paginazione -->
-        <div class="mt-16 pt-8 border-t border-slate-800/40 flex justify-center">
-            <div class="premium-pagination">
-                {{ $products->links() }}
+        <!-- Paginazione Standardizzata -->
+        @if($products->hasPages() || $products->total() > 0)
+            <div class="pagination-centered-column mt-16 pt-8 border-t border-slate-800/40">
+                <p class="pagination-label">
+                    Visualizzazione da {{ $products->firstItem() }} a {{ $products->lastItem() }} di {{ $products->total() }} prodotti
+                </p>
+                <div class="premium-pagination">
+                    {{ $products->links('pagination::tailwind') }}
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection

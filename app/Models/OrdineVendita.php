@@ -44,4 +44,10 @@ class OrdineVendita extends Model
             'CodiceUnivoco_FK'         // FK del modello target nella pivot
         )->withPivot(['QuantitaRichiesta', 'PrezzoApplicato']);
     }
+    public function getTotaleOrdineAttribute()
+    {
+        return $this->dettagliVendita->sum(function ($d) {
+            return $d->QuantitaRichiesta * $d->PrezzoApplicato;
+        });
+    }
 }

@@ -165,6 +165,7 @@ class DashboardController extends Controller
         $stats = [
             'ordini_count' => $cliente ? $cliente->ordiniVendita()->count() : 0,
             'preferiti_count' => $cliente ? $cliente->preferiti()->count() : 0,
+            'totale_speso' => $cliente ? $cliente->ordiniVendita->sum(fn($o) => $o->totale_ordine) : 0,
         ];
 
         $bestsellers = \App\Models\Prodotto::withSum('dettagliVendita as total_sold', 'QuantitaRichiesta')
@@ -206,6 +207,26 @@ class DashboardController extends Controller
             : new \Illuminate\Pagination\LengthAwarePaginator([], 0, 12);
 
         return view('customer.favorites_list', compact('user', 'cliente', 'preferiti'));
+    }
+
+    public function customerOrderShow($id)
+    {
+        if (!auth()->check())
+            return view('customer.guest_access');
+        
+        $user = auth()->user();
+        $cliente = $user ? $user->cliente : null;
+
+        if (!$cliente) {
+            abort(403, 'Profilo cliente non trovato.');
+        }
+        
+        $ordine = \App\Models\OrdineVendita::with(['dettagliVendita.prodotto.categoria'])
+            ->where('IDOrdineVendita', $id)
+            ->where('CodiceCliente_FK', $cliente->CodiceCliente)
+            ->firstOrFail();
+            
+        return view('customer.order_detail', compact('user', 'cliente', 'ordine'));
     }
 
     public function customerCart()

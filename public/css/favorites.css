@@ -106,29 +106,3 @@
     background-color: #6366f1;
 }
 
-/* --- Stats Summary --- */
-.stats-summary-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 2.5rem;
-    margin-bottom: 4.5rem;
-    padding-bottom: 3rem;
-}
-
-.stats-group {
-    display: flex;
-    gap: 6rem;
-}
-
-.pagination-centered-column {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-    margin-top: 2.5rem;
-    border-top: 1px solid rgba(30, 41, 59, 0.4);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-}

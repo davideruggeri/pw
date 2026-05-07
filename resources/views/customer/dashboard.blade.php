@@ -23,6 +23,23 @@
         ? "Gestisci il tuo account in modo semplice. Accedi rapidamente ai tuoi ordini e ai tuoi prodotti preferiti direttamente dal menu laterale."
         : "Questa è un'anteprima dell'area clienti. Registrati per iniziare a salvare i tuoi prodotti preferiti e monitorare i tuoi acquisti in tempo reale." }}
                 </p>
+
+                @if($user)
+                    <div class="flex items-center gap-12 mt-6 justify-center sm:justify-start">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">Ordini
+                                Totali</span>
+                            <span class="text-4xl font-black text-white tracking-tighter">{{ $stats['ordini_count'] }}</span>
+                        </div>
+                        <div class="w-px h-12 bg-white/10"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">Spesa
+                                Totale</span>
+                            <span
+                                class="text-4xl font-black text-white tracking-tighter">€{{ number_format($stats['totale_speso'], 2, ',', '.') }}</span>
+                        </div>
+                    </div>
+                @endif
                 @if(!$user)
                     <div class="flex flex-col sm:flex-row gap-5 w-full sm:w-auto justify-center mt-3 mb-6 relative z-20">
                         <a href="{{ route('register') }}"
@@ -102,45 +119,45 @@
                         Tutti</a>
                 </div>
 
-                <div class="recent-orders-box shadow-sm animate-fade-in">
-                    <div class="divide-y divide-slate-50 dark:divide-slate-800/50">
+                <div
+                    class="recent-orders-box shadow-sm animate-fade-in bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden">
+                    <div class="divide-y divide-slate-100/50 dark:divide-slate-800/50">
                         @foreach($recentOrders as $ordine)
-                            <div class="order-mini-row group">
+                            <a href="{{ route('customer.orders') }}"
+                                class="flex items-center justify-between p-4 hover:bg-indigo-50/30 dark:hover:bg-indigo-500/5 transition-all group">
                                 <div class="flex items-center gap-4">
                                     <div
-                                        class="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-lg">
+                                        class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
                                         📦</div>
                                     <div>
                                         <p class="text-sm font-black text-slate-900 dark:text-white">Ordine
                                             #{{ $ordine->IDOrdineVendita }}</p>
                                         <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-                                            {{ date('d M Y', strtotime($ordine->Data)) }}</p>
+                                            {{ date('d M Y', strtotime($ordine->Data)) }}
+                                        </p>
                                     </div>
                                 </div>
 
-                                <div class="hidden md:flex items-center gap-8">
-                                    <div class="text-right">
-                                        <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-0.5">Totale</p>
+                                <div class="flex items-center gap-4">
+                                    <div class="text-right hidden sm:block">
+                                        <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Totale</p>
                                         <p class="text-sm font-bold text-slate-900 dark:text-white">
-                                            €{{ number_format($ordine->TotaleOrdine, 2, ',', '.') }}</p>
+                                            €{{ number_format($ordine->totale_ordine, 2, ',', '.') }}</p>
                                     </div>
-                                    <div class="flex items-center gap-2 px-3 py-1 bg-slate-50 dark:bg-slate-900 rounded-full">
+                                    <div
+                                        class="flex items-center gap-2 px-3 py-1 bg-white/50 dark:bg-slate-950/50 rounded-full border border-slate-100 dark:border-slate-800">
                                         <span
-                                            class="status-indicator {{ $ordine->StatoConsegna == 'Consegnato' ? 'bg-emerald-500' : 'bg-amber-500' }}"></span>
+                                            class="w-1.5 h-1.5 rounded-full {{ $ordine->StatoConsegna == 'Consegnato' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]' }}"></span>
                                         <span
-                                            class="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-widest">{{ $ordine->StatoConsegna }}</span>
+                                            class="text-[9px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-widest">{{ $ordine->StatoConsegna }}</span>
                                     </div>
-                                </div>
-
-                                <a href="{{ route('customer.orders') }}"
-                                    class="p-2 text-slate-300 hover:text-indigo-600 transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                            clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-4 w-4 text-slate-300 group-hover:text-indigo-500 transition-colors" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
                                     </svg>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>

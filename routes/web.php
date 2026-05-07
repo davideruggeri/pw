@@ -17,17 +17,18 @@ Route::get('/coming-soon/{feature?}', [ComingSoonController::class, 'index'])->n
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Rotte per Clienti (Catalogo e Carrello - Solo per utenti loggati con ruolo customer)
-Route::middleware(['auth', 'role:customer', 'password.changed'])->group(function () {
-    // Catalogo
-    Route::get('/catalog', [ProductController::class, 'index'])->name('catalog.index');
-    Route::get('/catalog/{id}', [ProductController::class, 'show'])->name('catalog.show');
-    Route::post('/catalog/{id}/favorite', [ProductController::class, 'toggleFavorite'])->name('catalog.favorite');
+// Rotte Pubbliche per Clienti (Accessibili anche come Ospite)
+Route::get('/catalog', [ProductController::class, 'index'])->name('catalog.index');
+Route::get('/catalog/{id}', [ProductController::class, 'show'])->name('catalog.show');
+Route::get('/customer/dashboard', [DashboardController::class, 'customer'])->name('customer.dashboard');
 
-    // Dashboard e Funzionalità Cliente
+// Rotte per Clienti (Funzionalità protette - Solo per utenti loggati con ruolo customer)
+Route::middleware(['auth', 'role:customer', 'password.changed'])->group(function () {
+    // Funzionalità Cliente
     Route::prefix('customer')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'customer'])->name('customer.dashboard');
+        Route::post('/catalog/{id}/favorite', [ProductController::class, 'toggleFavorite'])->name('catalog.favorite');
         Route::get('/orders', [DashboardController::class, 'customerOrders'])->name('customer.orders');
+        Route::get('/orders/{id}', [DashboardController::class, 'customerOrderShow'])->name('customer.orders.show');
         Route::get('/favorites', [DashboardController::class, 'customerFavorites'])->name('customer.favorites');
         Route::get('/cart', [DashboardController::class, 'customerCart'])->name('customer.cart');
         Route::post('/cart/add/{id}', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');

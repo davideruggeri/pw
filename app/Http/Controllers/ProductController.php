@@ -12,6 +12,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Prodotto::query();
+        $perPage = $request->get('per_page', 12);
 
         // Applica filtro per categoria se selezionata nel menu a tendina
         if ($request->has('category')) {
@@ -23,7 +24,7 @@ class ProductController extends Controller
             $query->where('Descrizione', 'like', '%' . $request->search . '%');
         }
 
-        $products = $query->paginate(12);
+        $products = $query->paginate($perPage)->withQueryString();
         $categories = Categoria::all();
 
         // Recupera gli ID dei preferiti dell'utente per evidenziare il "cuore" nel catalogo
@@ -35,7 +36,7 @@ class ProductController extends Controller
                 ->toArray();
         }
 
-        return view('customer.catalog', compact('products', 'categories', 'favoriteIds'));
+        return view('customer.catalog', compact('products', 'categories', 'favoriteIds', 'perPage'));
     }
 
     public function show($id)
