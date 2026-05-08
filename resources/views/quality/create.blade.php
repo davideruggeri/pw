@@ -1,16 +1,13 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Registra Controllo Qualità')
+@section('title', 'Qualità - Operazioni')
 
 @section('content')
 <div class="max-w-2xl mx-auto py-10 animate-fade-in">
     
     <div class="mb-8">
-        <a href="{{ route('quality.index') }}" class="text-xs font-black text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition flex items-center gap-2 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-            Torna alla Dashboard
-        </a>
-        <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Nuovo Controllo</h3>
+
+        <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Operazioni di Controllo</h3>
         <p class="text-slate-500 text-sm">Verifica la conformità dei lotti prodotti recentemente.</p>
     </div>
 

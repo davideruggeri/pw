@@ -1,110 +1,73 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Logistica e Magazzino - Reparto 4')
+@section('title', 'Logistica - Dashboard')
 
 @section('content')
 <div class="max-w-6xl mx-auto py-10 animate-fade-in">
-
-    <!-- KPI Rapidi -->
+    
+    <!-- KPI Header -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex justify-between items-center">
-            <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Valore Magazzino</p>
-                <h3 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
-                    € {{ number_format($totalWarehouseValue, 0, ',', '.') }}
-                </h3>
-            </div>
-            <div class="text-right">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Sotto Scorta</p>
-                <h3 class="text-3xl font-black {{ $lowStockCount > 0 ? 'text-rose-500' : 'text-emerald-500' }} tracking-tighter">
-                    {{ $lowStockCount }} <span class="text-sm font-bold text-slate-500 uppercase">Articoli</span>
-                </h3>
-            </div>
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Valore Totale Magazzino</p>
+            <h3 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+                € {{ number_format($totalStockValue, 2, ',', '.') }}
+            </h3>
         </div>
         
-        <!-- Form Rapido Aggiornamento Stock -->
-        <div class="bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-800">
-            <h4 class="text-white font-black text-lg mb-4 tracking-tight">Aggiorna Giacenza</h4>
-            <form action="{{ route('logistics.update-stock') }}" method="POST" class="space-y-4">
-                @csrf
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <select name="CodiceUnivoco" required class="bg-white/5 border-slate-700 text-white rounded-xl text-xs font-bold focus:ring-indigo-500">
-                        <option value="" disabled selected class="text-slate-900">Seleziona Prodotto...</option>
-                        @foreach($prodotti as $p)
-                            <option value="{{ $p->CodiceUnivoco }}" class="text-slate-900">{{ $p->Descrizione }} ({{ $p->QuantitaGiacenza }}kg)</option>
-                        @endforeach
-                    </select>
-                    <div class="flex gap-2">
-                        <input type="number" name="QuantitaGiacenza" placeholder="Nuova Q.tà" required class="flex-1 bg-white/5 border-slate-700 text-white rounded-xl text-xs font-bold placeholder-slate-500">
-                        <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95">
-                            Aggiorna
-                        </button>
-                    </div>
-                </div>
-            </form>
+        <div class="bg-amber-500 p-8 rounded-3xl shadow-xl shadow-amber-500/20 flex items-center justify-between">
+            <div>
+                <p class="text-[10px] font-black text-white/70 uppercase tracking-widest mb-2">Alert Scorte</p>
+                <h3 class="text-4xl font-black text-white tracking-tighter">{{ $lowStockCount }}</h3>
+                <p class="text-white/80 text-xs font-bold uppercase tracking-widest mt-1">Articoli Sottoscorta</p>
+            </div>
+            <a href="{{ route('logistics.inventory') }}" class="bg-white text-amber-600 px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all active:scale-95">
+                Vedi Inventario
+            </a>
         </div>
     </div>
 
-    <!-- Inventario -->
-    <div class="bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden shadow-sm">
-        <div class="p-6 border-b border-slate-100 dark:border-slate-800/50 flex justify-between items-center">
-            <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter">Inventario Prodotti</h4>
-            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Stato Giacenze</span>
-        </div>
+    <!-- Azioni e Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="bg-slate-50 dark:bg-black/20">
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Codice</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Descrizione</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Giacenza</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Scorta Minima</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
-                    @foreach($prodotti as $p)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
-                        <td class="px-6 py-4">
-                            <span class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">#{{ $p->CodiceUnivoco }}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <p class="text-sm font-black text-slate-800 dark:text-white">{{ $p->Descrizione }}</p>
-                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{{ $p->categoria->NomeCategoria ?? 'N/A' }}</p>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <span class="text-sm font-black {{ $p->QuantitaGiacenza <= $p->ScortaMinima ? 'text-rose-500' : 'text-slate-900 dark:text-white' }}">
-                                {{ number_format($p->QuantitaGiacenza, 0, ',', '.') }} kg
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ number_format($p->ScortaMinima, 0, ',', '.') }} kg</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($p->QuantitaGiacenza <= $p->ScortaMinima)
-                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-rose-100 text-rose-600 text-[9px] font-black uppercase tracking-widest">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
-                                    Sotto Scorta
+        <div class="lg:col-span-2 bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden shadow-sm">
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800/50 flex justify-between items-center">
+                <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter">Movimentazioni Recenti</h4>
+                <a href="{{ route('logistics.inventory') }}" class="text-[10px] font-black text-indigo-500 uppercase tracking-widest hover:underline">Vedi Tutto</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                        @foreach($recentUpdates as $product)
+                        <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                            <td class="px-6 py-4">
+                                <p class="text-sm font-black text-slate-800 dark:text-white">{{ $product->NomeProdotto }}</p>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold">{{ $product->categoria->NomeCategoria ?? 'Materiale' }}</p>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="text-sm font-black {{ $product->Giacenza < 500 ? 'text-rose-500' : 'text-emerald-500' }}">
+                                    {{ number_format($product->Giacenza, 0, ',', '.') }} {{ $product->UnitaMisura }}
                                 </span>
-                            @else
-                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-100 text-emerald-600 text-[9px] font-black uppercase tracking-widest">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                    Ottimale
-                                </span>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-        
-        @if($prodotti->hasPages())
-        <div class="p-6 border-t border-slate-100 dark:border-slate-800/50">
-            {{ $prodotti->links() }}
+
+        <div class="bg-slate-900 p-8 rounded-3xl shadow-xl flex flex-col justify-between border border-slate-800">
+            <div>
+                <div class="w-12 h-12 bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-400 mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
+                </div>
+                <h4 class="text-white font-black text-xl tracking-tight mb-2">Movimenta Merci</h4>
+                <p class="text-slate-400 text-sm mb-8 leading-relaxed">Registra l'arrivo di nuove materie prime o lo scarico per spedizione.</p>
+            </div>
+            <a href="{{ route('logistics.update') }}" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all text-center">
+                Vai al Carico/Scarico
+            </a>
         </div>
-        @endif
+
     </div>
 
 </div>

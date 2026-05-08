@@ -20,6 +20,8 @@
                     ['id' => 'sales', 'name' => 'Venditore', 'color' => 'bg-emerald-600', 'desc' => 'Ordini e Clienti'],
                     ['id' => 'logistics', 'name' => 'Logistica', 'color' => 'bg-amber-600', 'desc' => 'Magazzino e Stock'],
                     ['id' => 'production', 'name' => 'Produzione', 'color' => 'bg-blue-600', 'desc' => 'Flussi operativi'],
+                    ['id' => 'maintenance', 'name' => 'Manutenzione', 'color' => 'bg-orange-600', 'desc' => 'Riparazioni e Logs'],
+                    ['id' => 'quality', 'name' => 'Qualità', 'color' => 'bg-rose-600', 'desc' => 'Controllo standard'],
                     ['id' => 'customer', 'name' => 'Cliente', 'color' => 'bg-slate-700', 'desc' => 'Area riservata'],
                 ];
             @endphp

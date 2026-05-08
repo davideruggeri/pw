@@ -20,7 +20,7 @@ class DebugController extends Controller
     */
     public function switchRole($role)
     {
-        $validRoles = ['admin', 'sales', 'logistics', 'production', 'customer'];
+        $validRoles = ['admin', 'sales', 'logistics', 'production', 'maintenance', 'quality', 'customer'];
         
         // Verifica che il ruolo richiesto sia tra quelli gestiti dal sistema
         if (!in_array($role, $validRoles)) {

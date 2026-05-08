@@ -1,16 +1,13 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Registra Produzione')
+@section('title', 'Produzione - Operazioni')
 
 @section('content')
 <div class="max-w-2xl mx-auto py-10 animate-fade-in">
     
     <div class="mb-8">
-        <a href="{{ route('production.index') }}" class="text-xs font-black text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition flex items-center gap-2 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-            Torna alla Dashboard
-        </a>
-        <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Nuovo Lotto di Produzione</h3>
+
+        <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Operazioni Operative</h3>
         <p class="text-slate-500 text-sm">Inserisci i dati relativi alla produzione appena completata.</p>
     </div>
 
@@ -29,8 +26,16 @@
             </div>
 
             <div>
-                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Quantità Prodotta (kg)</label>
-                <input type="number" name="QuantitaProdotta" placeholder="es. 500" required class="w-full bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl py-4 px-5 text-sm font-bold placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 transition-all">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Quantità Lotto (kg)</label>
+                <select name="QuantitaProdotta" required class="w-full bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl py-4 px-5 text-sm font-bold focus:ring-2 focus:ring-indigo-500 transition-all">
+                    <option value="" disabled selected>Seleziona quantità...</option>
+                    <option value="50">50 kg (Lotto Piccolo)</option>
+                    <option value="100">100 kg (Lotto Standard)</option>
+                    <option value="250">250 kg (Lotto Medio)</option>
+                    <option value="500">500 kg (Lotto Grande)</option>
+                    <option value="1000">1000 kg (Lotto Industriale)</option>
+                </select>
+                <p class="mt-2 text-[10px] text-slate-400 italic">Seleziona uno dei formati di produzione standard.</p>
             </div>
 
             <div class="pt-4">

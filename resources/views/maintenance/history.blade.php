@@ -7,10 +7,7 @@
     
     <div class="mb-8 flex justify-between items-end">
         <div>
-            <a href="{{ route('maintenance.index') }}" class="text-xs font-black text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition flex items-center gap-2 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                Torna alla Dashboard
-            </a>
+
             <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Registro Interventi</h3>
             <p class="text-slate-500 text-sm">Cronologia completa delle attività tecniche.</p>
         </div>

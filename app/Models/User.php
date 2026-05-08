@@ -60,7 +60,9 @@ class User extends Authenticatable
             5 => 'admin',
             6 => 'sales',
             4 => 'logistics',
-            1, 2, 3 => 'production',
+            1 => 'production',
+            2 => 'maintenance',
+            3 => 'quality',
             default => 'customer',
         };
     }
@@ -100,9 +102,24 @@ class User extends Authenticatable
         return $this->effective_role === 'logistics';
     }
 
+    public function isStaff(): bool
+    {
+        return in_array($this->effective_role, ['production', 'maintenance', 'quality', 'logistics', 'sales', 'manager']);
+    }
+
     public function isProduction(): bool
     {
         return $this->effective_role === 'production';
+    }
+
+    public function isMaintenance(): bool
+    {
+        return $this->effective_role === 'maintenance';
+    }
+
+    public function isQuality(): bool
+    {
+        return $this->effective_role === 'quality';
     }
 
     public function isCustomer(): bool

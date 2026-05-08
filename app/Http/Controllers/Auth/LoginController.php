@@ -70,13 +70,15 @@ class LoginController extends Controller
 
     protected function redirectBasedOnRole($user)
     {
-        return match ($user->role) {
-            'admin'      => redirect()->intended('/admin/dashboard'),
-            'sales'      => redirect()->intended('/sales/dashboard'),
-            'logistics'  => redirect()->intended('/logistics/dashboard'),
-            'production' => redirect()->intended('/operations/dashboard'),
-            'customer'   => redirect()->intended('/customer/orders'),
-            default      => redirect()->intended('/'),
+        return match ($user->effective_role) {
+            'admin'       => redirect()->intended('/admin/dashboard'),
+            'sales'       => redirect()->intended('/sales/dashboard'),
+            'logistics'   => redirect()->intended('/logistics'),
+            'production'  => redirect()->intended('/production'),
+            'maintenance' => redirect()->intended('/maintenance'),
+            'quality'     => redirect()->intended('/quality'),
+            'customer'    => redirect()->intended('/customer/dashboard'),
+            default       => redirect()->intended('/'),
         };
     }
 }

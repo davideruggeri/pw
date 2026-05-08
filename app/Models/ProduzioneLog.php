@@ -27,4 +27,9 @@ class ProduzioneLog extends Model
     {
         return $this->belongsTo(Dipendente::class, 'Matricola_FK', 'Matricola');
     }
+
+    public function qualita()
+    {
+        return $this->hasOne(QualitaLog::class, 'IDLogProduzione_FK', 'IDLogProduzione');
+    }
 }

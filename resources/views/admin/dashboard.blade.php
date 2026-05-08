@@ -212,17 +212,15 @@
     <div class="kpi-card kpi-card-dark shadow-lg">
         <h4 class="text-lg font-bold mb-6">Azioni Rapide</h4>
         <div class="space-y-4">
-            <a href="{{ route('employees.create') }}" class="w-full btn-premium justify-between py-4">
-                Nuovo Dipendente
+            <a href="{{ route('employees.index') }}" class="w-full btn-premium justify-between py-4">
+                Gestione Dipendenti
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                 </svg>
             </a>
-            <a href="{{ route('reports.index') }}" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl flex items-center justify-between px-6 transition font-semibold border border-slate-700">
+            <a href="#" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl flex items-center justify-between px-6 transition font-semibold border border-slate-700 opacity-50 cursor-not-allowed">
                 Genera Report KPI
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
+                <span class="text-[10px] bg-slate-700 px-2 py-1 rounded">PRO</span>
             </a>
         </div>
     </div>

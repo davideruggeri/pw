@@ -125,6 +125,14 @@ aside {
     box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
 }
 
+.nav-sub-link {
+    margin-left: 3rem !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    gap: 0.5rem !important;
+}
+
 .nav-section-title {
     margin-top: 1.5rem !important;
     margin-bottom: 0.5rem !important;
