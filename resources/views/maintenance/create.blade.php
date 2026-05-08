@@ -2,16 +2,19 @@
 
 @section('title', 'Manutenzione - Operazioni')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/maintenance.css') }}">
+@endpush
+
 @section('content')
-<div class="max-w-2xl mx-auto py-10 animate-fade-in">
+<div class="maintenance-container" style="max-width: 42rem;">
     
     <div class="mb-8">
-
         <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Operazioni di Manutenzione</h3>
         <p class="text-slate-500 text-sm">Registra i dettagli dell'attività tecnica svolta sugli impianti.</p>
     </div>
 
-    <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl">
+    <div class="maintenance-card p-8 shadow-xl">
         <form action="{{ route('maintenance.store') }}" method="POST" class="space-y-6">
             @csrf
             

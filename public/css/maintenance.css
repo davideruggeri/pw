@@ -1,0 +1,56 @@
+/* Maintenance Module Styles */
+.maintenance-container {
+    max-width: 72rem;
+    margin: 2.5rem auto;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.maintenance-card {
+    background-color: var(--bg-card);
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .maintenance-card {
+    background-color: rgba(10, 10, 10, 0.4);
+}
+
+.maintenance-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.maintenance-table-header {
+    background-color: var(--bg-main);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.maintenance-table-th {
+    padding: 1rem 1.5rem;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.maintenance-table-tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.maintenance-table-tr:hover {
+    background-color: var(--nav-hover);
+}
+
+.maintenance-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}

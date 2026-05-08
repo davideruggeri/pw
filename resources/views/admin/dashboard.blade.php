@@ -84,10 +84,14 @@
                 <span class="text-sm font-black text-red-600 dark:text-red-400">- € {{ number_format($maintenanceCosts, 0, ',', '.') }}</span>
             </div>
             <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
+                <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Rifornimento Materiali</span>
+                <span class="text-sm font-black text-amber-600 dark:text-amber-400">- € {{ number_format($replenishmentCosts, 0, ',', '.') }}</span>
+            </div>
+            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
                 <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Perdite per Scarti Qualità</span>
                 <span class="text-sm font-black text-red-600 dark:text-red-400">- € {{ number_format($qualityLosses, 0, ',', '.') }}</span>
             </div>
-            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
+            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center md:col-span-2">
                 <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Salari e Oneri Sociali</span>
                 <span class="text-sm font-black text-red-600 dark:text-red-400">- € {{ number_format($laborCosts, 0, ',', '.') }}</span>
             </div>

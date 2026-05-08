@@ -3,11 +3,11 @@
 @section('title', 'Produzione - Overview')
 
 @section('content')
-<div class="max-w-6xl mx-auto py-10 animate-fade-in">
+<div class="premium-page-container">
 
     <!-- KPI Header -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
+        <div class="premium-card p-8">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Volume Prodotto (Mese)</p>
             <h3 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
                 {{ number_format($totalProducedMonth, 0, ',', '.') }} <span class="text-sm font-bold text-slate-500 uppercase">kg</span>
@@ -27,17 +27,17 @@
     </div>
 
     <!-- Anteprima Ultimi Lotti -->
-    <div class="bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden shadow-sm">
+    <div class="premium-card">
         <div class="p-6 border-b border-slate-100 dark:border-slate-800/50 flex justify-between items-center">
             <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter">Attività Recente</h4>
             <a href="{{ route('production.history') }}" class="text-[10px] font-black text-indigo-500 uppercase tracking-widest hover:underline">Vedi tutto lo storico</a>
         </div>
         
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="premium-table">
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
                     @forelse($latestLogs as $log)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                    <tr class="premium-table-tr">
                         <td class="px-6 py-4">
                             <p class="text-sm font-bold text-slate-900 dark:text-white">{{ date('d/m/Y', strtotime($log->DataProduzione)) }}</p>
                             <p class="text-[10px] text-slate-500">{{ date('H:i', strtotime($log->DataProduzione)) }}</p>

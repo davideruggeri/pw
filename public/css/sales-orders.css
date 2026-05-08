@@ -1,0 +1,163 @@
+/* --- SALES ORDERS ARCHIVE STYLES --- */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.status-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.status-inviato {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.dark .status-inviato {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+.status-completato {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.dark .status-completato {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.status-annullato {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.dark .status-annullato {
+    background: rgba(239, 68, 104, 0.2);
+    color: #f87171;
+}
+
+/* Specific Archive Enhancements */
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+/* --- MINI STATS ENHANCEMENTS --- */
+.stats-card-premium {
+    background: var(--logistics-card);
+    border: 1px solid var(--logistics-border);
+    padding: 1.25rem 1.75rem;
+    border-radius: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card-premium:hover {
+    transform: translateY(-5px);
+    border-color: var(--logistics-accent);
+    box-shadow: 0 20px 40px -10px var(--logistics-accent-glow);
+}
+
+.stats-card-premium::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.stats-card-accent {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.stats-card-accent .stats-label {
+    color: var(--logistics-accent);
+}
+
+/* --- SEARCH BAR POLISH --- */
+.logistics-search-wrapper input {
+    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05) !important;
+}
+
+.logistics-search-wrapper:focus-within .logistics-search-icon {
+    color: var(--logistics-accent);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* --- TABLE ENHANCEMENTS --- */
+.logistics-table {
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    width: 100%;
+}
+
+.logistics-table-header th {
+    text-transform: uppercase;
+    font-[900];
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    padding: 1.5rem 2rem;
+    border: 0;
+}
+
+.logistics-table-tr {
+    background: transparent;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logistics-table-tr:hover {
+    background: rgba(99, 102, 241, 0.03) !important;
+    transform: translateX(8px);
+}
+
+.dark .logistics-table-tr:hover {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.logistics-table-tr td {
+    border: 0;
+    position: relative;
+}
+
+/* Row indicator */
+.logistics-table-tr:hover td:first-child::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 4px;
+    background: var(--logistics-accent);
+    border-radius: 0 4px 4px 0;
+    box-shadow: 4px 0 15px var(--logistics-accent-glow);
+}
+
+/* Price Column styling */
+.logistics-table td:nth-last-child(2) {
+    font-family: 'Instrument Sans', sans-serif;
+    color: var(--logistics-accent);
+}
+
+.dark .logistics-table td:nth-last-child(2) {
+    color: var(--text-main);
+}

@@ -2,12 +2,16 @@
 
 @section('title', 'Qualità - Overview')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/quality.css') }}">
+@endpush
+
 @section('content')
-<div class="max-w-6xl mx-auto py-10 animate-fade-in">
+<div class="quality-container">
 
     <!-- KPI Header -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex justify-between items-center">
+        <div class="quality-card p-8 flex justify-between items-center">
             <div>
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tasso di Scarto (Mese)</p>
                 <h3 class="text-4xl font-black {{ $rejectionRate > 3 ? 'text-rose-500' : 'text-emerald-500' }} tracking-tighter">
@@ -35,17 +39,17 @@
     </div>
 
     <!-- Anteprima Controlli -->
-    <div class="bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden shadow-sm">
+    <div class="quality-card">
         <div class="p-6 border-b border-slate-100 dark:border-slate-800/50 flex justify-between items-center">
             <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter">Controlli Recenti</h4>
             <a href="{{ route('quality.history') }}" class="text-[10px] font-black text-indigo-500 uppercase tracking-widest hover:underline">Vedi tutto il registro</a>
         </div>
         
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="quality-table">
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
                     @forelse($latestLogs as $log)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                    <tr class="quality-table-tr">
                         <td class="px-6 py-4">
                             <p class="text-sm font-bold text-slate-900 dark:text-white">{{ date('d/m/Y', strtotime($log->DataControllo)) }}</p>
                         </td>
@@ -54,7 +58,7 @@
                             <p class="text-[10px] text-slate-500 uppercase font-black">{{ $log->produzione->prodotto->Descrizione ?? 'N/A' }}</p>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest {{ $log->Esito == 'PASS' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600' }}">
+                            <span class="quality-badge {{ $log->Esito == 'PASS' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600' }}">
                                 {{ $log->Esito }}
                             </span>
                         </td>

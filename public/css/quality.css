@@ -1,0 +1,89 @@
+/* Quality Module Styles */
+.quality-container {
+    max-width: 72rem;
+    margin: 2.5rem auto;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.quality-card {
+    background-color: var(--bg-card);
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .quality-card {
+    background-color: rgba(10, 10, 10, 0.4);
+}
+
+.quality-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.quality-table-header {
+    background-color: var(--bg-main);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.quality-table-th {
+    padding: 1rem 1.5rem;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.quality-table-tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.quality-table-tr:hover {
+    background-color: var(--nav-hover);
+}
+
+.quality-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* Form Styles for Quality */
+.quality-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.quality-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.quality-input {
+    width: 100%;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.quality-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}

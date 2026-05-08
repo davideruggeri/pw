@@ -87,8 +87,10 @@ Route::middleware(['auth', 'role:admin,sales', 'password.changed'])->prefix('adm
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 });
 
-Route::middleware(['auth', 'role:sales', 'password.changed'])->prefix('sales')->group(function () {
+Route::middleware(['auth', 'role:sales,admin', 'password.changed'])->prefix('sales')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'sales'])->name('sales.dashboard');
+    Route::get('/orders/pending', [OrderController::class, 'pending'])->name('orders.pending');
+    Route::post('/orders/{id}/approve', [OrderController::class, 'approve'])->name('orders.approve');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 });
@@ -118,6 +120,7 @@ Route::middleware(['auth', 'role:admin,quality', 'password.changed'])->prefix('q
 Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix('logistics')->group(function () {
     Route::get('/', [App\Http\Controllers\LogisticsController::class, 'index'])->name('logistics.index');
     Route::get('/inventory', [App\Http\Controllers\LogisticsController::class, 'inventory'])->name('logistics.inventory');
+    Route::get('/replenishment', [App\Http\Controllers\LogisticsController::class, 'replenishment'])->name('logistics.replenishment');
     Route::get('/update', [App\Http\Controllers\LogisticsController::class, 'updateForm'])->name('logistics.update');
     Route::post('/update-stock', [App\Http\Controllers\LogisticsController::class, 'updateStock'])->name('logistics.update-stock');
 });
@@ -126,6 +129,6 @@ Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix(
 // Rotte Placeholder per funzionalità in sviluppo
 Route::middleware(['auth', 'password.changed'])->group(function () {
     Route::get('/inventory-placeholder', fn() => redirect()->route('coming-soon', ['feature' => 'Magazzino Avanzato']))->name('inventory.index');
-    Route::get('/orders-placeholder', fn() => redirect()->route('coming-soon', ['feature' => 'Elenco Ordini']))->name('orders.index');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/coming-soon/{feature}', fn($feature) => view('coming-soon', compact('feature')))->name('coming-soon');
 });

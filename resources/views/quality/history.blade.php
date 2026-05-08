@@ -2,12 +2,15 @@
 
 @section('title', 'Registro Qualità')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/quality.css') }}">
+@endpush
+
 @section('content')
-<div class="max-w-6xl mx-auto py-10 animate-fade-in">
+<div class="quality-container">
     
     <div class="mb-8 flex justify-between items-end">
         <div>
-
             <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Registro Controlli</h3>
             <p class="text-slate-500 text-sm">Archivio storico dei test di conformità.</p>
         </div>
@@ -16,22 +19,22 @@
         </a>
     </div>
 
-    <div class="bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden shadow-sm">
+    <div class="quality-card">
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="quality-table">
                 <thead>
-                    <tr class="bg-slate-50 dark:bg-black/20">
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Data</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Lotto</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Prodotto</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Esito</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Scarto (kg)</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Note Difetto</th>
+                    <tr class="quality-table-header">
+                        <th class="quality-table-th">Data</th>
+                        <th class="quality-table-th">Lotto</th>
+                        <th class="quality-table-th">Prodotto</th>
+                        <th class="quality-table-th">Esito</th>
+                        <th class="quality-table-th text-right">Scarto (kg)</th>
+                        <th class="quality-table-th">Note Difetto</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
                     @foreach($logs as $log)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                    <tr class="quality-table-tr">
                         <td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">
                             {{ date('d/m/Y', strtotime($log->DataControllo)) }}
                         </td>

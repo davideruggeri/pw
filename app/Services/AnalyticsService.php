@@ -34,25 +34,28 @@ class AnalyticsService
 
         $energyCosts = DB::table('produzione_log')->sum('CostoEnergiaStimato');
         $maintenanceCosts = DB::table('manutenzione_log')->sum('CostoRicambi');
+        $replenishmentCosts = DB::table('movimenti_magazzino')->where('Tipo', 'carico')->sum('CostoTotale');
+        
         $qualityLosses = DB::table('qualita_log')
             ->join('produzione_log', 'qualita_log.IDLogProduzione_FK', '=', 'produzione_log.IDLogProduzione')
             ->join('prodotto', 'produzione_log.CodiceUnivoco_FK', '=', 'prodotto.CodiceUnivoco')
             ->selectRaw('SUM(QuantitaScartata * CostoProduzione) as loss')
             ->value('loss') ?? 0;
-
+ 
         $totalEmployees = DB::table('dipendente')->count();
         $laborCosts = $totalEmployees * 3500; // Media costo aziendale mensile per dipendente
-
+ 
         $totalRevenue = $salesData->revenue ?? 0;
         $cogs = $salesData->cogs ?? 0;
         
-        $ebitda = $totalRevenue - $cogs - $energyCosts - $maintenanceCosts - $qualityLosses - $laborCosts;
-
+        $ebitda = $totalRevenue - $cogs - $energyCosts - $maintenanceCosts - $qualityLosses - $laborCosts - $replenishmentCosts;
+ 
         return [
             'totalRevenue' => $totalRevenue,
             'cogs' => $cogs,
             'energyCosts' => $energyCosts,
             'maintenanceCosts' => $maintenanceCosts,
+            'replenishmentCosts' => $replenishmentCosts,
             'qualityLosses' => $qualityLosses,
             'laborCosts' => $laborCosts,
             'ebitda' => $ebitda,

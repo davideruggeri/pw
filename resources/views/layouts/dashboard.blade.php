@@ -80,7 +80,7 @@
                     $dashRoute = in_array($role, ['production', 'logistics', 'maintenance', 'quality']) ? $role . '.index' : ($role === 'admin' ? 'admin.dashboard' : $role . '.dashboard');
                 @endphp
                 <a href="{{ Auth::check() ? route($dashRoute) : route('home') }}"
-                    class="nav-link {{ request()->routeIs('*.dashboard') || (request()->routeIs('*.index') && !request()->routeIs('employees.*') && !request()->routeIs('departments.*')) ? 'nav-link-active' : '' }}">
+                    class="nav-link {{ request()->routeIs($dashRoute) ? 'nav-link-active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
@@ -138,22 +138,6 @@
 
                     <!-- Reparti Operativi (Produzione, Manutenzione, Qualità) -->
 
-                    <!-- Vendite & Ordini -->
-                    @if(Auth::user()->isAdmin() || Auth::user()->isSales())
-                        <div class="nav-section-title">Commerciale</div>
-                        <a href="{{ route('sales.dashboard') }}" class="nav-link {{ request()->routeIs('sales.dashboard') ? 'nav-link-active' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                            <span>Hub Vendite</span>
-                        </a>
-                        <a href="{{ route('orders.index') }}" class="nav-link {{ request()->routeIs('orders.index') ? 'nav-link-active' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                            </svg>
-                            <span>Archivio Ordini</span>
-                        </a>
-                    @endif
 
                     <!-- Sezione Operativa -->
                     @php 
@@ -196,10 +180,29 @@
                             </a>
                         @endif
                         
+                        @if(Auth::user()->isAdmin() || Auth::user()->isSales())
+                            <a href="{{ route('orders.pending') }}" class="nav-link {{ request()->routeIs('orders.pending') ? 'nav-link-active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Approvazione Ordini</span>
+                            </a>
+                            <a href="{{ route('orders.index') }}" class="nav-link {{ request()->routeIs('orders.index') || request()->routeIs('orders.show') ? 'nav-link-active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                                <span>Archivio Vendite</span>
+                            </a>
+                        @endif
+                        
                         @if(Auth::user()->isAdmin() || Auth::user()->role === 'logistics')
                             <a href="{{ route('logistics.inventory') }}" class="nav-link {{ request()->routeIs('logistics.inventory') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                                 <span>Inventario</span>
+                            </a>
+                            <a href="{{ route('logistics.replenishment') }}" class="nav-link {{ request()->routeIs('logistics.replenishment') ? 'nav-link-active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                                <span>Rifornimento</span>
                             </a>
                             <a href="{{ route('logistics.update') }}" class="nav-link {{ request()->routeIs('logistics.update') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>

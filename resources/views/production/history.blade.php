@@ -2,12 +2,15 @@
 
 @section('title', 'Storico Produzione')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/production.css') }}">
+@endpush
+
 @section('content')
-<div class="max-w-6xl mx-auto py-10 animate-fade-in">
+<div class="production-container">
     
     <div class="mb-8 flex justify-between items-end">
         <div>
-
             <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Archivio Lotti</h3>
             <p class="text-slate-500 text-sm">Registro completo della produzione ceramica.</p>
         </div>
@@ -16,22 +19,22 @@
         </a>
     </div>
 
-    <div class="bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800/50 overflow-hidden shadow-sm">
+    <div class="production-card">
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="production-table">
                 <thead>
-                    <tr class="bg-slate-50 dark:bg-black/20">
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">ID Lotto</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Data / Ora</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Prodotto</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Quantità</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Costo Energia</th>
-                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Responsabile</th>
+                    <tr class="production-table-header">
+                        <th class="production-table-th">ID Lotto</th>
+                        <th class="production-table-th">Data / Ora</th>
+                        <th class="production-table-th">Prodotto</th>
+                        <th class="production-table-th text-right">Quantità</th>
+                        <th class="production-table-th text-right">Costo Energia</th>
+                        <th class="production-table-th">Responsabile</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
                     @foreach($logs as $log)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                    <tr class="production-table-tr">
                         <td class="px-6 py-4">
                             <span class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">#{{ $log->IDLogProduzione }}</span>
                         </td>

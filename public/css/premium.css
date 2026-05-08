@@ -151,6 +151,92 @@ aside {
     margin-top: auto;
 }
 
+/* --- Dashboard Components --- */
+.premium-page-container {
+    max-width: 72rem; /* max-w-6xl */
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.premium-card {
+    background-color: var(--bg-card);
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .premium-card {
+    background-color: rgba(10, 10, 10, 0.4);
+}
+
+.premium-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.premium-table-header {
+    background-color: var(--bg-main);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.premium-table-th {
+    padding: 1rem 1.5rem;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.premium-table-tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.premium-table-tr:hover {
+    background-color: var(--nav-hover);
+}
+
+.premium-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btn-premium {
+    background-color: var(--accent-color);
+    color: white !important;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 1rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -10px var(--accent-color);
+}
+
 .btn-logout {
     display: flex !important;
     align-items: center !important;

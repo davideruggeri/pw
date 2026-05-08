@@ -30,6 +30,21 @@ class Prodotto extends Model
         return $this->Descrizione;
     }
 
+    public function getGiacenzaAttribute()
+    {
+        return $this->QuantitaGiacenza;
+    }
+
+    public function setGiacenzaAttribute($value)
+    {
+        $this->attributes['QuantitaGiacenza'] = $value;
+    }
+
+    public function getPrezzoListinoAttribute()
+    {
+        return $this->PrezzoVendita;
+    }
+
     // ── Relazioni ─────────────────────────────────────────────
     public function categoria()
     {

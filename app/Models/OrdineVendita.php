@@ -32,6 +32,11 @@ class OrdineVendita extends Model
         return $this->hasMany(DettaglioVendita::class, 'IDOrdineVendita_FK', 'IDOrdineVendita');
     }
 
+    public function venditore()
+    {
+        return $this->belongsTo(Dipendente::class, 'Matricola_FK', 'Matricola');
+    }
+
     /**
      * Relazione N:M verso Prodotto tramite DettaglioVendita.
      */

@@ -2,16 +2,19 @@
 
 @section('title', 'Qualità - Operazioni')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/quality.css') }}">
+@endpush
+
 @section('content')
-<div class="max-w-2xl mx-auto py-10 animate-fade-in">
+<div class="quality-container" style="max-width: 42rem;">
     
     <div class="mb-8">
-
         <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">Operazioni di Controllo</h3>
         <p class="text-slate-500 text-sm">Verifica la conformità dei lotti prodotti recentemente.</p>
     </div>
 
-    <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl">
+    <div class="quality-card p-8 shadow-xl">
         <form action="{{ route('quality.store') }}" method="POST" class="space-y-6">
             @csrf
             

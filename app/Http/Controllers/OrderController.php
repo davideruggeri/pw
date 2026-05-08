@@ -21,6 +21,57 @@ class OrderController extends Controller
         $this->prodottoRepo = $prodottoRepo;
     }
 
+    public function index(Request $request)
+    {
+        $query = \App\Models\OrdineVendita::with(['cliente', 'venditore', 'dettagliVendita.prodotto']);
+
+        if ($request->filled('search')) {
+            $query->where('IDOrdineVendita', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('cliente', function($q) use ($request) {
+                      $q->where('Nome', 'like', '%' . $request->search . '%');
+                  });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('Stato', $request->status);
+        }
+
+        $perPage = $request->input('per_page', 10);
+        $orders = $query->orderBy('Data', 'desc')->paginate($perPage);
+
+        // Stats for the archive
+        $stats = [
+            'total_today' => \App\Models\OrdineVendita::whereDate('Data', \Carbon\Carbon::today())->count(),
+            'total_week' => \App\Models\OrdineVendita::whereBetween('Data', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()])->count(),
+            'pending' => \App\Models\OrdineVendita::where('Stato', 'Inviato')->count(),
+        ];
+
+        return view('sales.orders.index', compact('orders', 'perPage', 'stats'));
+    }
+
+    public function pending()
+    {
+        $orders = \App\Models\OrdineVendita::with(['cliente', 'venditore', 'dettagliVendita.prodotto'])
+            ->where('Stato', 'Inviato')
+            ->orderBy('Data', 'asc')
+            ->get();
+
+        return view('sales.orders.pending', compact('orders'));
+    }
+
+    public function approve($id)
+    {
+        $ordine = \App\Models\OrdineVendita::findOrFail($id);
+        
+        if ($ordine->Stato !== 'Inviato') {
+            return back()->with('error', 'Questo ordine è già stato elaborato.');
+        }
+
+        $ordine->update(['Stato' => 'Completato']);
+
+        return redirect()->route('orders.pending')->with('success', "Ordine #{$id} approvato con successo!");
+    }
+
     public function create()
     {
         $clienti = Cliente::orderBy('Nome')->get();
