@@ -4,11 +4,13 @@ Sistema di gestione aziendale integrato sviluppato con Laravel 11, basato su un 
 
 ## 📌 Mapping Database (Legacy Schema)
 **IMPORTANTE:** I modelli Laravel devono mappare lo schema esistente rispettando i nomi delle tabelle e le chiavi primarie personalizzate.
-- **PRODOTTO**: Tabella `prodotto`. PK: `CodiceUnivoco`. Relazione con `CATEGORIA` tramite `IDCategoria_FK`.
+- **PRODOTTO**: Tabella `prodotto`. PK: `CodiceUnivoco`. Relazione con `CATEGORIA` tramite `IDCategoria_FK`. (Catalogo aggiornato a prodotti Tech/Ufficio)
 - **CLIENTE**: Tabella `cliente`. PK: `CodiceCliente`.
 - **ORDINE VENDITA**: Tabella `ordine_vendita`. PK: `IDOrdineVendita`. Relazione con `CLIENTE` tramite `CodiceCliente_FK`.
-- **DIPENDENTE**: Tabella `dipendente`. PK: `Matricola`. Relazione con `REPARTO` e `RUOLO`.
+- **DIPENDENTE**: Tabella `dipendente`. PK: `Matricola`. Relazione con `REPARTO` e `RUOLO`. (Reparti attivi: Logistica, Commerciale, Amministrazione)
 - **ASSOCIAZIONI N:M**: Le tabelle `DETTAGLIO_VENDITA` e `DETTAGLIO_ACQUISTO` gestiscono i prodotti negli ordini con quantità e prezzi specifici.
+
+> **Nota di Refactoring:** Il progetto è stato snellito per eliminare la complessità dei reparti di produzione industriale (Produzione, Manutenzione, Qualità) e si concentra ora esclusivamente sui flussi di Logistica, Vendite (Commerciale) e Dashboard Direzionale (Amministrazione), con un catalogo di prodotti per ufficio e tecnologia.
 
 ## 🚀 Funzionalità Principali
 - **Gestione Inventario**: Monitoraggio delle giacenze e segnalazione automatica dei prodotti sotto `ScortaMinima`.

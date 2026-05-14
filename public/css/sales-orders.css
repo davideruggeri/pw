@@ -95,7 +95,7 @@
 
 /* --- SEARCH BAR POLISH --- */
 .logistics-search-wrapper input {
-    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05) !important;
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05) !important;
 }
 
 .logistics-search-wrapper:focus-within .logistics-search-icon {
@@ -112,7 +112,7 @@
 
 .logistics-table-header th {
     text-transform: uppercase;
-    font-[900];
+    font-weight: 900;
     font-size: 10px;
     letter-spacing: 0.15em;
     color: var(--text-dim);

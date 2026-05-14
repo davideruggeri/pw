@@ -1,83 +1,100 @@
-# 🏭 Progetto ERP Industriale - Guida Installazione e Demo
+# 📦 Progetto Gestionale Vendite & Magazzino - Guida Installazione e Demo
 
-Benvenuti nel sistema ERP per la gestione di un'industria ceramica. Questo progetto è stato realizzato per l'esame di **[Nome Esame]** (6 CFU) e implementa una gestione multi-reparto con dashboard dedicate e flussi di dati integrati.
+Sistema integrato per la gestione aziendale di inventario, acquisti, vendite e personale, sviluppato su stack moderno con **Laravel 11** e **Vite**.
 
 ---
 
 ## 🚀 1. Installazione e Configurazione
 
-Segui questi passaggi per avviare il progetto in locale:
+Segui questi passaggi per avviare il progetto in ambiente locale:
 
 ### Requisiti
-*   PHP >= 8.1
-*   Composer
-*   Node.js & NPM
-*   SQLite (configurazione di default)
+*   **PHP** >= 8.3
+*   **Composer**
+*   **Node.js** & **NPM**
+*   **MySQL** (schema preesistente/legacy)
 
 ### Passaggi
-1.  **Clona il repository** e posizionati nella cartella del progetto.
-2.  **Installa le dipendenze PHP**:
+1.  **Clona il repository** e posizionati nella cartella root del progetto.
+2.  **Installa le dipendenze Backend (PHP)**:
     ```bash
     composer install
     ```
 3.  **Installa le dipendenze Frontend**:
     ```bash
     npm install
-    npm run dev
     ```
 4.  **Configura l'ambiente**:
+    Duplica il file di configurazione di esempio e genera la chiave di cifratura:
     ```bash
     cp .env.example .env
     php artisan key:generate
     ```
-5.  **Inizializza il Database**:
-    Assicurati che il file `database/database.sqlite` esista (puoi crearlo vuoto se necessario).
+5.  **Configura il Database**:
+    Apri il file `.env` e inserisci le credenziali di accesso al tuo database MySQL:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=nome_del_tuo_database
+    DB_USERNAME=root
+    DB_PASSWORD=tua_password
+    ```
+    > **⚠️ ATTENZIONE:** Il sistema mappa uno schema legacy esistente. Non eseguire `php artisan migrate` per evitare di alterare o sovrascrivere le tabelle preesistenti, a meno che tu non stia ripristinando da zero l'ambiente di test con le migrazioni fornite.
+
+6.  **Avvia i server di sviluppo**:
+    Per visualizzare l'interfaccia con il design premium (Vite) ed eseguire il backend:
     ```bash
-    php artisan migrate --seed
+    # In un terminale avvia il server Laravel
+    php artisan serve
+
+    # In un secondo terminale avvia il motore di build frontend
+    npm run dev
     ```
 
 ---
 
 ## 🔑 2. Credenziali di Accesso (Demo)
 
-Per testare le diverse funzionalità del sistema, utilizza i seguenti account predefiniti.  
-**Password per tutti gli account:** `password`
+Per accedere alle interfacce e testare i vari flussi operativi, utilizza gli account predefiniti configurati nel seeder.  
+**Password di default per tutti gli account:** `password`
 
-| Reparto | Ruolo / Email | Funzionalità Principale |
+| Area / Ruolo | Email | Funzionalità Principali |
 | :--- | :--- | :--- |
-| **Amministrazione** | `admin@azienda.it` | Dashboard Finanziaria (EBITDA), Gestione HR e Reparti |
-| **Commerciale** | `sales@azienda.it` | Gestione Vendite, Creazione Ordini, Bestsellers |
-| **Produzione** | `produzione@azienda.it` | Registrazione Lotti (Input), Monitoraggio Output |
-| **Manutenzione** | `manutenzione@azienda.it` | Registro Interventi, Monitoraggio Downtime Macchine |
-| **Qualità** | `qualita@azienda.it` | Test di Conformità, Gestione Scarti e Difetti |
-| **Logistica** | `logistica@azienda.it` | Gestione Inventario, Alert Sotto Scorta |
-| **Cliente** | `cliente@test.it` | Catalogo Prodotti, Carrello, I Miei Ordini |
+| **Amministrazione** | `admin@azienda.it` | Dashboard Direzionale (KPI), gestione dipendenti, reparti e supervisione flussi |
+| **Commerciale** | `sales@azienda.it` | Creazione e gestione ordini di vendita, approvazione ordini pending, statistiche bestsellers |
+| **Logistica** | `logistica@azienda.it` | Gestione giacenze di magazzino, rifornimenti e alert per prodotti sotto scorta minima |
+| **Cliente** | `cliente@test.it` | Consultazione catalogo, carrello, gestione preferiti e tracciamento propri ordini |
+
+> **💡 Suggerimento:** È disponibile una modalità ospite per esplorare liberamente il catalogo prodotti senza autenticazione.
 
 ---
 
-## 🛠️ 3. Struttura dei Reparti Operativi
+## 🛠️ 3. Struttura dei Moduli e Flussi
 
-Il sistema è suddiviso in moduli specializzati per garantire ordine e scalabilità:
+Il gestionale si focalizza sull'ottimizzazione del ciclo di vendita e sull'efficienza di magazzino, eliminando la complessità industriale:
 
-### Reparto 1 & 3: Produzione e Qualità
-*   La **Produzione** permette di registrare i lotti realizzati. Il sistema calcola automaticamente i costi energetici stimati.
-*   Il **Controllo Qualità** interviene sui lotti prodotti per approvarli o scartarli, generando statistiche sui difetti.
+### 📦 Logistica & Magazzino
+*   Monitoraggio in tempo reale della `QuantitaGiacenza`.
+*   Segnalazione automatica degli articoli che scendono al di sotto della soglia di `ScortaMinima`.
+*   Interfacce dedicate per l'aggiornamento rapido dello stock.
 
-### Reparto 2: Manutenzione
-*   Gestisce gli interventi tecnici (ordinari e straordinari).
-*   Traccia le ore di fermo macchina (Downtime) e i costi dei ricambi, che influiscono direttamente sul bilancio aziendale.
+### 🤝 Vendite (Commerciale)
+*   Registrazione di ordini con associazione di prodotti, quantità e prezzi tramite tabelle di associazione N:M (`dettaglio_vendita`).
+*   Controllo di disponibilità integrato: le vendite vengono automaticamente inibite se lo stock a magazzino risulta insufficiente.
 
-### Reparto 4: Logistica
-*   Monitora le giacenze di magazzino in tempo reale.
-*   Ogni vendita effettuata dal reparto commerciale scala automaticamente le quantità disponibili.
+### 📊 Direzione (Amministrazione)
+*   **Business Intelligence**: dashboard centralizzata per il calcolo del fatturato per cliente e l'analisi temporale dei ricavi.
+*   Monitoraggio delle performance del personale dipendente.
+*   Calcolo avanzato del Valore Medio dell'Ordine (AOV).
 
-### Reparto 5: Amministrazione
-*   Dashboard "Master" che consolida i dati di tutti i reparti.
-*   Calcolo automatico dell'**EBITDA** sottraendo dai ricavi i costi di produzione, manutenzione, lavoro e scarti.
-
-### Reparto 6: Commerciale
-*   Hub per la creazione di ordini di vendita per i clienti registrati.
-*   Analisi dei prodotti più redditizi (Margine Lordo).
+### 🛍️ Area Cliente (B2B / B2C)
+*   Catalogo interattivo di prodotti Tech e per Ufficio.
+*   Supporto completo a liste dei desideri (Wishlist/Preferiti) e carrello persistente.
 
 ---
-*Progetto realizzato da [Tuo Nome e Cognome]*
+
+## 🎨 4. Specifiche di Design & Frontend
+L'interfaccia adotta un'estetica **Glassmorphism** su toni Indigo/Slate con font **Instrument Sans**, studiata per offrire un'esperienza utente premium:
+*   **Dual Mode**: Pieno supporto nativo a temi **Light** e **Dark** tramite selettore `.dark`.
+*   **Modularità CSS**: Le pagine caricano dinamicamente file CSS dedicati per evitare sovraccarichi globali, sfruttando le variabili di design centralizzate in `premium.css`.

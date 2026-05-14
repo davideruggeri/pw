@@ -6,7 +6,7 @@
         <h1 class="text-3xl font-bold text-white mb-2 tracking-tight">Role Switcher <span class="text-indigo-400">(Debug Mode)</span></h1>
         <p class="text-slate-400 mb-10">Seleziona un ruolo per testare istantaneamente le diverse dashboard e i permessi.</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @php
                 /* 
                    Definiamo un array di ruoli con i relativi metadati per il debug switcher:
@@ -19,9 +19,7 @@
                     ['id' => 'admin', 'name' => 'Amministratore', 'color' => 'bg-indigo-600', 'desc' => 'Accesso totale'],
                     ['id' => 'sales', 'name' => 'Venditore', 'color' => 'bg-emerald-600', 'desc' => 'Ordini e Clienti'],
                     ['id' => 'logistics', 'name' => 'Logistica', 'color' => 'bg-amber-600', 'desc' => 'Magazzino e Stock'],
-                    ['id' => 'production', 'name' => 'Produzione', 'color' => 'bg-blue-600', 'desc' => 'Flussi operativi'],
-                    ['id' => 'maintenance', 'name' => 'Manutenzione', 'color' => 'bg-orange-600', 'desc' => 'Riparazioni e Logs'],
-                    ['id' => 'quality', 'name' => 'Qualità', 'color' => 'bg-rose-600', 'desc' => 'Controllo standard'],
+
                     ['id' => 'customer', 'name' => 'Cliente', 'color' => 'bg-slate-700', 'desc' => 'Area riservata'],
                 ];
             @endphp

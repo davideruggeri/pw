@@ -33,9 +33,6 @@ class DashboardController extends Controller
 
         // Statistiche Reparti per l'Admin
         $deptStats = [
-            'production' => \App\Models\ProduzioneLog::whereMonth('DataProduzione', now()->month)->sum('QuantitaProdotta'),
-            'maintenance' => \App\Models\ManutenzioneLog::whereMonth('DataIntervento', now()->month)->sum('OreFermoMacchina'),
-            'quality' => $kpis['totalRevenue'] > 0 ? ($kpis['qualityLosses'] / $kpis['totalRevenue']) * 100 : 0,
             'logistics' => $kpis['lowStockCount']
         ];
 
@@ -87,90 +84,7 @@ class DashboardController extends Controller
         return view('sales.dashboard', compact('monthlyRevenue', 'monthlyMargin', 'newClients', 'topProducts', 'recentOrders', 'clienti'));
     }
 
-    // Dashboard Logistica: monitoraggio giacenze, valore magazzino e prodotti sotto scorta
-    public function logistics()
-    {
-        $products = DB::table('prodotto')->get();
 
-        $totalProducts = $products->count();
-        $totalWarehouseValue = $products->sum(fn($p) => $p->QuantitaGiacenza * $p->CostoProduzione);
-
-        $sottoScorta = $products->filter(fn($p) => $p->QuantitaGiacenza <= $p->ScortaMinima);
-        $sottoScortaCount = $sottoScorta->count();
-
-        $inventoryStatus = [
-            'critical' => $products->filter(fn($p) => $p->QuantitaGiacenza == 0)->count(),
-            'warning' => $sottoScortaCount,
-            'ok' => $totalProducts - $sottoScortaCount
-        ];
-
-        return view('logistics.dashboard', compact(
-            'totalProducts',
-            'totalWarehouseValue',
-            'sottoScorta',
-            'sottoScortaCount',
-            'inventoryStatus'
-        ));
-    }
-
-    public function operations()
-    {
-        $stats = DB::table('produzione_log')
-            ->selectRaw('SUM(QuantitaProdotta) as total_qty, SUM(CostoEnergiaStimato) as total_energy')
-            ->whereMonth('DataProduzione', now()->month)
-            ->first();
-
-        $recentLogs = \App\Models\ProduzioneLog::with('prodotto', 'responsabile')
-            ->orderByDesc('DataProduzione')
-            ->limit(10)
-            ->get();
-
-        $productionByDay = DB::table('produzione_log')
-            ->selectRaw('DATE(DataProduzione) as date, SUM(QuantitaProdotta) as qty')
-            ->where('DataProduzione', '>=', now()->subDays(14))
-            ->groupBy('date')
-            ->get();
-
-        // Metriche Qualità
-        $qualityStats = DB::table('qualita_log')
-            ->join('produzione_log', 'qualita_log.IDLogProduzione_FK', '=', 'produzione_log.IDLogProduzione')
-            ->selectRaw('SUM(QuantitaProdotta) as total_produced, SUM(QuantitaScartata) as total_rejected')
-            ->whereMonth('DataControllo', now()->month)
-            ->first();
-
-        $rejectionRate = ($qualityStats->total_produced > 0)
-            ? ($qualityStats->total_rejected / $qualityStats->total_produced) * 100
-            : 0;
-
-        $qualityIssues = \App\Models\QualitaLog::with('produzione.prodotto')
-            ->where('Esito', 'FAIL')
-            ->orderByDesc('DataControllo')
-            ->limit(5)
-            ->get();
-
-        // Metriche Manutenzione
-        $maintenanceStats = DB::table('manutenzione_log')
-            ->selectRaw('SUM(OreFermoMacchina) as total_downtime, SUM(CostoRicambi) as total_maintenance_cost')
-            ->whereMonth('DataIntervento', now()->month)
-            ->first();
-
-        $recentMaintenance = \App\Models\ManutenzioneLog::with('tecnico')
-            ->orderByDesc('DataIntervento')
-            ->limit(3)
-            ->get();
-
-        return view('operations.dashboard', [
-            'totalQty' => $stats->total_qty ?? 0,
-            'totalEnergy' => $stats->total_energy ?? 0,
-            'recentLogs' => $recentLogs,
-            'productionByDay' => $productionByDay,
-            'rejectionRate' => $rejectionRate,
-            'qualityIssues' => $qualityIssues,
-            'totalDowntime' => $maintenanceStats->total_downtime ?? 0,
-            'totalMaintenanceCost' => $maintenanceStats->total_maintenance_cost ?? 0,
-            'recentMaintenance' => $recentMaintenance
-        ]);
-    }
 
     // Dashboard Cliente: riepilogo ordini, preferiti e prodotti più venduti (bestsellers)
     public function customer()

@@ -63,7 +63,7 @@ Route::middleware(['auth', 'password.changed'])->group(function () {
 });
 
 // Gestione Dipendenti (Accessibile a Admin e Manager di reparto)
-Route::middleware(['auth', 'role:admin,sales,logistics,production', 'password.changed'])->group(function () {
+Route::middleware(['auth', 'role:admin,sales,logistics', 'password.changed'])->group(function () {
     Route::resource('employees', EmployeeController::class)->names([
         'index' => 'employees.index',
         'create' => 'employees.create',
@@ -96,26 +96,7 @@ Route::middleware(['auth', 'role:sales,admin', 'password.changed'])->prefix('sal
 });
 
 
-Route::middleware(['auth', 'role:admin,production', 'password.changed'])->prefix('production')->group(function () {
-    Route::get('/', [App\Http\Controllers\ProductionController::class, 'index'])->name('production.index');
-    Route::get('/create', [App\Http\Controllers\ProductionController::class, 'create'])->name('production.create');
-    Route::post('/store', [App\Http\Controllers\ProductionController::class, 'store'])->name('production.store');
-    Route::get('/history', [App\Http\Controllers\ProductionController::class, 'history'])->name('production.history');
-});
 
-Route::middleware(['auth', 'role:admin,maintenance', 'password.changed'])->prefix('maintenance')->group(function () {
-    Route::get('/', [App\Http\Controllers\MaintenanceController::class, 'index'])->name('maintenance.index');
-    Route::get('/create', [App\Http\Controllers\MaintenanceController::class, 'create'])->name('maintenance.create');
-    Route::post('/store', [App\Http\Controllers\MaintenanceController::class, 'store'])->name('maintenance.store');
-    Route::get('/history', [App\Http\Controllers\MaintenanceController::class, 'history'])->name('maintenance.history');
-});
-
-Route::middleware(['auth', 'role:admin,quality', 'password.changed'])->prefix('quality')->group(function () {
-    Route::get('/', [App\Http\Controllers\QualityController::class, 'index'])->name('quality.index');
-    Route::get('/create', [App\Http\Controllers\QualityController::class, 'create'])->name('quality.create');
-    Route::post('/store', [App\Http\Controllers\QualityController::class, 'store'])->name('quality.store');
-    Route::get('/history', [App\Http\Controllers\QualityController::class, 'history'])->name('quality.history');
-});
 
 Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix('logistics')->group(function () {
     Route::get('/', [App\Http\Controllers\LogisticsController::class, 'index'])->name('logistics.index');
@@ -126,9 +107,8 @@ Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix(
 });
 
 
-// Rotte Placeholder per funzionalità in sviluppo
+// Rotte aggiuntive protette
 Route::middleware(['auth', 'password.changed'])->group(function () {
     Route::get('/inventory-placeholder', fn() => redirect()->route('coming-soon', ['feature' => 'Magazzino Avanzato']))->name('inventory.index');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/coming-soon/{feature}', fn($feature) => view('coming-soon', compact('feature')))->name('coming-soon');
 });

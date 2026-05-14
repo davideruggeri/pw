@@ -77,7 +77,7 @@
                 
                 @php
                     $role = Auth::user()->effective_role ?? 'customer';
-                    $dashRoute = in_array($role, ['production', 'logistics', 'maintenance', 'quality']) ? $role . '.index' : ($role === 'admin' ? 'admin.dashboard' : $role . '.dashboard');
+                    $dashRoute = in_array($role, ['logistics']) ? $role . '.index' : ($role === 'admin' ? 'admin.dashboard' : $role . '.dashboard');
                 @endphp
                 <a href="{{ Auth::check() ? route($dashRoute) : route('home') }}"
                     class="nav-link {{ request()->routeIs($dashRoute) ? 'nav-link-active' : '' }}">
@@ -141,44 +141,13 @@
 
                     <!-- Sezione Operativa -->
                     @php 
-                        $isStaff = Auth::user()->isAdmin() || Auth::user()->isManager() || Auth::user()->isSales() || Auth::user()->role === 'logistics' || Auth::user()->isProduction() || Auth::user()->isMaintenance() || Auth::user()->isQuality(); 
+                        $isStaff = Auth::user()->isAdmin() || Auth::user()->isManager() || Auth::user()->isSales() || Auth::user()->role === 'logistics'; 
                     @endphp
                     
                     @if(Auth::user()->isStaff() || Auth::user()->isAdmin())
                         <div class="nav-section-title">Operazioni</div>
                         
-                        @if(Auth::user()->isAdmin() || Auth::user()->isProduction())
-                            <a href="{{ route('production.create') }}" class="nav-link {{ request()->routeIs('production.create') ? 'nav-link-active' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                <span>Nuovo Lotto</span>
-                            </a>
-                            <a href="{{ route('production.history') }}" class="nav-link {{ request()->routeIs('production.history') ? 'nav-link-active' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                <span>Archivio Produzione</span>
-                            </a>
-                        @endif
 
-                        @if(Auth::user()->isAdmin() || Auth::user()->isMaintenance())
-                            <a href="{{ route('maintenance.create') }}" class="nav-link {{ request()->routeIs('maintenance.create') ? 'nav-link-active' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                <span>Intervento</span>
-                            </a>
-                            <a href="{{ route('maintenance.history') }}" class="nav-link {{ request()->routeIs('maintenance.history') ? 'nav-link-active' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                <span>Archivio Manutenzione</span>
-                            </a>
-                        @endif
-
-                        @if(Auth::user()->isAdmin() || Auth::user()->isQuality())
-                            <a href="{{ route('quality.create') }}" class="nav-link {{ request()->routeIs('quality.create') ? 'nav-link-active' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                <span>Controllo</span>
-                            </a>
-                            <a href="{{ route('quality.history') }}" class="nav-link {{ request()->routeIs('quality.history') ? 'nav-link-active' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                <span>Archivio Qualità</span>
-                            </a>
-                        @endif
                         
                         @if(Auth::user()->isAdmin() || Auth::user()->isSales())
                             <a href="{{ route('orders.pending') }}" class="nav-link {{ request()->routeIs('orders.pending') ? 'nav-link-active' : '' }}">
@@ -246,7 +215,7 @@
                                 <select onchange="this.form.action='/debug/switch-role/' + this.value; this.form.submit()" 
                                         class="w-full bg-slate-50 border border-slate-200 text-slate-600 text-xs rounded-xl focus:ring-amber-500 focus:border-amber-500 block p-3 font-bold cursor-pointer hover:bg-slate-100 transition-all">
                                     <option value="" disabled selected>Seleziona Ruolo...</option>
-                                    @foreach(['admin', 'sales', 'logistics', 'production', 'maintenance', 'quality', 'customer'] as $role)
+                                    @foreach(['admin', 'sales', 'logistics', 'customer'] as $role)
                                         <option value="{{ $role }}" {{ Auth::user()->role === $role ? 'selected' : '' }}>
                                             {{ strtoupper($role) }}
                                         </option>
@@ -271,9 +240,7 @@
                                     <p class="text-xs font-black text-black dark:text-white uppercase tracking-wider leading-tight">
                                         {{ match(Auth::user()->effective_role) {
                                             'admin' => 'Amministratore',
-                                            'production' => 'Operatore Produzione',
-                                            'maintenance' => 'Tecnico Manutenzione',
-                                            'quality' => 'Addetto Qualità',
+
                                             'logistics' => 'Addetto Logistica',
                                             'sales' => 'Commerciale',
                                             'manager' => 'Responsabile',

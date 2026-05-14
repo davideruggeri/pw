@@ -16,14 +16,11 @@ class HomeController extends Controller
         // Se l'utente è loggato E ha già cambiato la password, lo mandiamo alla sua dashboard
         if (auth()->check() && auth()->user()->password_changed) {
             return match (auth()->user()->effective_role) {
-                'admin'       => redirect('/admin/dashboard'),
-                'sales'       => redirect('/sales/dashboard'),
-                'logistics'   => redirect('/logistics'),
-                'production'  => redirect('/production'),
-                'maintenance' => redirect('/maintenance'),
-                'quality'     => redirect('/quality'),
-                'customer'    => redirect(route('customer.dashboard')),
-                default       => view('prelobby', ['stats' => $this->getStats()]),
+                'admin'     => redirect('/admin/dashboard'),
+                'sales'     => redirect('/sales/dashboard'),
+                'logistics' => redirect('/logistics'),
+                'customer'  => redirect(route('customer.dashboard')),
+                default     => view('prelobby', ['stats' => $this->getStats()]),
             };
         }
 

@@ -114,42 +114,8 @@
 <!-- Riepilogo Reparti -->
 <div class="mt-8">
     <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter mb-6">Stato Operativo Reparti</h4>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Produzione -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
-                </div>
-                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Produzione</span>
-            </div>
-            <p class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">{{ number_format($deptStats['production'], 0, ',', '.') }} kg</p>
-            <p class="text-[10px] text-slate-500 font-bold mt-1">Output Mensile</p>
-        </div>
+    <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
 
-        <!-- Manutenzione -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center text-amber-600 dark:text-amber-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                </div>
-                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Manutenzione</span>
-            </div>
-            <p class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">{{ number_format($deptStats['maintenance'], 1, ',', '.') }} h</p>
-            <p class="text-[10px] text-slate-500 font-bold mt-1">Downtime Totale</p>
-        </div>
-
-        <!-- Qualità -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-600 dark:text-rose-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Qualità</span>
-            </div>
-            <p class="text-2xl font-black {{ $deptStats['quality'] > 3 ? 'text-rose-500' : 'text-slate-900 dark:text-white' }} tracking-tighter">{{ number_format($deptStats['quality'], 1, ',', '.') }}%</p>
-            <p class="text-[10px] text-slate-500 font-bold mt-1">Tasso di Scarto</p>
-        </div>
 
         <!-- Logistica -->
         <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">

@@ -34,4 +34,9 @@ class Dipendente extends Model
     {
         return $this->hasOne(User::class, 'matricola_fk', 'Matricola');
     }
+
+    public function ordiniAcquistoGestiti()
+    {
+        return $this->hasMany(OrdineAcquisto::class, 'Matricola_FK', 'Matricola');
+    }
 }

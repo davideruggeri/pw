@@ -74,4 +74,29 @@ class Prodotto extends Model
         return $this->belongsToMany(Cliente::class, 'preferiti', 'CodiceUnivoco_FK', 'CodiceCliente_FK')
                     ->withTimestamps();
     }
+
+    public function forniture()
+    {
+        return $this->hasMany(Fornitura::class, 'CodiceUnivoco_FK', 'CodiceUnivoco');
+    }
+
+    public function fornitori()
+    {
+        return $this->belongsToMany(
+            Fornitore::class,
+            'fornitura',
+            'CodiceUnivoco_FK',
+            'PartitaIVA_FK'
+        )->withPivot('PrezzoAcquistoSpecifico');
+    }
+
+    public function ordiniAcquisto()
+    {
+        return $this->belongsToMany(
+            OrdineAcquisto::class,
+            'dettaglio_acquisto',
+            'CodiceUnivoco_FK',
+            'IDOrdineAcquisto_FK'
+        )->withPivot(['QuantitaOrdinata', 'PrezzoPattuito']);
+    }
 }
