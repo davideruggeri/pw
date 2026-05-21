@@ -88,7 +88,10 @@
 
                     @if(count($cart ?? []) > 0)
                         @auth
-                            <button class="checkout-btn">Procedi all'ordine</button>
+                            <form action="{{ route('cart.checkout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="checkout-btn w-full">Procedi all'ordine</button>
+                            </form>
                         @else
                             <div x-data="{ showAuthPrompt: false }">
                                 <button x-show="!showAuthPrompt" @click="showAuthPrompt = true" class="checkout-btn">

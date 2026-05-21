@@ -41,19 +41,102 @@
     color: #34d399;
 }
 
-.status-annullato {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-}
-
 .dark .status-annullato {
     background: rgba(239, 68, 104, 0.2);
     color: #f87171;
 }
 
-/* Specific Archive Enhancements */
-.tabular-nums {
-    font-variant-numeric: tabular-nums;
+.status-spedito {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+}
+
+.status-approvato {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.status-annullato {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.status-in {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+/* --- ORDER DETAIL SPECIFIC STYLES --- */
+
+.order-detail-container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 10;
+    padding: 0 1rem;
+    background: var(--logistics-card, #fff);
+}
+
+.timeline-line {
+    position: absolute;
+    top: 1.25rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #f1f5f9;
+    z-index: 0;
+}
+
+.dark .timeline-line {
+    background: #1e293b;
+}
+
+.order-sidebar-card {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.dark .order-sidebar-card {
+    background: #0f172a;
+    border-color: #1e293b;
+}
+
+.order-total-card {
+    background: #0f172a;
+    color: #fff;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.dark .order-total-card {
+    background: #4f46e5;
+}
+
+.order-table-header {
+    background: rgba(248, 250, 252, 0.5);
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dark .order-table-header {
+    background: rgba(30, 41, 59, 0.2);
+    border-bottom-color: #1e293b;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- MINI STATS ENHANCEMENTS --- */
@@ -160,4 +243,76 @@
 
 .dark .logistics-table td:nth-last-child(2) {
     color: var(--text-main);
+}
+
+/* --- ORDER APPROVAL PAGE --- */
+.approval-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 2rem;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.approval-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-color);
+}
+
+.btn-approve {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-approve:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.6);
+}
+
+.btn-reject {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 1rem;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.btn-reject:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.client-avatar-placeholder {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1.25rem;
+    background: var(--accent-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 900;
+    box-shadow: 0 8px 16px rgba(79, 70, 229, 0.3);
+}
+
+.order-detail-mini {
+    background: rgba(0, 0, 0, 0.02);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dark .order-detail-mini {
+    background: rgba(255, 255, 255, 0.03);
 }

@@ -8,7 +8,7 @@ class OrdineVendita extends Model
 {
     protected $table      = 'ordine_vendita';
     protected $primaryKey = 'IDOrdineVendita';
-    public    $incrementing = true;        // INT auto-increment
+    public    $incrementing = false;        // NON auto-increment
     protected $keyType    = 'int';
     public    $timestamps = false;
 

@@ -2,8 +2,10 @@
     --bg-main: #f8fafc;
     --bg-card: #ffffff;
     --bg-sidebar: #ffffff;
-    --text-primary: #000000; /* Nero puro per tema chiaro */
-    --text-secondary: #334155; /* Grigio scuro per tema chiaro */
+    --text-primary: #000000;
+    /* Nero puro per tema chiaro */
+    --text-secondary: #334155;
+    /* Grigio scuro per tema chiaro */
     --text-muted: #64748b;
     --border-color: #e2e8f0;
     --accent-color: #4f46e5;
@@ -46,6 +48,10 @@ aside {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+[x-cloak] {
+    display: none !important;
 }
 
 /* Forzatura globale contrasti */
@@ -153,7 +159,8 @@ aside {
 
 /* --- Dashboard Components --- */
 .premium-page-container {
-    max-width: 72rem; /* max-w-6xl */
+    max-width: 72rem;
+    /* max-w-6xl */
     margin-left: auto;
     margin-right: auto;
     padding-top: 2.5rem;
@@ -162,8 +169,15 @@ aside {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .premium-card {
@@ -328,6 +342,7 @@ aside {
     color: var(--text-secondary) !important;
     opacity: 0.9;
 }
+
 /* --- Shared Paginazione & Stats --- */
 .stats-summary-container {
     display: flex;
@@ -382,7 +397,7 @@ aside {
     font-weight: 900 !important;
 }
 
-.premium-pagination a, 
+.premium-pagination a,
 .premium-pagination span[aria-disabled="true"] span {
     background-color: rgba(30, 41, 59, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.05) !important;

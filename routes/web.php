@@ -33,6 +33,7 @@ Route::middleware(['auth', 'role:customer', 'password.changed'])->group(function
         Route::get('/cart', [DashboardController::class, 'customerCart'])->name('customer.cart');
         Route::post('/cart/add/{id}', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
         Route::post('/cart/remove/{id}', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+        Route::post('/cart/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('cart.checkout');
     });
 });
 
@@ -91,6 +92,7 @@ Route::middleware(['auth', 'role:sales,admin', 'password.changed'])->prefix('sal
     Route::get('/dashboard', [DashboardController::class, 'sales'])->name('sales.dashboard');
     Route::get('/orders/pending', [OrderController::class, 'pending'])->name('orders.pending');
     Route::post('/orders/{id}/approve', [OrderController::class, 'approve'])->name('orders.approve');
+    Route::post('/orders/{id}/reject', [OrderController::class, 'reject'])->name('orders.reject');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 });
@@ -111,4 +113,10 @@ Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix(
 Route::middleware(['auth', 'password.changed'])->group(function () {
     Route::get('/inventory-placeholder', fn() => redirect()->route('coming-soon', ['feature' => 'Magazzino Avanzato']))->name('inventory.index');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{id}/ship', [OrderController::class, 'ship'])->name('orders.ship');
+    
+    // Notifiche
+    Route::get('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'read'])->name('notifications.read');
+    Route::post('/notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'readAll'])->name('notifications.readAll');
 });

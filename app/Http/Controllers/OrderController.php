@@ -52,7 +52,7 @@ class OrderController extends Controller
     public function pending()
     {
         $orders = \App\Models\OrdineVendita::with(['cliente', 'venditore', 'dettagliVendita.prodotto'])
-            ->where('Stato', 'Inviato')
+            ->where('Stato', 'In Attesa')
             ->orderBy('Data', 'asc')
             ->get();
 
@@ -63,13 +63,57 @@ class OrderController extends Controller
     {
         $ordine = \App\Models\OrdineVendita::findOrFail($id);
         
-        if ($ordine->Stato !== 'Inviato') {
+        if ($ordine->Stato !== 'In Attesa') {
             return back()->with('error', 'Questo ordine è già stato elaborato.');
         }
 
-        $ordine->update(['Stato' => 'Completato']);
+        $ordine->update(['Stato' => 'Approvato']);
 
         return redirect()->route('orders.pending')->with('success', "Ordine #{$id} approvato con successo!");
+    }
+
+    public function reject($id)
+    {
+        $ordine = \App\Models\OrdineVendita::findOrFail($id);
+        
+        if ($ordine->Stato !== 'In Attesa') {
+            return back()->with('error', 'Questo ordine è già stato elaborato.');
+        }
+
+        $ordine->update(['Stato' => 'Annullato']);
+
+        return redirect()->route('orders.pending')->with('success', "Ordine #{$id} rifiutato correttamente.");
+    }
+
+    public function ship($id)
+    {
+        $ordine = \App\Models\OrdineVendita::with('dettagliVendita.prodotto')->findOrFail($id);
+        
+        if ($ordine->Stato === 'Spedito') {
+            return back()->with('error', 'Questo ordine è già stato spedito.');
+        }
+
+        // Sottrai i prodotti dal magazzino
+        foreach ($ordine->dettagliVendita as $dettaglio) {
+            $prodotto = $dettaglio->prodotto;
+            if ($prodotto) {
+                $prodotto->Giacenza -= $dettaglio->QuantitaRichiesta;
+                $prodotto->save();
+
+                // Registra il movimento di scarico
+                \App\Models\MovimentoMagazzino::create([
+                    'CodiceUnivoco_FK' => $prodotto->CodiceUnivoco,
+                    'Quantita' => $dettaglio->QuantitaRichiesta,
+                    'Tipo' => 'scarico',
+                    'DataMovimento' => now(),
+                    'CostoTotale' => 0 // Vendita, non costo di acquisto
+                ]);
+            }
+        }
+
+        $ordine->update(['Stato' => 'Spedito']);
+
+        return back()->with('success', "Ordine #{$id} confermato come spedito! Magazzino aggiornato.");
     }
 
     public function create()

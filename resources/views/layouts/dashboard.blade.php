@@ -16,6 +16,7 @@
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/premium.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/notifications.css') }}?v={{ time() }}">
     @stack('styles')
     
     <!-- Alpine.js -->
@@ -34,10 +35,6 @@
             window.dispatchEvent(new CustomEvent('notify', { detail: { message, type } }));
         };
     </script>
-    
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
 </head>
 
 <body class="antialiased bg-slate-50 dark:bg-slate-950 text-black dark:text-white" x-data="{ sidebarOpen: window.innerWidth > 1024 }">
@@ -278,11 +275,60 @@
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <button class="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-indigo-600 shadow-sm transition-all">
+                    <!-- Centro Notifiche -->
+                    @if(Auth::check())
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" @click.outside="open = false" class="header-icon-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            @if(Auth::user()->unreadNotifications->count() > 0)
+                                <span class="notification-badge-container">
+                                  <span class="notification-badge-ping"></span>
+                                  <span class="notification-badge-number">{{ Auth::user()->unreadNotifications->count() }}</span>
+                                </span>
+                            @endif
+                        </button>
+                        
+                        <!-- Menu Dropdown -->
+                        <div x-show="open" x-transition x-cloak class="notification-dropdown">
+                            <div class="notification-header">
+                                <h3>Notifiche</h3>
+                                @if(Auth::user()->unreadNotifications->count() > 0)
+                                <form action="{{ route('notifications.readAll') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="notification-mark-read">Segna lette</button>
+                                </form>
+                                @endif
+                            </div>
+                            <div class="notification-list">
+                                @forelse(Auth::user()->unreadNotifications as $notification)
+                                    <a href="{{ route('notifications.read', $notification->id) }}" class="notification-item">
+                                        <div class="notification-icon-box">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="notification-title">{{ $notification->data['messaggio'] ?? 'Nuova Notifica' }}</p>
+                                            <p class="notification-time">{{ $notification->created_at->diffForHumans() }}</p>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <div class="notification-empty">
+                                        Nessuna notifica.
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <button class="header-icon-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
                     </button>
+                    @endif
                     <a href="{{ route('account.index') }}" class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white text-lg font-black shadow-xl shadow-indigo-200 hover:rotate-3 transition-all">
                         {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'O' }}
                     </a>
