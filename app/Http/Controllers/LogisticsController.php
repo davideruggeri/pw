@@ -13,7 +13,6 @@ class LogisticsController extends Controller
         $totalStockValue = $products->sum(fn($p) => $p->Giacenza * ($p->PrezzoListino ?? 0));
         
         $lowStockCount = Prodotto::whereColumn('QuantitaGiacenza', '<', 'ScortaMinima')
-                                    ->orWhere('QuantitaGiacenza', '<', 50)
                                     ->count();
         
         $recentUpdates = Prodotto::orderBy('CodiceUnivoco', 'desc')->take(3)->get();
@@ -26,41 +25,94 @@ class LogisticsController extends Controller
         $query = Prodotto::query();
 
         if ($request->has('filter') && $request->filter == 'low_stock') {
-            $query->whereColumn('QuantitaGiacenza', '<', 'ScortaMinima')
-                  ->orWhere('QuantitaGiacenza', '<', 50);
+            $query->whereColumn('QuantitaGiacenza', '<', 'ScortaMinima');
         }
 
         if ($request->filled('search')) {
-            $query->where('Descrizione', 'like', '%' . $request->search . '%')
+            $query->where(function($q) use ($request) {
+                $q->where('Descrizione', 'like', '%' . $request->search . '%')
                   ->orWhere('CodiceUnivoco', 'like', '%' . $request->search . '%');
+            });
         }
 
-        $products = $query->paginate(15);
-        
-        return view('logistics.replenishment', compact('products'));
+        $perPage = $request->input('per_page', 15);
+        $products = $query->paginate($perPage);
+
+        // Calcolo metriche per KPI
+        $allProducts = Prodotto::all();
+        $totalProductsCount = $allProducts->count();
+        $lowStockCount = Prodotto::whereColumn('QuantitaGiacenza', '<', 'ScortaMinima')->count();
+
+        return view('logistics.replenishment', compact(
+            'products', 
+            'perPage', 
+            'totalProductsCount', 
+            'lowStockCount'
+        ));
     }
 
     public function inventory(Request $request)
     {
         $query = Prodotto::query();
 
+        // Filtro per stato scorte
+        if ($request->has('filter') && $request->filter == 'low_stock') {
+            $query->whereColumn('QuantitaGiacenza', '<', 'ScortaMinima');
+        }
+
+        // Filtro per categoria
+        if ($request->filled('category')) {
+            $query->where('IDCategoria_FK', $request->category);
+        }
+
+        // Ricerca testuale
         if ($request->filled('search')) {
-            $query->where('NomeProdotto', 'like', '%' . $request->search . '%')
-                  ->orWhere('CodiceUnivoco', 'like', '%' . $request->search . '%')
-                  ->orWhere('Descrizione', 'like', '%' . $request->search . '%');
+            $query->where(function($q) use ($request) {
+                $q->where('Descrizione', 'like', '%' . $request->search . '%')
+                  ->orWhere('CodiceUnivoco', 'like', '%' . $request->search . '%');
+            });
         }
 
         $perPage = $request->input('per_page', 10);
         $products = $query->paginate($perPage);
 
-        return view('logistics.inventory', compact('products', 'perPage'));
+        // Calcolo metriche globali per KPI
+        $allProducts = Prodotto::all();
+        $totalProductsCount = $allProducts->count();
+        $totalStockValue = $allProducts->sum(fn($p) => $p->Giacenza * ($p->PrezzoListino ?? 0));
+        $lowStockCount = Prodotto::whereColumn('QuantitaGiacenza', '<', 'ScortaMinima')
+                                    ->count();
+
+        $categories = \App\Models\Categoria::all();
+
+        return view('logistics.inventory', compact(
+            'products', 
+            'perPage', 
+            'totalProductsCount', 
+            'totalStockValue', 
+            'lowStockCount',
+            'categories'
+        ));
     }
 
     public function updateForm()
     {
         $products = Prodotto::with('categoria')->get();
         $categories = \App\Models\Categoria::all();
-        return view('logistics.update', compact('products', 'categories'));
+
+        // Calcolo metriche per KPI
+        $totalProductsCount = $products->count();
+        $lowStockCount = Prodotto::whereColumn('QuantitaGiacenza', '<', 'ScortaMinima')
+                                    ->count();
+        $todayMovementsCount = \App\Models\MovimentoMagazzino::whereDate('DataMovimento', \Carbon\Carbon::today())->count();
+
+        return view('logistics.update', compact(
+            'products', 
+            'categories', 
+            'totalProductsCount', 
+            'lowStockCount', 
+            'todayMovementsCount'
+        ));
     }
 
     public function updateStock(Request $request)
@@ -101,6 +153,6 @@ class LogisticsController extends Controller
             ? "Carico effettuato: aggiunti " . $request->Quantita . " unità. Registrata spesa di € " . number_format($costoTotale, 2)
             : "Scarico effettuato con successo.";
 
-        return redirect()->route('logistics.index')->with('success', $msg);
+        return redirect()->route('inventory.index')->with('success', $msg);
     }
 }

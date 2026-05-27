@@ -26,7 +26,9 @@ class AnalyticsService
     public function getAdminKpis()
     {
         $salesData = DB::table('dettaglio_vendita')
+            ->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')
             ->join('prodotto', 'dettaglio_vendita.CodiceUnivoco_FK', '=', 'prodotto.CodiceUnivoco')
+            ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
             ->selectRaw('
                 SUM(QuantitaRichiesta * PrezzoApplicato) as revenue,
                 SUM(QuantitaRichiesta * CostoProduzione) as cogs
@@ -64,7 +66,10 @@ class AnalyticsService
     public function getEmployeePerformance()
     {
         return DB::table('dipendente')
-            ->leftJoin('ordine_vendita', 'dipendente.Matricola', '=', 'ordine_vendita.Matricola_FK')
+            ->leftJoin('ordine_vendita', function($join) {
+                $join->on('dipendente.Matricola', '=', 'ordine_vendita.Matricola_FK')
+                     ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito']);
+            })
             ->leftJoin('dettaglio_vendita', 'ordine_vendita.IDOrdineVendita', '=', 'dettaglio_vendita.IDOrdineVendita_FK')
             ->select(
                 'dipendente.Matricola',
@@ -83,6 +88,7 @@ class AnalyticsService
         return DB::table('cliente')
             ->join('ordine_vendita', 'cliente.CodiceCliente', '=', 'ordine_vendita.CodiceCliente_FK')
             ->join('dettaglio_vendita', 'ordine_vendita.IDOrdineVendita', '=', 'dettaglio_vendita.IDOrdineVendita_FK')
+            ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
             ->select(
                 'cliente.CodiceCliente',
                 'cliente.Nome',

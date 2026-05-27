@@ -392,3 +392,333 @@ nav[role="navigation"] span[aria-disabled="true"] {
     opacity: 0.3;
     cursor: not-allowed;
 }
+
+/* --- KPI CARDS SYSTEM (GLASSMORPHISM & PREMIUM GLOW) --- */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    animation: fadeInPage 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kpi-card {
+    background: var(--logistics-card);
+    border: 1px solid var(--logistics-border);
+    border-radius: 1.5rem;
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: var(--shadow-premium);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--logistics-accent);
+    box-shadow: 0 30px 60px -15px rgba(99, 102, 241, 0.15);
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--logistics-accent);
+    opacity: 0.8;
+}
+
+.kpi-card-warning::before {
+    background: #f59e0b;
+}
+
+.kpi-card-danger::before {
+    background: #ef4444;
+}
+
+.kpi-icon-container {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(99, 102, 241, 0.08);
+    color: var(--logistics-accent);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.kpi-card:hover .kpi-icon-container {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.kpi-icon-container-warning {
+    background: rgba(245, 158, 11, 0.08);
+    color: #f59e0b;
+}
+
+.kpi-icon-container-danger {
+    background: rgba(239, 68, 68, 0.08);
+    color: #ef4444;
+}
+
+.kpi-details {
+    flex: 1;
+}
+
+.kpi-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+}
+
+.kpi-value {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-top: 0.15rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+/* --- PREMIUM FILTER BAR AND BADGES --- */
+.logistics-filter-bar {
+    background: var(--logistics-card);
+    border: 1px solid var(--logistics-border);
+    border-radius: 1.5rem;
+    padding: 1.25rem 1.75rem;
+    box-shadow: var(--shadow-premium);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    animation: fadeInPage 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filter-left-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    flex: 1;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-label {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    white-space: nowrap;
+}
+
+.filter-select {
+    background: var(--logistics-bg) !important;
+    border: 1px solid var(--logistics-border) !important;
+    border-radius: 1rem !important;
+    padding: 0.5rem 2.25rem 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: var(--text-main) !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    border-color: var(--logistics-accent) !important;
+    box-shadow: 0 0 0 3px var(--logistics-accent-glow) !important;
+}
+
+/* Status Pills / Filter links */
+.status-pills {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.status-pill {
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--text-dim);
+    background: var(--logistics-bg);
+    border: 1px solid var(--logistics-border);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.status-pill:hover {
+    color: var(--text-main);
+    border-color: var(--text-dim);
+    transform: translateY(-1px);
+}
+
+.status-pill-active {
+    background: var(--logistics-accent);
+    color: white !important;
+    border-color: var(--logistics-accent);
+    box-shadow: 0 8px 16px -4px var(--logistics-accent-glow);
+}
+
+/* --- TABLE ENHANCEMENTS --- */
+.logistics-table {
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    width: 100%;
+}
+
+.logistics-table-header th {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    padding: 1.25rem 1.5rem;
+    border: 0;
+}
+
+.logistics-table-tr {
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logistics-table-tr:hover {
+    background: rgba(99, 102, 241, 0.03) !important;
+    transform: translateX(6px);
+}
+
+.dark .logistics-table-tr:hover {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.logistics-table-tr td {
+    border: 0;
+    position: relative;
+    padding: 1.25rem 1.5rem;
+}
+
+/* Row indicator */
+.logistics-table-tr:hover td:first-child::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 4px;
+    background: var(--logistics-accent);
+    border-radius: 0 4px 4px 0;
+    box-shadow: 4px 0 15px var(--logistics-accent-glow);
+}
+
+/* Stock progress indicator */
+.table-stock-progress-container {
+    width: 120px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 99px;
+    overflow: hidden;
+    position: relative;
+    height: 6px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dark .table-stock-progress-container {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.table-stock-progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s ease-in-out;
+}
+
+/* Premium mini buttons */
+.btn-action-movimenta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--logistics-accent);
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-action-movimenta:hover {
+    background: var(--logistics-accent);
+    color: white;
+    box-shadow: 0 8px 16px -4px var(--logistics-accent-glow);
+    transform: translateY(-1px);
+}
+
+.btn-action-movimenta svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* --- DYNAMIC OPERATION VIEWS --- */
+.preview-card-dynamic {
+    background: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.25) !important;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .preview-card-dynamic {
+    background: #0f172a !important;
+}
+
+.preview-card-carico {
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.08) !important;
+}
+
+.preview-card-scarico {
+    border-color: rgba(225, 29, 72, 0.3) !important;
+    box-shadow: 0 30px 60px -15px rgba(225, 29, 72, 0.08) !important;
+}
+
+.btn-quick-qty-carico {
+    color: #10b981 !important;
+    border-color: rgba(16, 185, 129, 0.15) !important;
+    background: rgba(16, 185, 129, 0.04) !important;
+}
+.btn-quick-qty-carico:hover {
+    background: #10b981 !important;
+    color: white !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.3) !important;
+}
+
+.btn-quick-qty-scarico {
+    color: #f43f5e !important;
+    border-color: rgba(244, 63, 94, 0.15) !important;
+    background: rgba(244, 63, 94, 0.04) !important;
+}
+.btn-quick-qty-scarico:hover {
+    background: #f43f5e !important;
+    color: white !important;
+    border-color: #f43f5e !important;
+    box-shadow: 0 15px 25px -5px rgba(244, 63, 94, 0.3) !important;
+}

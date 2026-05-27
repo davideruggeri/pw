@@ -49,22 +49,96 @@ class OrderController extends Controller
         return view('sales.orders.index', compact('orders', 'perPage', 'stats'));
     }
 
-    public function pending()
+    public function pending(Request $request)
     {
-        $orders = \App\Models\OrdineVendita::with(['cliente', 'venditore', 'dettagliVendita.prodotto'])
+        $query = \App\Models\OrdineVendita::with(['cliente', 'venditore', 'dettagliVendita.prodotto'])
+            ->where('Stato', 'In Attesa');
+
+        // Ricerca per ID o Nome Cliente
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('IDOrdineVendita', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('cliente', function($c) use ($request) {
+                      $c->where('Nome', 'like', '%' . $request->search . '%');
+                  });
+            });
+        }
+
+        $orders = $query->get();
+
+        // Ordinamento in PHP
+        $sort = $request->input('sort', 'date_asc');
+        switch ($sort) {
+            case 'date_desc':
+                $orders = $orders->sortByDesc('Data');
+                break;
+            case 'value_asc':
+                $orders = $orders->sortBy('totale_ordine');
+                break;
+            case 'value_desc':
+                $orders = $orders->sortByDesc('totale_ordine');
+                break;
+            case 'date_asc':
+            default:
+                $orders = $orders->sortBy('Data');
+                break;
+        }
+
+        // Calcolo metriche per KPI (globali)
+        $allPending = \App\Models\OrdineVendita::with(['dettagliVendita'])
             ->where('Stato', 'In Attesa')
-            ->orderBy('Data', 'asc')
             ->get();
 
-        return view('sales.orders.pending', compact('orders'));
+        $totalPendingCount = $allPending->count();
+        $totalPendingValue = $allPending->sum('totale_ordine');
+        $maxPendingValue = $allPending->isNotEmpty() ? $allPending->max('totale_ordine') : 0;
+
+        return view('sales.orders.pending', compact(
+            'orders',
+            'totalPendingCount',
+            'totalPendingValue',
+            'maxPendingValue'
+        ));
     }
 
     public function approve($id)
     {
-        $ordine = \App\Models\OrdineVendita::findOrFail($id);
+        $ordine = \App\Models\OrdineVendita::with('dettagliVendita.prodotto')->findOrFail($id);
         
         if ($ordine->Stato !== 'In Attesa') {
             return back()->with('error', 'Questo ordine è già stato elaborato.');
+        }
+
+        // 1. Verifica scorte sufficienti per tutti i prodotti nell'ordine
+        foreach ($ordine->dettagliVendita as $dettaglio) {
+            $prodotto = $dettaglio->prodotto;
+            if ($prodotto && $prodotto->Giacenza < $dettaglio->QuantitaRichiesta) {
+                return back()->with('error', "Impossibile approvare l'ordine #{$id}: scorte insufficienti per il prodotto '{$prodotto->NomeProdotto}' (Giacenza: {$prodotto->Giacenza}, Richiesto: {$dettaglio->QuantitaRichiesta}).");
+            }
+        }
+
+        // 2. Sottrai i prodotti dal magazzino, registra il movimento e invia notifiche se necessario
+        foreach ($ordine->dettagliVendita as $dettaglio) {
+            $prodotto = $dettaglio->prodotto;
+            if ($prodotto) {
+                $prodotto->Giacenza -= $dettaglio->QuantitaRichiesta;
+                $prodotto->save();
+
+                // Registra il movimento di scarico
+                \App\Models\MovimentoMagazzino::create([
+                    'CodiceUnivoco_FK' => $prodotto->CodiceUnivoco,
+                    'Quantita' => $dettaglio->QuantitaRichiesta,
+                    'Tipo' => 'scarico',
+                    'DataMovimento' => now(),
+                    'CostoTotale' => 0
+                ]);
+
+                // Genera una notifica se il prodotto è sceso sotto scorta
+                if ($prodotto->Giacenza < $prodotto->ScortaMinima) {
+                    $staffUsers = \App\Models\User::whereIn('role', ['admin', 'logistics', 'production'])->get();
+                    \Illuminate\Support\Facades\Notification::send($staffUsers, new \App\Notifications\LowStockAlertNotification($prodotto));
+                }
+            }
         }
 
         $ordine->update(['Stato' => 'Approvato']);
@@ -87,33 +161,15 @@ class OrderController extends Controller
 
     public function ship($id)
     {
-        $ordine = \App\Models\OrdineVendita::with('dettagliVendita.prodotto')->findOrFail($id);
+        $ordine = \App\Models\OrdineVendita::findOrFail($id);
         
         if ($ordine->Stato === 'Spedito') {
             return back()->with('error', 'Questo ordine è già stato spedito.');
         }
 
-        // Sottrai i prodotti dal magazzino
-        foreach ($ordine->dettagliVendita as $dettaglio) {
-            $prodotto = $dettaglio->prodotto;
-            if ($prodotto) {
-                $prodotto->Giacenza -= $dettaglio->QuantitaRichiesta;
-                $prodotto->save();
-
-                // Registra il movimento di scarico
-                \App\Models\MovimentoMagazzino::create([
-                    'CodiceUnivoco_FK' => $prodotto->CodiceUnivoco,
-                    'Quantita' => $dettaglio->QuantitaRichiesta,
-                    'Tipo' => 'scarico',
-                    'DataMovimento' => now(),
-                    'CostoTotale' => 0 // Vendita, non costo di acquisto
-                ]);
-            }
-        }
-
         $ordine->update(['Stato' => 'Spedito']);
 
-        return back()->with('success', "Ordine #{$id} confermato come spedito! Magazzino aggiornato.");
+        return back()->with('success', "Ordine #{$id} confermato come spedito!");
     }
 
     public function create()

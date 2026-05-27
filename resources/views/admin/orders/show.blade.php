@@ -36,10 +36,27 @@
                     {{ $ordine->Stato }}
                 </span>
             </div>
-            @if($ordine->Stato !== 'Spedito' && $ordine->Stato !== 'Annullato')
+            @if($ordine->Stato === 'In Attesa')
+                <div class="flex items-center gap-4">
+                    <form action="{{ route('orders.approve', $ordine->IDOrdineVendita) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="bg-emerald-600 text-white px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-emerald-600/20 hover:bg-emerald-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3 cursor-pointer border-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+                            Approva Ordine
+                        </button>
+                    </form>
+                    <form action="{{ route('orders.reject', $ordine->IDOrdineVendita) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="bg-rose-600 text-white px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-rose-600/20 hover:bg-rose-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3 cursor-pointer border-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                            Rifiuta Ordine
+                        </button>
+                    </form>
+                </div>
+            @elseif($ordine->Stato === 'Approvato')
                 <form action="{{ route('orders.ship', $ordine->IDOrdineVendita) }}" method="POST">
                     @csrf
-                    <button type="submit" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-indigo-600/20 hover:bg-indigo-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3">
+                    <button type="submit" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-indigo-600/20 hover:bg-indigo-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3 cursor-pointer border-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                         Conferma Spedizione
                     </button>
@@ -48,117 +65,132 @@
         </div>
     </div>
 
-    <!-- Main Grid: 12 Columns (3 Sidebar, 9 Main) -->
-    <div class="grid grid-cols-12 gap-12 items-start">
+    <!-- Main Grid: Custom Grid System to ensure proper layout and avoid conflicts -->
+    <div class="order-detail-layout-grid">
         
-        <!-- Sidebar Info (col-span-3) -->
-        <div class="col-span-12 lg:col-span-3 space-y-10 sticky top-10">
+        <!-- Sidebar Info -->
+        <div class="sticky top-10 flex flex-col gap-8">
             
             <!-- Card Cliente -->
-            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 border border-slate-200 dark:border-slate-800 shadow-sm">
-                <div class="flex flex-col items-center text-center mb-10">
-                    <div class="w-20 h-20 rounded-3xl bg-slate-900 dark:bg-indigo-600 flex items-center justify-center text-white text-3xl font-black shadow-2xl mb-4">
+            <div class="order-detail-glass-card">
+                <div class="flex flex-col items-center text-center mb-8">
+                    <div class="w-20 h-20 rounded-3xl bg-indigo-600 flex items-center justify-center text-white text-3xl font-black shadow-2xl mb-4">
                         {{ substr($ordine->cliente->Nome ?? 'C', 0, 1) }}
                     </div>
-                    <h3 class="text-xl font-black text-slate-900 dark:text-white leading-tight">{{ $ordine->cliente->Nome ?? 'N/D' }}</h3>
-                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">ID: {{ $ordine->CodiceCliente_FK }}</p>
+                    <h3 class="text-xl font-black text-premium-primary leading-tight">{{ $ordine->cliente->Nome ?? 'N/D' }}</h3>
+                    <p class="text-[10px] text-premium-muted font-black uppercase tracking-widest mt-2">ID: {{ $ordine->CodiceCliente_FK }}</p>
                 </div>
 
-                <div class="space-y-10 pt-10 border-t border-slate-100 dark:border-slate-800/50">
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-1 h-4 bg-indigo-500 rounded-full"></div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Spedizione</span>
+                <div class="sidebar-field-divider"></div>
+
+                <div class="space-y-8">
+                    <div class="sidebar-field-group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-1.5 h-4 bg-indigo-500 rounded-full"></div>
+                            <span class="text-[10px] font-black text-premium-muted uppercase tracking-widest">Spedizione</span>
                         </div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 font-bold leading-relaxed">{{ $ordine->cliente->IndirizzoSpedizione ?? 'N/D' }}</p>
+                        <p class="text-xs text-premium-secondary font-bold leading-relaxed">{{ $ordine->cliente->IndirizzoSpedizione ?? 'N/D' }}</p>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-1 h-4 bg-slate-400 rounded-full"></div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Dettaglio Fiscale</span>
+
+                    <div class="sidebar-field-divider"></div>
+
+                    <div class="sidebar-field-group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-1.5 h-4 bg-indigo-400 rounded-full"></div>
+                            <span class="text-[10px] font-black text-premium-muted uppercase tracking-widest">Dettaglio Fiscale</span>
                         </div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 font-bold">P.IVA: {{ $ordine->cliente->PartitaIVA ?? 'N/D' }}</p>
+                        <p class="text-xs text-premium-secondary font-bold">P.IVA: {{ $ordine->cliente->PartitaIVA ?? 'N/D' }}</p>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-1 h-4 bg-slate-400 rounded-full"></div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pagamento</span>
+
+                    <div class="sidebar-field-divider"></div>
+
+                    <div class="sidebar-field-group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-1.5 h-4 bg-indigo-400 rounded-full"></div>
+                            <span class="text-[10px] font-black text-premium-muted uppercase tracking-widest">Pagamento</span>
                         </div>
-                        <p class="text-xs text-slate-900 dark:text-white font-black uppercase tracking-widest">Bonifico Bancario</p>
-                        <p class="text-[10px] text-slate-400 font-bold mt-1">Netto 30 Giorni</p>
+                        <p class="text-xs text-premium-primary font-black uppercase tracking-widest">Bonifico Bancario</p>
+                        <p class="text-[10px] text-premium-muted font-bold mt-1">Netto 30 Giorni</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Main Area (col-span-9) -->
-        <div class="col-span-12 lg:col-span-9 space-y-12">
+        <!-- Main Area -->
+        <div class="flex flex-col gap-10">
             
             <!-- Timeline Tracker -->
-            <div class="bg-white dark:bg-slate-900 rounded-[3rem] p-12 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                <div class="flex items-center justify-between relative max-w-3xl mx-auto py-4">
-                    <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800 -translate-y-1/2"></div>
-                    
-                    <div class="flex flex-col items-center gap-5 relative z-10 bg-white dark:bg-slate-900 px-8">
+            <div class="order-detail-glass-card">
+                <div class="timeline-stepper">
+                    <div class="timeline-step-node">
                         <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-2xl shadow-emerald-500/30">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                         </div>
-                        <span class="text-[11px] font-black text-slate-900 dark:text-white uppercase tracking-widest">Creato</span>
+                        <span class="text-[11px] font-black text-premium-primary uppercase tracking-widest">Creato</span>
                     </div>
 
-                    <div class="flex flex-col items-center gap-5 relative z-10 bg-white dark:bg-slate-900 px-8">
-                        <div class="w-14 h-14 rounded-full {{ in_array($ordine->Stato, ['Approvato', 'Spedito']) ? 'bg-emerald-500 text-white shadow-2xl shadow-emerald-500/30' : 'bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-200 dark:border-slate-700' }} flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    @if($ordine->Stato === 'Annullato')
+                        <div class="timeline-step-node">
+                            <div class="w-14 h-14 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-2xl shadow-rose-600/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </div>
+                            <span class="text-[11px] font-black text-rose-600 uppercase tracking-widest">Annullato</span>
                         </div>
-                        <span class="text-[11px] font-black {{ in_array($ordine->Stato, ['Approvato', 'Spedito']) ? 'text-slate-900 dark:text-white' : 'text-slate-400' }} uppercase tracking-widest">Approvato</span>
-                    </div>
+                    @else
+                        <div class="timeline-step-node">
+                            <div class="w-14 h-14 rounded-full {{ in_array($ordine->Stato, ['Approvato', 'Spedito']) ? 'bg-emerald-500 text-white shadow-2xl shadow-emerald-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700' }} flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <span class="text-[11px] font-black {{ in_array($ordine->Stato, ['Approvato', 'Spedito']) ? 'text-premium-primary' : 'text-premium-muted' }} uppercase tracking-widest">Approvato</span>
+                        </div>
 
-                    <div class="flex flex-col items-center gap-5 relative z-10 bg-white dark:bg-slate-900 px-8">
-                        <div class="w-14 h-14 rounded-full {{ $ordine->Stato === 'Spedito' ? 'bg-indigo-600 text-white shadow-2xl shadow-indigo-600/30' : 'bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-200 dark:border-slate-700' }} flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                        <div class="timeline-step-node">
+                            <div class="w-14 h-14 rounded-full {{ $ordine->Stato === 'Spedito' ? 'bg-indigo-600 text-white shadow-2xl shadow-indigo-600/30' : 'bg-slate-800 text-slate-400 border border-slate-700' }} flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                            </div>
+                            <span class="text-[11px] font-black {{ $ordine->Stato === 'Spedito' ? 'text-premium-primary' : 'text-premium-muted' }} uppercase tracking-widest">Spedito</span>
                         </div>
-                        <span class="text-[11px] font-black {{ $ordine->Stato === 'Spedito' ? 'text-slate-900 dark:text-white' : 'text-slate-400' }} uppercase tracking-widest">Spedito</span>
-                    </div>
+                    @endif
                 </div>
             </div>
 
             <!-- Prodotti Card -->
-            <div class="bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-                <div class="px-12 py-10 border-b border-slate-100 dark:border-slate-800/50 flex justify-between items-center bg-slate-50/20 dark:bg-slate-800/10">
-                    <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">Dettaglio Articoli</h3>
-                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{{ count($ordine->dettagliVendita) }} Posizioni</span>
+            <div class="order-detail-glass-card !p-0">
+                <div class="px-12 py-10 border-b border-slate-800 flex justify-between items-center bg-slate-800/10">
+                    <h3 class="text-sm font-black text-premium-primary uppercase tracking-widest">Dettaglio Articoli</h3>
+                    <span class="text-[11px] font-bold text-premium-muted uppercase tracking-widest">{{ count($ordine->dettagliVendita) }} Posizioni</span>
                 </div>
                 
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-50/50 dark:bg-slate-800/20">
-                            <th class="px-12 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Articolo</th>
-                            <th class="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Qtà</th>
-                            <th class="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Unitario</th>
-                            <th class="px-12 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Totale</th>
+                        <tr class="bg-slate-800/20">
+                            <th class="px-12 py-6 text-[10px] font-black text-premium-muted uppercase tracking-widest">Articolo</th>
+                            <th class="px-6 py-6 text-[10px] font-black text-premium-muted uppercase tracking-widest text-center">Qtà</th>
+                            <th class="px-6 py-6 text-[10px] font-black text-premium-muted uppercase tracking-widest text-right">Unitario</th>
+                            <th class="px-12 py-6 text-[10px] font-black text-premium-muted uppercase tracking-widest text-right">Totale</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                    <tbody class="divide-y divide-slate-800/50">
                         @foreach($ordine->dettagliVendita as $dettaglio)
-                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
-                            <td class="px-12 py-10">
+                        <tr class="hover:bg-slate-800/30 transition-colors group">
+                            <td class="px-12 py-8">
                                 <div class="flex items-center gap-6">
-                                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center text-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm group-hover:scale-110 transition-transform">📦</div>
+                                    <div class="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center text-2xl border border-slate-700/50 shadow-sm group-hover:scale-110 transition-transform">📦</div>
                                     <div>
-                                        <p class="text-base font-black text-slate-900 dark:text-white leading-tight mb-2">{{ $dettaglio->prodotto->Descrizione }}</p>
-                                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">SKU: {{ $dettaglio->CodiceUnivoco_FK }}</p>
+                                        <p class="text-base font-black text-premium-primary leading-tight mb-2 break-words line-clamp-2">{{ $dettaglio->prodotto->Descrizione }}</p>
+                                        <p class="text-[10px] text-premium-muted font-bold uppercase tracking-widest">SKU: {{ $dettaglio->CodiceUnivoco_FK }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-10 text-center">
-                                <span class="px-5 py-2 bg-slate-100 dark:bg-slate-800 rounded-2xl text-xs font-black text-slate-700 dark:text-slate-300 tabular-nums">
+                            <td class="px-6 py-8 text-center">
+                                <span class="px-5 py-2 bg-slate-800 rounded-2xl text-xs font-black text-premium-secondary tabular-nums">
                                     {{ (int)$dettaglio->QuantitaRichiesta }} pz
                                 </span>
                             </td>
-                            <td class="px-6 py-10 text-right font-bold text-slate-400 tabular-nums text-xs">
+                            <td class="px-6 py-8 text-right font-bold text-premium-muted tabular-nums text-xs">
                                 € {{ number_format($dettaglio->PrezzoApplicato, 2, ',', '.') }}
                             </td>
-                            <td class="px-12 py-10 text-right font-black text-slate-900 dark:text-white tabular-nums text-base">
+                            <td class="px-12 py-8 text-right font-black text-premium-primary tabular-nums text-base">
                                 € {{ number_format($dettaglio->QuantitaRichiesta * $dettaglio->PrezzoApplicato, 2, ',', '.') }}
                             </td>
                         </tr>
@@ -167,19 +199,19 @@
                 </table>
 
                 <!-- Footer Riepilogo -->
-                <div class="bg-slate-50/50 dark:bg-slate-800/20 px-10 py-10 border-t border-slate-100 dark:border-slate-800/50">
+                <div class="bg-slate-800/20 px-10 py-10 border-t border-slate-800">
                     <div class="flex flex-col items-end gap-3">
-                        <div class="flex justify-between w-full md:w-80 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                        <div class="flex justify-between w-full md:w-80 text-[9px] font-bold text-premium-muted uppercase tracking-widest">
                             <span>Subtotale</span>
-                            <span class="text-slate-900 dark:text-white font-black">€ {{ number_format($ordine->totale_ordine * 0.78, 2, ',', '.') }}</span>
+                            <span class="text-premium-primary font-black">€ {{ number_format($ordine->totale_ordine * 0.78, 2, ',', '.') }}</span>
                         </div>
-                        <div class="flex justify-between w-full md:w-72 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                        <div class="flex justify-between w-full md:w-72 text-[9px] font-bold text-premium-muted uppercase tracking-widest">
                             <span>Imposta IVA (22%)</span>
-                            <span class="text-slate-900 dark:text-white font-black">€ {{ number_format($ordine->totale_ordine * 0.22, 2, ',', '.') }}</span>
+                            <span class="text-premium-primary font-black">€ {{ number_format($ordine->totale_ordine * 0.22, 2, ',', '.') }}</span>
                         </div>
-                        <div class="flex justify-between w-full md:w-72 text-base font-black text-slate-900 dark:text-white uppercase mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                        <div class="flex justify-between w-full md:w-72 text-base font-black text-premium-primary uppercase mt-4 pt-4 border-t border-slate-700">
                             <span class="tracking-tighter">Totale Ordine</span>
-                            <span class="text-indigo-600 tracking-tight text-xl">€ {{ number_format($ordine->totale_ordine, 2, ',', '.') }}</span>
+                            <span class="text-indigo-400 tracking-tight text-xl">€ {{ number_format($ordine->totale_ordine, 2, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>

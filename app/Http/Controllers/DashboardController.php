@@ -50,6 +50,7 @@ class DashboardController extends Controller
             ->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')
             ->join('prodotto', 'dettaglio_vendita.CodiceUnivoco_FK', '=', 'prodotto.CodiceUnivoco')
             ->whereMonth('ordine_vendita.Data', now()->month)
+            ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
             ->selectRaw('
                 SUM(QuantitaRichiesta * PrezzoApplicato) as revenue,
                 SUM(QuantitaRichiesta * CostoProduzione) as cost
@@ -64,6 +65,8 @@ class DashboardController extends Controller
 
         $topProducts = DB::table('prodotto')
             ->join('dettaglio_vendita', 'prodotto.CodiceUnivoco', '=', 'dettaglio_vendita.CodiceUnivoco_FK')
+            ->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')
+            ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
             ->select(
                 'prodotto.Descrizione as NomeProdotto',
                 DB::raw('SUM(dettaglio_vendita.QuantitaRichiesta) as total_sold'),
@@ -95,10 +98,14 @@ class DashboardController extends Controller
         $stats = [
             'ordini_count' => $cliente ? $cliente->ordiniVendita()->count() : 0,
             'preferiti_count' => $cliente ? $cliente->preferiti()->count() : 0,
-            'totale_speso' => $cliente ? $cliente->ordiniVendita->sum(fn($o) => $o->totale_ordine) : 0,
+            'totale_speso' => $cliente ? $cliente->ordiniVendita()->whereIn('Stato', ['Approvato', 'Spedito'])->get()->sum(fn($o) => $o->totale_ordine) : 0,
         ];
 
-        $bestsellers = \App\Models\Prodotto::withSum('dettagliVendita as total_sold', 'QuantitaRichiesta')
+        $bestsellers = \App\Models\Prodotto::withSum(['dettagliVendita as total_sold' => function($query) {
+            $query->whereHas('ordiniVendita', function($q) {
+                $q->whereIn('Stato', ['Approvato', 'Spedito']);
+            });
+        }], 'QuantitaRichiesta')
             ->orderByDesc('total_sold')
             ->limit(4)
             ->get();

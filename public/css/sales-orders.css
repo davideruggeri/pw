@@ -316,3 +316,394 @@
 .dark .order-detail-mini {
     background: rgba(255, 255, 255, 0.03);
 }
+
+/* --- PENDING ORDERS KPI SYSTEM --- */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.kpi-card {
+    background: var(--logistics-card, #ffffff);
+    border: 1px solid var(--logistics-border, rgba(0,0,0,0.05));
+    border-radius: 1.5rem;
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: var(--shadow-premium);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--logistics-accent, #6366f1);
+    box-shadow: 0 30px 60px -15px rgba(99, 102, 241, 0.15);
+}
+
+.dark .kpi-card {
+    background: var(--logistics-glass-bg, rgba(15, 23, 42, 0.7));
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #6366f1;
+}
+
+.kpi-card-warning::before {
+    background: #f59e0b;
+}
+
+.kpi-card-success::before {
+    background: #10b981;
+}
+
+.kpi-icon-container {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(99, 102, 241, 0.08);
+    color: #6366f1;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.kpi-card:hover .kpi-icon-container {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.kpi-icon-container-warning {
+    background: rgba(245, 158, 11, 0.08);
+    color: #f59e0b;
+}
+
+.kpi-icon-container-success {
+    background: rgba(16, 185, 129, 0.08);
+    color: #10b981;
+}
+
+.kpi-details {
+    flex: 1;
+}
+
+.kpi-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim, #64748b);
+}
+
+.kpi-value {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--text-main, #0f172a);
+    margin-top: 0.15rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.dark .kpi-value {
+    color: var(--text-main, #f8fafc);
+}
+
+/* --- FILTER BAR SYSTEM --- */
+.logistics-filter-bar {
+    background: var(--logistics-card, #ffffff);
+    border: 1px solid var(--logistics-border, rgba(0,0,0,0.05));
+    border-radius: 1.5rem;
+    padding: 1.25rem 1.75rem;
+    box-shadow: var(--shadow-premium);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    animation: fadeIn 0.7s ease-out;
+}
+
+.dark .logistics-filter-bar {
+    background: var(--logistics-glass-bg, rgba(15, 23, 42, 0.7));
+}
+
+.filter-left-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    flex: 1;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-label {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim, #64748b);
+    white-space: nowrap;
+}
+
+.filter-select {
+    background: var(--logistics-bg, #f8fafc) !important;
+    border: 1px solid var(--logistics-border, rgba(0,0,0,0.05)) !important;
+    border-radius: 1rem !important;
+    padding: 0.5rem 2.25rem 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: var(--text-main, #0f172a) !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dark .filter-select {
+    background: var(--logistics-bg, #020617) !important;
+    color: var(--text-main, #f8fafc) !important;
+}
+
+.filter-select:focus {
+    border-color: var(--logistics-accent, #6366f1) !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.2) !important;
+}
+
+/* --- PRIORITY BADGES --- */
+.priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.75rem;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.priority-high {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.priority-medium {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.priority-normal {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+/* --- CARD UPDATES --- */
+.approval-card {
+    background: var(--logistics-card, #ffffff);
+    border: 1px solid var(--logistics-border, rgba(0,0,0,0.05));
+    border-radius: 2rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-premium);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark .approval-card {
+    background: var(--logistics-glass-bg, rgba(15, 23, 42, 0.7));
+}
+
+.approval-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--logistics-accent, #6366f1);
+    box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.15);
+}
+
+.approval-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.approval-card-urgent {
+    border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.approval-card-urgent:hover {
+    border-color: #ef4444 !important;
+    box-shadow: 0 40px 80px -15px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Row elements spacing */
+.order-detail-mini {
+    background: rgba(0, 0, 0, 0.02) !important;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    padding: 1.25rem !important;
+    border-radius: 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.dark .order-detail-mini {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-color: rgba(255, 255, 255, 0.04);
+}
+
+.btn-reject {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(239, 68, 68, 0.08);
+    color: #ef4444;
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+}
+
+.btn-reject:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
+}
+
+.btn-approve {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.2rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white !important;
+    box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4) !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-approve:hover {
+    transform: scale(1.1) rotate(5deg) !important;
+    box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.6) !important;
+}
+
+/* --- ORDER DETAIL HIGH CONTRAST & GRID SYSTEM --- */
+.order-detail-layout-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .order-detail-layout-grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 3rem;
+        align-items: start;
+    }
+}
+
+.order-detail-glass-card {
+    background: rgba(30, 41, 59, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 2rem !important;
+    padding: 2.5rem !important;
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4) !important;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(20px) saturate(180%);
+}
+
+.dark .order-detail-glass-card {
+    background: rgba(15, 23, 42, 0.65) !important;
+    border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+.text-premium-primary {
+    color: #ffffff !important;
+}
+
+.text-premium-secondary {
+    color: #cbd5e1 !important;
+}
+
+.text-premium-muted {
+    color: #94a3b8 !important;
+}
+
+.sidebar-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-field-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    margin-top: 1.75rem !important;
+    margin-bottom: 1.75rem !important;
+}
+
+/* Timeline Custom Styles */
+.timeline-stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+}
+
+.timeline-stepper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.timeline-step-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    position: relative;
+    z-index: 10;
+    background: #0f172a;
+    padding: 0 1.5rem;
+}
+
+.dark .timeline-step-node {
+    background: #090e1a;
+}

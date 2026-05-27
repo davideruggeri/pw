@@ -39,7 +39,7 @@
             <div class="info-block">
                 <span class="info-label">Indirizzo di Spedizione</span>
                 <p class="info-value">{{ $ordine->cliente->Nome }}</p>
-                <p class="text-xs text-slate-500 mt-3 leading-relaxed">{{ $ordine->cliente->Indirizzo ?? 'Indirizzo non disponibile' }}</p>
+                <p class="text-xs text-slate-500 mt-3 leading-relaxed">{{ $ordine->cliente->IndirizzoSpedizione ?? 'Indirizzo non disponibile' }}</p>
             </div>
 
             <div class="info-block">

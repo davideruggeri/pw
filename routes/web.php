@@ -111,7 +111,7 @@ Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix(
 
 // Rotte aggiuntive protette
 Route::middleware(['auth', 'password.changed'])->group(function () {
-    Route::get('/inventory-placeholder', fn() => redirect()->route('coming-soon', ['feature' => 'Magazzino Avanzato']))->name('inventory.index');
+    Route::get('/admin/inventory', [App\Http\Controllers\LogisticsController::class, 'inventory'])->name('inventory.index');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{id}/ship', [OrderController::class, 'ship'])->name('orders.ship');

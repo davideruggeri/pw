@@ -26,6 +26,7 @@ class DepartmentController extends Controller
                         $val = DB::table('dettaglio_vendita')
                             ->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')
                             ->whereMonth('ordine_vendita.Data', now()->month)
+                            ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
                             ->selectRaw('SUM(QuantitaRichiesta * PrezzoApplicato) as total')
                             ->value('total') ?? 0;
                         $reparto->kpi_label = "Fatturato Mensile";
@@ -61,7 +62,12 @@ class DepartmentController extends Controller
                 break;
             case 6: // Commerciale
                 $stats['titolo'] = "Performance Commerciali";
-                $sales = DB::table('dettaglio_vendita')->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')->whereMonth('ordine_vendita.Data', now()->month)->selectRaw('SUM(QuantitaRichiesta * PrezzoApplicato) as rev, COUNT(DISTINCT IDOrdineVendita) as ord')->first();
+                $sales = DB::table('dettaglio_vendita')
+                    ->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')
+                    ->whereMonth('ordine_vendita.Data', now()->month)
+                    ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
+                    ->selectRaw('SUM(QuantitaRichiesta * PrezzoApplicato) as rev, COUNT(DISTINCT IDOrdineVendita) as ord')
+                    ->first();
                 $stats['kpi1_label'] = "Fatturato Mensile";
                 $stats['kpi1_value'] = '€ ' . number_format($sales->rev ?? 0, 0, ',', '.');
                 $stats['kpi2_label'] = "Ordini Chiusi";

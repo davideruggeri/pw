@@ -50,7 +50,7 @@
             if (p) {
                 this.selectedId = p.id;
                 this.searchTerm = "";
-                this.dropdownOpen = false;y
+                this.dropdownOpen = false;
             }
         }
     }'>
@@ -58,6 +58,48 @@
         <div class="mb-10">
             <h3 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">Aggiornamento Scorte</h3>
             <p class="text-slate-500 text-sm">Inserisci il codice o seleziona un prodotto dalla tendina.</p>
+        </div>
+
+        <!-- KPI Cards Section -->
+        <div class="kpi-grid">
+            <!-- Totale Articoli -->
+            <div class="kpi-card">
+                <div class="kpi-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                </div>
+                <div class="kpi-details">
+                    <p class="kpi-title">Articoli in Anagrafica</p>
+                    <p class="kpi-value">{{ $totalProductsCount }}</p>
+                </div>
+            </div>
+
+            <!-- Movimenti Oggi -->
+            <div class="kpi-card">
+                <div class="kpi-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                    </svg>
+                </div>
+                <div class="kpi-details">
+                    <p class="kpi-title">Movimenti Oggi</p>
+                    <p class="kpi-value">{{ $todayMovementsCount }}</p>
+                </div>
+            </div>
+
+            <!-- Prodotti Sotto Scorta -->
+            <div class="kpi-card {{ $lowStockCount > 0 ? 'kpi-card-danger' : '' }}">
+                <div class="kpi-icon-container {{ $lowStockCount > 0 ? 'kpi-icon-container-danger' : '' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="kpi-details">
+                    <p class="kpi-title">Allarmi Sotto Scorta</p>
+                    <p class="kpi-value">{{ $lowStockCount }}</p>
+                </div>
+            </div>
         </div>
 
         <!-- SELEZIONE PRODOTTO (TOP BAR) -->
@@ -158,41 +200,47 @@
                             <div class="space-y-4">
                                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Quantità
                                     da Movimentare</label>
-                                <input type="number" name="Quantità" x-model="quantity" step="0.01" required
+                                <input type="number" name="Quantita" x-model="quantity" step="0.01" required
                                     class="logistics-input w-full !text-4xl !py-6 text-center bg-slate-50 dark:bg-black/20">
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <template x-for="val in [10, 50, 100, 500]">
                                         <button type="button" @click="addQty(val)"
-                                            class="btn-quick-qty !py-4 !text-sm !rounded-xl border-indigo-500/20 text-indigo-600 dark:text-indigo-400"
+                                            class="btn-quick-qty !py-4 !text-sm !rounded-xl transition-all"
+                                            :class="movementType === 'carico' ? 'btn-quick-qty-carico' : 'btn-quick-qty-scarico'"
                                             x-text="'+' + val"></button>
                                     </template>
                                 </div>
                             </div>
 
                             <button type="submit"
-                                class="w-full py-6 bg-indigo-600 text-white rounded-xl font-black text-sm uppercase tracking-[0.2em] hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 active:scale-95 flex items-center justify-center relative overflow-hidden group">
-                                <span class="relative z-10">Conferma Movimento</span>
+                                class="w-full py-7 text-white rounded-2xl font-black text-base uppercase tracking-[0.25em] transition-all shadow-2xl active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group hover:scale-[1.02] border-0 cursor-pointer"
+                                :class="movementType === 'carico' ? 'bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 shadow-emerald-500/40 hover:shadow-emerald-500/60' : 'bg-gradient-to-r from-rose-500 via-rose-600 to-red-600 shadow-rose-500/40 hover:shadow-rose-500/60'">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 relative z-10 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+                                </svg>
+                                <span class="relative z-10" x-text="movementType === 'carico' ? 'Conferma Carico (+)' : 'Conferma Scarico (-)'"></span>
                             </button>
                         </form>
                     </div>
                 </div>
 
                 <!-- Preview Card -->
-                <div class="lg:col-span-5 space-y-6">
-                    <div class="logistics-card p-8 bg-gradient-to-br from-indigo-600 to-violet-700 text-white border-0 shadow-2xl relative overflow-hidden group">
+                <div class="lg:col-span-5 space-y-20">
+                    <div class="logistics-card p-8 text-white border-0 relative overflow-hidden group preview-card-dynamic"
+                        :class="movementType === 'carico' ? 'preview-card-carico' : 'preview-card-scarico'">
                         <!-- Background Decoration -->
-                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-700"></div>
-                        <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-indigo-400/20 rounded-full blur-3xl group-hover:bg-indigo-400/30 transition-all duration-700"></div>
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all duration-700"></div>
+                        <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all duration-700"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-start justify-between mb-8">
-                                <div>
-                                    <p class="text-[10px] font-black text-indigo-200 uppercase tracking-[0.2em] mb-1">Dettaglio Prodotto</p>
-                                    <h4 class="text-3xl font-black tracking-tighter leading-none" x-text="selectedProduct.name"></h4>
-                                    <p class="text-[10px] font-bold text-indigo-300 mt-2 uppercase tracking-widest" x-text="'ID: ' + selectedProduct.id"></p>
+                                <div class="min-w-0 flex-1 pr-4">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Dettaglio Prodotto</p>
+                                    <h4 class="text-xl md:text-2xl lg:text-3xl font-black tracking-tighter leading-tight break-words text-white" x-text="selectedProduct.name"></h4>
+                                    <p class="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-widest" x-text="'ID: ' + selectedProduct.id"></p>
                                 </div>
-                                <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
+                                <div class="w-12 h-12 bg-white/5 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/10">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
@@ -201,18 +249,18 @@
 
                             <!-- Stock Stats Grid -->
                             <div class="grid grid-cols-2 gap-4 mb-8">
-                                <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
-                                    <p class="text-[9px] font-black text-indigo-200 uppercase tracking-widest mb-1">Attuale</p>
+                                <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/5">
+                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Attuale</p>
                                     <div class="flex items-baseline gap-1">
-                                        <span class="text-2xl font-black" x-text="selectedProduct.giacenza"></span>
-                                        <span class="text-[10px] font-bold opacity-60 uppercase" x-text="selectedProduct.um"></span>
+                                        <span class="text-2xl font-black text-white" x-text="selectedProduct.giacenza"></span>
+                                        <span class="text-[10px] font-bold opacity-60 uppercase text-slate-400" x-text="selectedProduct.um"></span>
                                     </div>
                                 </div>
-                                <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20">
-                                    <p class="text-[9px] font-black text-indigo-200 uppercase tracking-widest mb-1">Proiezione</p>
+                                <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/5">
+                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Proiezione</p>
                                     <div class="flex items-baseline gap-1">
                                         <span class="text-4xl font-black text-white" x-text="futureStock"></span>
-                                        <span class="text-[10px] font-bold opacity-60 uppercase" x-text="selectedProduct.um"></span>
+                                        <span class="text-[10px] font-bold opacity-60 uppercase text-slate-400" x-text="selectedProduct.um"></span>
                                     </div>
                                 </div>
                             </div>
@@ -220,8 +268,8 @@
                             <!-- Dynamic Progress Section -->
                             <div class="space-y-3">
                                 <div class="flex justify-between items-end">
-                                    <p class="text-[10px] font-black text-indigo-200 uppercase tracking-widest">Salute Stock</p>
-                                    <p class="text-[10px] font-black uppercase" :class="futureStock < selectedProduct.minima ? 'text-rose-300' : 'text-emerald-300'" 
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Salute Stock</p>
+                                    <p class="text-[10px] font-black uppercase" :class="futureStock < selectedProduct.minima ? 'text-rose-400' : 'text-emerald-400'" 
                                        x-text="futureStock < selectedProduct.minima ? 'Sotto Scorta Minima' : 'Livello Ottimale'"></p>
                                 </div>
                                 <div class="h-4 bg-white/10 rounded-full overflow-hidden p-1 border border-white/5">
@@ -230,7 +278,7 @@
                                         :class="futureStock < selectedProduct.minima ? 'bg-gradient-to-r from-rose-500 to-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.5)]' : 'bg-gradient-to-r from-emerald-500 to-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.5)]'">
                                     </div>
                                 </div>
-                                <div class="flex justify-between text-[8px] font-black text-indigo-300 uppercase tracking-tighter">
+                                <div class="flex justify-between text-[8px] font-black text-slate-400 uppercase tracking-tighter">
                                     <span>0</span>
                                     <span x-text="'Minima: ' + selectedProduct.minima"></span>
                                     <span x-text="'Target: ' + (selectedProduct.minima * 2)"></span>
@@ -239,14 +287,14 @@
                         </div>
                     </div>
 
-                    <div class="logistics-card p-6 flex items-center gap-6 border-indigo-500/10 bg-indigo-500/[0.03] dark:bg-indigo-500/[0.05]">
-                        <div class="w-12 h-12 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center shrink-0 border border-indigo-500/20">
+                    <div class="logistics-card p-6 flex items-center gap-6 border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
+                        <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-xl flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                         <div>
-                            <h5 class="text-xs font-black text-indigo-900 dark:text-white uppercase tracking-widest">Verifica Fisica</h5>
+                            <h5 class="text-xs font-black text-slate-800 dark:text-white uppercase tracking-widest">Verifica Fisica</h5>
                             <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 leading-relaxed">Confronta sempre la giacenza fisica prima di validare il movimento a sistema.</p>
                         </div>
                     </div>
