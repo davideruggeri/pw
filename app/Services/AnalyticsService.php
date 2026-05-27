@@ -27,39 +27,22 @@ class AnalyticsService
     {
         $salesData = DB::table('dettaglio_vendita')
             ->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')
-            ->join('prodotto', 'dettaglio_vendita.CodiceUnivoco_FK', '=', 'prodotto.CodiceUnivoco')
             ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
-            ->selectRaw('
-                SUM(QuantitaRichiesta * PrezzoApplicato) as revenue,
-                SUM(QuantitaRichiesta * CostoProduzione) as cogs
-            ')->first();
+            ->selectRaw('SUM(QuantitaRichiesta * PrezzoApplicato) as revenue')
+            ->first();
 
-        $energyCosts = 0;
-        $maintenanceCosts = 0;
-        $replenishmentCosts = DB::table('movimenti_magazzino')->where('Tipo', 'carico')->sum('CostoTotale');
-        
-        $qualityLosses = 0;
- 
-        $totalEmployees = DB::table('dipendente')->count();
-        $laborCosts = $totalEmployees * 3500; // Media costo aziendale mensile per dipendente
- 
         $totalRevenue = $salesData->revenue ?? 0;
-        $cogs = $salesData->cogs ?? 0;
-        
-        $ebitda = $totalRevenue - $cogs - $laborCosts - $replenishmentCosts;
- 
+        $pendingOrdersCount = DB::table('ordine_vendita')->where('Stato', 'In Attesa')->count();
+        $totalCustomers = DB::table('cliente')->count();
+        $totalEmployees = DB::table('dipendente')->count();
+        $lowStockCount = count($this->prodottoRepo->getLowStock());
+
         return [
             'totalRevenue' => $totalRevenue,
-            'cogs' => $cogs,
-            'energyCosts' => $energyCosts,
-            'maintenanceCosts' => $maintenanceCosts,
-            'replenishmentCosts' => $replenishmentCosts,
-            'qualityLosses' => $qualityLosses,
-            'laborCosts' => $laborCosts,
-            'ebitda' => $ebitda,
-            'activeOrders' => $this->ordineRepo->getActiveCount(),
+            'pendingOrdersCount' => $pendingOrdersCount,
+            'totalCustomers' => $totalCustomers,
             'totalEmployees' => $totalEmployees,
-            'lowStockCount' => count($this->prodottoRepo->getLowStock()),
+            'lowStockCount' => $lowStockCount,
         ];
     }
 
@@ -97,6 +80,24 @@ class AnalyticsService
             ->groupBy('cliente.CodiceCliente', 'cliente.Nome')
             ->orderByDesc('revenue')
             ->limit(10)
+            ->get();
+    }
+
+    public function getBestsellers($limit = 5)
+    {
+        return DB::table('prodotto')
+            ->join('dettaglio_vendita', 'prodotto.CodiceUnivoco', '=', 'dettaglio_vendita.CodiceUnivoco_FK')
+            ->join('ordine_vendita', 'dettaglio_vendita.IDOrdineVendita_FK', '=', 'ordine_vendita.IDOrdineVendita')
+            ->whereIn('ordine_vendita.Stato', ['Approvato', 'Spedito'])
+            ->select(
+                'prodotto.CodiceUnivoco',
+                'prodotto.Descrizione as NomeProdotto',
+                DB::raw('SUM(dettaglio_vendita.QuantitaRichiesta) as total_sold'),
+                DB::raw('SUM(dettaglio_vendita.QuantitaRichiesta * dettaglio_vendita.PrezzoApplicato) as revenue')
+            )
+            ->groupBy('prodotto.CodiceUnivoco', 'prodotto.Descrizione')
+            ->orderByDesc('total_sold')
+            ->limit($limit)
             ->get();
     }
 }

@@ -7,192 +7,211 @@
 @endpush
 
 @section('content')
-<div class="admin-kpi-grid animate-fade-in">
-    <!-- KPI Card: Fatturato -->
-    <div class="kpi-card shadow-sm group">
-        <div class="relative z-10">
-            <p class="kpi-label">Fatturato Lordo</p>
-            <h3 class="kpi-value">€ {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
-            <p class="text-xs text-slate-400 mt-2">Volume totale vendite</p>
-        </div>
-        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-50 dark:bg-indigo-900/20 rounded-full opacity-50"></div>
-    </div>
+<div class="animate-fade-in w-full max-w-[1500px] mx-auto py-6">
 
-    <!-- KPI Card: Costi Operativi -->
-    <div class="kpi-card shadow-sm group">
-        <div class="relative z-10">
-            <p class="kpi-label">Costi Industriali</p>
-            <h3 class="kpi-value text-red-600 dark:text-red-400">€ {{ number_format($cogs + $energyCosts + $maintenanceCosts + $qualityLosses, 0, ',', '.') }}</h3>
-            <p class="text-xs text-red-400 font-bold mt-2">Energia + Manut. + Scarti</p>
-        </div>
-        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-red-50 dark:bg-red-900/20 rounded-full opacity-50"></div>
-    </div>
-
-    <!-- KPI Card: EBITDA -->
-    <div class="kpi-card kpi-card-dark shadow-lg group">
-        <div class="relative z-10">
-            <p class="kpi-label text-slate-400">EBITDA (Margine Operativo)</p>
-            <h3 class="kpi-value text-emerald-400">€ {{ number_format($ebitda, 0, ',', '.') }}</h3>
-            <p class="text-[10px] text-slate-500 mt-2 uppercase font-black">Utile al lordo di tasse/ammortamenti</p>
-        </div>
-        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-emerald-500/10 rounded-full"></div>
-    </div>
-
-    <!-- KPI Card: Personale -->
-    <div class="kpi-card shadow-sm group">
-        <div class="relative z-10">
-            <p class="kpi-label">Costo Lavoro</p>
-            <h3 class="kpi-value">€ {{ number_format($laborCosts, 0, ',', '.') }}</h3>
-            <p class="text-xs text-slate-500 mt-2">{{ $totalEmployees }} dipendenti attivi</p>
-        </div>
-    </div>
-</div>
-
-<!-- Bilancio Dettagliato -->
-<div class="financial-container shadow-sm animate-fade-in">
-    <div class="flex items-center justify-between mb-8">
-        <div>
-            <h4 class="text-xl font-bold text-slate-800 dark:text-white">Conto Economico Mensile</h4>
-            <p class="text-sm text-slate-500">Analisi consolidata dei flussi di cassa per reparto.</p>
-        </div>
-        <span class="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 uppercase">Periodo: {{ now()->translatedFormat('F Y') }}</span>
-    </div>
-
-    <div class="space-y-6">
-        <!-- Revenue -->
-        <div class="financial-row">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" /><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" /></svg>
-                </div>
+    <!-- KPI Cards Grid: Cinque metriche operative reali -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
+        <!-- KPI Card: Fatturato Consolidato -->
+        <div class="kpi-card shadow-sm group border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative z-10 flex flex-col justify-between h-full">
                 <div>
-                    <p class="font-bold text-slate-800 dark:text-slate-200">Ricavi da Vendite</p>
-                    <p class="text-[10px] text-slate-400 uppercase font-black">Reparto Commerciale</p>
+                    <p class="kpi-label text-[10px] font-black tracking-widest text-slate-400 uppercase">Fatturato Consolidato</p>
+                    <h3 class="kpi-value text-2xl font-black text-slate-900 dark:text-white mt-3">€ {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
                 </div>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-4">Volume vendite approvate/spedite</p>
             </div>
-            <p class="text-lg font-black text-slate-900 dark:text-emerald-400">+ € {{ number_format($totalRevenue, 0, ',', '.') }}</p>
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-50 dark:bg-indigo-950/20 rounded-full opacity-50 transition-transform group-hover:scale-110 duration-300"></div>
         </div>
 
-        <!-- Costs Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
-                <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Costo Produzione (Energia)</span>
-                <span class="text-sm font-black text-red-600 dark:text-red-400">- € {{ number_format($energyCosts, 0, ',', '.') }}</span>
-            </div>
-            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
-                <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Manutenzione & Ricambi</span>
-                <span class="text-sm font-black text-red-600 dark:text-red-400">- € {{ number_format($maintenanceCosts, 0, ',', '.') }}</span>
-            </div>
-            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
-                <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Rifornimento Materiali</span>
-                <span class="text-sm font-black text-amber-600 dark:text-amber-400">- € {{ number_format($replenishmentCosts, 0, ',', '.') }}</span>
-            </div>
-            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
-                <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Perdite per Scarti Qualità</span>
-                <span class="text-sm font-black text-red-600 dark:text-red-400">- € {{ number_format($qualityLosses, 0, ',', '.') }}</span>
-            </div>
-            <div class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center md:col-span-2">
-                <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Salari e Oneri Sociali</span>
-                <span class="text-sm font-black text-red-600 dark:text-red-400">- € {{ number_format($laborCosts, 0, ',', '.') }}</span>
-            </div>
-        </div>
-
-        <!-- Final Margin -->
-        <div class="final-net-box">
-            <div>
-                <p class="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Utile Operativo Netto</p>
-                <h3 class="text-3xl font-black {{ $ebitda > 0 ? 'text-emerald-400' : 'text-red-400' }}">€ {{ number_format($ebitda, 0, ',', '.') }}</h3>
-            </div>
-            <div class="text-right">
-                <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Margine su Ricavi</p>
-                <p class="text-xl font-bold">{{ number_format(($ebitda / ($totalRevenue ?: 1)) * 100, 1) }}%</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Riepilogo Reparti -->
-<div class="mt-8">
-    <h4 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter mb-6">Stato Operativo Reparti</h4>
-    <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
-
-
-        <!-- Logistica -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-                </div>
-                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Logistica</span>
-            </div>
-            <p class="text-2xl font-black {{ $deptStats['logistics'] > 0 ? 'text-amber-500' : 'text-slate-900 dark:text-white' }} tracking-tighter">{{ $deptStats['logistics'] }}</p>
-            <p class="text-[10px] text-slate-500 font-bold mt-1">Articoli Sottoscorta</p>
-        </div>
-    </div>
-</div>
-
-<div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- Recent Activity -->
-    <div class="lg:col-span-2 admin-table-container shadow-sm">
-        <h4 class="text-lg font-bold text-slate-800 dark:text-white mb-6">Ultimi Ordini</h4>
-        <div class="overflow-x-auto">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th class="px-2">ID Ordine</th>
-                        <th class="px-2">Cliente</th>
-                        <th class="px-2">Data</th>
-                        <th class="px-2">Stato</th>
-                        <th class="px-2 text-right">Totale</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
-                    @foreach($recentOrders as $ordine)
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="px-2 font-medium">
-                            <a href="{{ route('orders.show', $ordine->IDOrdineVendita) }}" class="text-indigo-600 hover:underline font-black">
-                                #{{ $ordine->IDOrdineVendita }}
-                            </a>
-                        </td>
-                        <td class="px-2 text-slate-700 dark:text-slate-300 font-semibold">{{ $ordine->cliente->Nome ?? 'N/D' }}</td>
-                        <td class="px-2 text-slate-500">{{ $ordine->Data ? date('d/m/Y', strtotime($ordine->Data)) : '-' }}</td>
-                        <td class="px-2">
-                            @php
-                                $statusClasses = [
-                                    'Inviato' => 'bg-amber-100 text-amber-700',
-                                    'Completato' => 'bg-emerald-100 text-emerald-700',
-                                    'Annullato' => 'bg-red-100 text-red-700'
-                                ];
-                            @endphp
-                            <span class="px-2 py-1 {{ $statusClasses[$ordine->Stato] ?? 'bg-slate-100 text-slate-700' }} rounded-lg text-[10px] font-bold uppercase">
-                                {{ $ordine->Stato }}
+        <!-- KPI Card: Ordini in Attesa di Approva -->
+        <a href="{{ route('orders.pending') }}" class="kpi-card shadow-sm group border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:-translate-y-1 transition-all duration-300 block text-decoration-none">
+            <div class="relative z-10 flex flex-col justify-between h-full">
+                <div>
+                    <div class="flex justify-between items-start">
+                        <p class="kpi-label text-[10px] font-black tracking-widest text-slate-400 uppercase">Ordini da Approvare</p>
+                        @if($pendingOrdersCount > 0)
+                            <span class="flex h-2 w-2 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                             </span>
-                        </td>
-                        <td class="px-2 text-right font-bold text-slate-800 dark:text-white">
-                            € {{ number_format($ordine->dettagliVendita->sum(fn($d) => $d->QuantitaRichiesta * $d->PrezzoApplicato), 2, ',', '.') }}
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        @endif
+                    </div>
+                    <h3 class="kpi-value text-2xl font-black {{ $pendingOrdersCount > 0 ? 'text-rose-500 dark:text-rose-400' : 'text-slate-900 dark:text-white' }} mt-3">{{ $pendingOrdersCount }}</h3>
+                </div>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-4 hover:text-rose-500 transition-colors">Vedi coda di approvazione →</p>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-rose-50 dark:bg-rose-950/20 rounded-full opacity-50 transition-transform group-hover:scale-110 duration-300"></div>
+        </a>
+
+        <!-- KPI Card: Prodotti Sotto Scorta -->
+        <a href="{{ route('logistics.replenishment') }}" class="kpi-card shadow-sm group border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:-translate-y-1 transition-all duration-300 block text-decoration-none">
+            <div class="relative z-10 flex flex-col justify-between h-full">
+                <div>
+                    <div class="flex justify-between items-start">
+                        <p class="kpi-label text-[10px] font-black tracking-widest text-slate-400 uppercase">Allarmi Sotto Scorta</p>
+                        @if($lowStockCount > 0)
+                            <span class="flex h-2 w-2 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                            </span>
+                        @endif
+                    </div>
+                    <h3 class="kpi-value text-2xl font-black {{ $lowStockCount > 0 ? 'text-amber-500 dark:text-amber-400' : 'text-slate-900 dark:text-white' }} mt-3">{{ $lowStockCount }}</h3>
+                </div>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-4 hover:text-amber-500 transition-colors">Gestisci rifornimenti →</p>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-50 dark:bg-amber-950/20 rounded-full opacity-50 transition-transform group-hover:scale-110 duration-300"></div>
+        </a>
+
+        <!-- KPI Card: Clienti Registrati -->
+        <div class="kpi-card shadow-sm group border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative z-10 flex flex-col justify-between h-full">
+                <div>
+                    <p class="kpi-label text-[10px] font-black tracking-widest text-slate-400 uppercase">Clienti Registrati</p>
+                    <h3 class="kpi-value text-2xl font-black text-slate-900 dark:text-white mt-3">{{ $totalCustomers }}</h3>
+                </div>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-4">Totale account clienti registrati</p>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-50 dark:bg-emerald-950/20 rounded-full opacity-50 transition-transform group-hover:scale-110 duration-300"></div>
+        </div>
+
+        <!-- KPI Card: Dipendenti Attivi -->
+        <a href="{{ route('employees.index') }}" class="kpi-card shadow-sm group border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:-translate-y-1 transition-all duration-300 block text-decoration-none">
+            <div class="relative z-10 flex flex-col justify-between h-full">
+                <div>
+                    <p class="kpi-label text-[10px] font-black tracking-widest text-slate-400 uppercase">Dipendenti Attivi</p>
+                    <h3 class="kpi-value text-2xl font-black text-slate-900 dark:text-white mt-3">{{ $totalEmployees }}</h3>
+                </div>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-4 hover:text-indigo-500 transition-colors">Gestione anagrafiche →</p>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-50 dark:bg-blue-950/20 rounded-full opacity-50 transition-transform group-hover:scale-110 duration-300"></div>
+        </a>
+    </div>
+
+    <!-- Sezione Dettaglio: 2 Colonne -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Tabella Principale: Ordini e Prodotti più venduti (2/3 della larghezza) -->
+        <div class="lg:col-span-2 flex flex-col gap-8">
+            
+            <!-- Ultimi Ordini -->
+            <div class="admin-table-container shadow-sm border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 rounded-3xl p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h4 class="text-lg font-black text-slate-900 dark:text-white tracking-tighter">Ultimi Ordini Ricevuti</h4>
+                    <a href="{{ route('orders.index') }}" class="text-[10px] font-black text-indigo-650 dark:text-indigo-400 uppercase tracking-widest hover:underline">Vedi Archivio Vendite →</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th class="px-2">ID Ordine</th>
+                                <th class="px-2">Cliente</th>
+                                <th class="px-2">Data</th>
+                                <th class="px-2">Stato</th>
+                                <th class="px-2 text-right">Totale</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                            @forelse($recentOrders as $ordine)
+                            <tr class="hover:bg-slate-50 transition duration-150">
+                                <td class="px-2 font-medium">
+                                    <a href="{{ route('orders.show', $ordine->IDOrdineVendita) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline font-black">
+                                        #{{ $ordine->IDOrdineVendita }}
+                                    </a>
+                                </td>
+                                <td class="px-2 text-slate-700 dark:text-slate-350 font-semibold">{{ $ordine->cliente->Nome ?? 'N/D' }}</td>
+                                <td class="px-2 text-slate-500">{{ $ordine->Data ? \Carbon\Carbon::parse($ordine->Data)->format('d/m/Y') : '-' }}</td>
+                                <td class="px-2">
+                                    @php
+                                        $statusClasses = [
+                                            'In Attesa' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                                            'Approvato' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
+                                            'Spedito' => 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400',
+                                            'Annullato' => 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+                                        ];
+                                    @endphp
+                                    <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider {{ $statusClasses[$ordine->Stato] ?? 'bg-slate-100 text-slate-700' }}">
+                                        {{ $ordine->Stato }}
+                                    </span>
+                                </td>
+                                <td class="px-2 text-right font-black text-slate-900 dark:text-white">
+                                    € {{ number_format($ordine->totale_ordine, 2, ',', '.') }}
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="py-6 text-center text-slate-400 font-bold">Nessun ordine presente a sistema.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Prodotti Bestseller -->
+            <div class="admin-table-container shadow-sm border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 rounded-3xl p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h4 class="text-lg font-black text-slate-900 dark:text-white tracking-tighter">Articoli Bestseller</h4>
+                    <a href="{{ route('inventory.index') }}" class="text-[10px] font-black text-indigo-650 dark:text-indigo-400 uppercase tracking-widest hover:underline">Vedi Inventario Magazzino →</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th class="px-2">SKU</th>
+                                <th class="px-2">Prodotto</th>
+                                <th class="px-2 text-center">Unità Vendute</th>
+                                <th class="px-2 text-right">Fatturato Generato</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                            @forelse($bestsellers as $product)
+                            <tr class="hover:bg-slate-50 transition duration-150">
+                                <td class="px-2 font-black text-slate-500">#{{ $product->CodiceUnivoco }}</td>
+                                <td class="px-2 text-slate-800 dark:text-slate-200 font-bold break-words">{{ $product->NomeProdotto }}</td>
+                                <td class="px-2 text-center">
+                                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-350 rounded-lg text-xs font-black">
+                                        {{ (int)$product->total_sold }} pz
+                                    </span>
+                                </td>
+                                <td class="px-2 text-right font-black text-slate-900 dark:text-white">
+                                    € {{ number_format($product->revenue, 2, ',', '.') }}
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="py-6 text-center text-slate-400 font-bold">Nessuna vendita registrata.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Destra: Top Clienti (1/3 della larghezza) -->
+        <div class="flex flex-col gap-8">
+            
+            <!-- Classifica Clienti Top -->
+            <div class="admin-table-container shadow-sm border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 rounded-3xl p-8">
+                <h4 class="text-lg font-black text-slate-900 dark:text-white tracking-tighter mb-6">Top Clienti per Volume</h4>
+                <div class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                    @forelse($customerStats as $customer)
+                    <div class="py-3 flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-slate-850 dark:text-slate-200 text-sm">{{ $customer->Nome }}</p>
+                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">ID: {{ $customer->CodiceCliente }}</p>
+                        </div>
+                        <p class="font-black text-slate-900 dark:text-white text-sm">€ {{ number_format($customer->revenue, 0, ',', '.') }}</p>
+                    </div>
+                    @empty
+                    <p class="py-4 text-center text-slate-400 font-bold">Nessun cliente registrato.</p>
+                    @endforelse
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="kpi-card kpi-card-dark shadow-lg">
-        <h4 class="text-lg font-bold mb-6">Azioni Rapide</h4>
-        <div class="space-y-4">
-            <a href="{{ route('employees.index') }}" class="w-full btn-premium justify-between py-4">
-                Gestione Dipendenti
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                </svg>
-            </a>
-            <a href="#" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl flex items-center justify-between px-6 transition font-semibold border border-slate-700 opacity-50 cursor-not-allowed">
-                Genera Report KPI
-                <span class="text-[10px] bg-slate-700 px-2 py-1 rounded">PRO</span>
-            </a>
-        </div>
-    </div>
 </div>
 @endsection

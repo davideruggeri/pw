@@ -29,18 +29,14 @@ class DashboardController extends Controller
         $kpis = $this->analytics->getAdminKpis();
         $employeeStats = $this->analytics->getEmployeePerformance();
         $customerStats = $this->analytics->getTopCustomers();
+        $bestsellers = $this->analytics->getBestsellers(5);
         $recentOrders = $this->ordineRepo->getRecent(5);
-
-        // Statistiche Reparti per l'Admin
-        $deptStats = [
-            'logistics' => $kpis['lowStockCount']
-        ];
 
         return view('admin.dashboard', array_merge($kpis, [
             'recentOrders' => $recentOrders,
             'employeeStats' => $employeeStats,
             'customerStats' => $customerStats,
-            'deptStats' => $deptStats
+            'bestsellers' => $bestsellers
         ]));
     }
 
