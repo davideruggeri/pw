@@ -104,6 +104,7 @@ Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix(
     Route::get('/', [App\Http\Controllers\LogisticsController::class, 'index'])->name('logistics.index');
     Route::get('/inventory', [App\Http\Controllers\LogisticsController::class, 'inventory'])->name('logistics.inventory');
     Route::get('/replenishment', [App\Http\Controllers\LogisticsController::class, 'replenishment'])->name('logistics.replenishment');
+    Route::get('/replenishment-history', [App\Http\Controllers\LogisticsController::class, 'replenishmentHistory'])->name('logistics.replenishment-history');
     Route::get('/update', [App\Http\Controllers\LogisticsController::class, 'updateForm'])->name('logistics.update');
     Route::post('/update-stock', [App\Http\Controllers\LogisticsController::class, 'updateStock'])->name('logistics.update-stock');
 });

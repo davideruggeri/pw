@@ -62,8 +62,8 @@ Per accedere alle interfacce e testare i vari flussi operativi, utilizza gli acc
 | Area / Ruolo | Email | Funzionalità Principali |
 | :--- | :--- | :--- |
 | **Amministrazione** | `admin@azienda.it` | Dashboard Direzionale (KPI), gestione dipendenti, reparti e supervisione flussi |
-| **Commerciale** | `sales@azienda.it` | Creazione e gestione ordini di vendita, approvazione ordini pending, statistiche bestsellers |
-| **Logistica** | `logistica@azienda.it` | Gestione giacenze di magazzino, rifornimenti e alert per prodotti sotto scorta minima |
+| **Commerciale** | `sales@azienda.it` | Supervisione e approvazione/rifiuto ordini clienti, archivio vendite, statistiche bestsellers |
+| **Logistica** | `logistica@azienda.it` | Gestione giacenze di magazzino, rifornimenti, storico carichi e alert per prodotti sotto scorta minima |
 | **Cliente** | `cliente@test.it` | Consultazione catalogo, carrello, gestione preferiti e tracciamento propri ordini |
 
 > **💡 Suggerimento:** È disponibile una modalità ospite per esplorare liberamente il catalogo prodotti senza autenticazione.
@@ -77,11 +77,13 @@ Il gestionale si focalizza sull'ottimizzazione del ciclo di vendita e sull'effic
 ### 📦 Logistica & Magazzino
 *   Monitoraggio in tempo reale della `QuantitaGiacenza`.
 *   Segnalazione automatica degli articoli che scendono al di sotto della soglia di `ScortaMinima`.
-*   Interfacce dedicate per l'aggiornamento rapido dello stock.
+*   Interfacce dedicate per l'aggiornamento rapido dello stock (Carico/Scarico).
+*   **Storico Rifornimenti**: registro completo dei carichi effettuati a magazzino con spesa, quantità e timestamp delle operazioni.
 
 ### 🤝 Vendite (Commerciale)
-*   Registrazione di ordini con associazione di prodotti, quantità e prezzi tramite tabelle di associazione N:M (`dettaglio_vendita`).
+*   Gestione del flusso di acquisto: i clienti ordinano tramite carrello, e i commerciali approvano o rifiutano gli ordini.
 *   Controllo di disponibilità integrato: le vendite vengono automaticamente inibite se lo stock a magazzino risulta insufficiente.
+*   Consultazione dell'archivio storico delle vendite completate.
 
 ### 📊 Direzione (Amministrazione)
 *   **Business Intelligence**: dashboard centralizzata per il calcolo del fatturato per cliente e l'analisi temporale dei ricavi.

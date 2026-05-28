@@ -40,7 +40,7 @@
                         della produzione e logistica.</p>
                 </div>
                 <div class="flex flex-col gap-4 mt-auto">
-                    <div class="flex flex-col gap-2 min-h-[130px] justify-start">
+                    <div class="flex flex-col gap-2 min-h-[140px] justify-center">
                         <a href="{{ route('login.staff') }}" class="btn-lobby accent">Accesso Staff</a>
                     </div>
                     <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Richiede Matricola o Email

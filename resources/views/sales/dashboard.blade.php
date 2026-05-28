@@ -10,7 +10,7 @@
 <div class="logistics-container animate-fade-in">
 
     <!-- KPI Header -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
         <div class="logistics-card p-8 group relative overflow-hidden">
             <div class="relative z-10">
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Fatturato Mensile</p>
@@ -36,18 +36,6 @@
                 </p>
             </div>
             <div class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-50 dark:bg-emerald-500/5 rounded-full blur-3xl group-hover:bg-emerald-500/10 transition-all"></div>
-        </div>
-
-        <div class="bg-gradient-to-br from-indigo-600 to-violet-700 p-8 rounded-[2.5rem] shadow-2xl shadow-indigo-500/30 flex flex-col justify-between relative overflow-hidden group">
-            <div class="relative z-10">
-                <p class="text-[10px] font-black text-indigo-100 uppercase tracking-[0.2em] mb-2">Gestione Operativa</p>
-                <h3 class="text-2xl font-black text-white tracking-tight leading-tight">Nuova Trattativa<br>Commerciale</h3>
-            </div>
-            <a href="{{ route('orders.create') }}" class="relative z-10 bg-white text-indigo-600 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-100 hover:scale-105 transition-all text-center mt-6 shadow-xl shadow-black/10 active:scale-95">
-                Nuovo Ordine
-            </a>
-            <!-- Decoration -->
-            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-125 transition-all duration-700"></div>
         </div>
     </div>
 
@@ -145,16 +133,6 @@
                         @endif
                     </div>
                 </div>
-            </div>
-
-            <!-- Promotion Card -->
-            <div class="bg-emerald-500 p-8 rounded-[2.5rem] text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden group">
-                <div class="relative z-10">
-                    <h5 class="text-xl font-black tracking-tight mb-2">Analisi CRM</h5>
-                    <p class="text-emerald-100 text-xs leading-relaxed opacity-90">Scopri quali clienti non ordinano da tempo e pianifica un follow-up.</p>
-                    <button class="mt-6 text-[10px] font-black uppercase tracking-widest bg-white text-emerald-600 px-6 py-3 rounded-xl hover:bg-emerald-50 transition-colors shadow-lg">Analizza Ora</button>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="absolute -right-4 -bottom-4 w-32 h-32 text-emerald-400 opacity-20 transform rotate-12 group-hover:scale-110 transition-transform duration-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
             </div>
         </div>
 

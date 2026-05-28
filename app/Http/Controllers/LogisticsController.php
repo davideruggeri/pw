@@ -155,4 +155,25 @@ class LogisticsController extends Controller
 
         return redirect()->route('inventory.index')->with('success', $msg);
     }
+
+    public function replenishmentHistory(Request $request)
+    {
+        $query = \App\Models\MovimentoMagazzino::with('prodotto')->where('Tipo', 'carico');
+
+        if ($request->filled('search')) {
+            $query->whereHas('prodotto', function($q) use ($request) {
+                $q->where('Descrizione', 'like', '%' . $request->search . '%')
+                  ->orWhere('CodiceUnivoco', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $perPage = $request->input('per_page', 15);
+        $movements = $query->orderBy('DataMovimento', 'desc')->paginate($perPage);
+
+        // Calcoliamo KPI/metriche per lo storico rifornimenti
+        $totalReplenishedQuantity = \App\Models\MovimentoMagazzino::where('Tipo', 'carico')->sum('Quantita');
+        $totalReplenishmentCost = \App\Models\MovimentoMagazzino::where('Tipo', 'carico')->sum('CostoTotale');
+
+        return view('logistics.history', compact('movements', 'perPage', 'totalReplenishedQuantity', 'totalReplenishmentCost'));
+    }
 }

@@ -170,6 +170,10 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                                 <span>Rifornimento</span>
                             </a>
+                            <a href="{{ route('logistics.replenishment-history') }}" class="nav-link {{ request()->routeIs('logistics.replenishment-history') ? 'nav-link-active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                                <span>Storico Rifornimenti</span>
+                            </a>
                             <a href="{{ route('logistics.update') }}" class="nav-link {{ request()->routeIs('logistics.update') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
                                 <span>Carico/Scarico</span>
@@ -329,7 +333,7 @@
                         </svg>
                     </button>
                     @endif
-                    <a href="{{ route('account.index') }}" class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white text-lg font-black shadow-xl shadow-indigo-200 hover:rotate-3 transition-all">
+                    <a href="{{ route('account.index') }}" class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white text-lg font-black shadow-lg shadow-indigo-500/20 hover:rotate-3 transition-all">
                         {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'O' }}
                     </a>
                 </div>

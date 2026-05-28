@@ -98,7 +98,7 @@ class DashboardController extends Controller
         ];
 
         $bestsellers = \App\Models\Prodotto::withSum(['dettagliVendita as total_sold' => function($query) {
-            $query->whereHas('ordiniVendita', function($q) {
+            $query->whereHas('ordineVendita', function($q) {
                 $q->whereIn('Stato', ['Approvato', 'Spedito']);
             });
         }], 'QuantitaRichiesta')
