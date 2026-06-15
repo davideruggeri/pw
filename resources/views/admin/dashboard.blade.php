@@ -44,7 +44,7 @@
         </a>
 
         <!-- KPI Card: Prodotti Sotto Scorta -->
-        <a href="{{ route('logistics.replenishment') }}" class="kpi-card shadow-sm group border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:-translate-y-1 transition-all duration-300 block text-decoration-none">
+        <a href="{{ route('logistics.inventory', ['tab' => 'replenishment']) }}" class="kpi-card shadow-sm group border border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900/40 hover:-translate-y-1 transition-all duration-300 block text-decoration-none">
             <div class="relative z-10 flex flex-col justify-between h-full">
                 <div>
                     <div class="flex justify-between items-start">

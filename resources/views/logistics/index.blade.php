@@ -24,7 +24,7 @@
                 <h3 class="text-4xl font-black text-white tracking-tighter">{{ $lowStockCount }}</h3>
                 <p class="text-white/80 text-xs font-bold uppercase tracking-widest mt-1">Prodotti Sottoscorta</p>
             </div>
-            <a href="{{ route('logistics.replenishment', ['filter' => 'low_stock']) }}" class="bg-white text-rose-600 px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all active:scale-95">
+            <a href="{{ route('logistics.inventory', ['filter' => 'low_stock', 'tab' => 'replenishment']) }}" class="bg-white text-rose-600 px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all active:scale-95">
                 Vedi Criticità
             </a>
         </div>
@@ -62,7 +62,7 @@
 
         <!-- Scorciatoie -->
         <div class="space-y-6">
-            <a href="{{ route('logistics.replenishment') }}" class="block group">
+            <a href="{{ route('logistics.inventory', ['tab' => 'replenishment']) }}" class="block group">
                 <div class="bg-slate-900 p-8 rounded-[2.5rem] shadow-xl border border-slate-800 group-hover:bg-slate-800 transition-all">
                     <div class="w-12 h-12 bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>

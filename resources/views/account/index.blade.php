@@ -39,21 +39,7 @@
                     </button>
                 </nav>
                 
-                @if($user && $user->email === 'admin@azienda.it')
-                    <div class="role-switcher-mini">
-                        <p>Cambia Ruolo (Debug)</p>
-                        <form action="" method="POST">
-                            @csrf
-                            <select onchange="this.form.action='/debug/switch-role/' + this.value; this.form.submit()">
-                                @foreach(['admin', 'sales', 'logistics', 'production', 'customer'] as $role)
-                                    <option value="{{ $role }}" {{ $user->role === $role ? 'selected' : '' }}>
-                                        {{ strtoupper($role) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </form>
-                    </div>
-                @endif
+
 
                 <div class="sidebar-footer">
                     <a href="{{ $backUrl ?? route('home') }}" class="btn-back-lobby">

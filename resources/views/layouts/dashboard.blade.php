@@ -146,13 +146,15 @@
                         
 
                         
-                        @if(Auth::user()->isAdmin() || Auth::user()->isSales())
+                        @if(Auth::user()->isSales())
                             <a href="{{ route('orders.pending') }}" class="nav-link {{ request()->routeIs('orders.pending') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <span>Approvazione Ordini</span>
                             </a>
+                        @endif
+                        @if(Auth::user()->isAdmin() || Auth::user()->isSales())
                             <a href="{{ route('orders.index') }}" class="nav-link {{ request()->routeIs('orders.index') || request()->routeIs('orders.show') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -161,19 +163,20 @@
                             </a>
                         @endif
                         
-                        @if(Auth::user()->isAdmin() || Auth::user()->role === 'logistics')
+                        @if(Auth::user()->isAdmin() || Auth::user()->isLogistics())
                             <a href="{{ route('logistics.inventory') }}" class="nav-link {{ request()->routeIs('logistics.inventory') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                                 <span>Inventario</span>
                             </a>
-                            <a href="{{ route('logistics.replenishment') }}" class="nav-link {{ request()->routeIs('logistics.replenishment') ? 'nav-link-active' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                                <span>Rifornimento</span>
-                            </a>
+                        @endif
+
+                        @if(Auth::user()->isAdmin() || Auth::user()->isLogistics())
                             <a href="{{ route('logistics.replenishment-history') }}" class="nav-link {{ request()->routeIs('logistics.replenishment-history') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                                 <span>Storico Rifornimenti</span>
                             </a>
+                        @endif
+                        @if(Auth::user()->isLogistics())
                             <a href="{{ route('logistics.update') }}" class="nav-link {{ request()->routeIs('logistics.update') ? 'nav-link-active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
                                 <span>Carico/Scarico</span>
@@ -207,24 +210,7 @@
                     </a>
                     @endif
 
-                    <!-- Role Switcher (Solo per SuperAdmin) -->
-                    @if(Auth::check() && Auth::user()->email === 'admin@azienda.it')
-                        <div class="nav-section-title text-amber-500">Cambia Ruolo (Debug)</div>
-                        <div class="px-4 pb-4">
-                            <form action="" method="POST" id="roleSwitcherForm">
-                                @csrf
-                                <select onchange="this.form.action='/debug/switch-role/' + this.value; this.form.submit()" 
-                                        class="w-full bg-slate-50 border border-slate-200 text-slate-600 text-xs rounded-xl focus:ring-amber-500 focus:border-amber-500 block p-3 font-bold cursor-pointer hover:bg-slate-100 transition-all">
-                                    <option value="" disabled selected>Seleziona Ruolo...</option>
-                                    @foreach(['admin', 'sales', 'logistics', 'customer'] as $role)
-                                        <option value="{{ $role }}" {{ Auth::user()->role === $role ? 'selected' : '' }}>
-                                            {{ strtoupper($role) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </form>
-                        </div>
-                    @endif
+
                 @endif
 
                 <!-- Spacer per spingere il Logout in fondo -->

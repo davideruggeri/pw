@@ -20,36 +20,7 @@ class LogisticsController extends Controller
         return view('logistics.index', compact('totalStockValue', 'lowStockCount', 'recentUpdates'));
     }
 
-    public function replenishment(Request $request)
-    {
-        $query = Prodotto::query();
 
-        if ($request->has('filter') && $request->filter == 'low_stock') {
-            $query->whereColumn('QuantitaGiacenza', '<', 'ScortaMinima');
-        }
-
-        if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('Descrizione', 'like', '%' . $request->search . '%')
-                  ->orWhere('CodiceUnivoco', 'like', '%' . $request->search . '%');
-            });
-        }
-
-        $perPage = $request->input('per_page', 15);
-        $products = $query->paginate($perPage);
-
-        // Calcolo metriche per KPI
-        $allProducts = Prodotto::all();
-        $totalProductsCount = $allProducts->count();
-        $lowStockCount = Prodotto::whereColumn('QuantitaGiacenza', '<', 'ScortaMinima')->count();
-
-        return view('logistics.replenishment', compact(
-            'products', 
-            'perPage', 
-            'totalProductsCount', 
-            'lowStockCount'
-        ));
-    }
 
     public function inventory(Request $request)
     {

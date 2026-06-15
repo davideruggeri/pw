@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\Auth\DebugController;
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ComingSoonController;
@@ -57,11 +57,7 @@ Route::middleware(['auth'])->prefix('account')->group(function () {
     Route::post('/update-password', [AccountController::class, 'updatePassword'])->name('account.update-password');
 });
 
-// Debug Role Switcher (Rimuovere in produzione)
-Route::middleware(['auth', 'password.changed'])->group(function () {
-    Route::get('/debug/roles', [DebugController::class, 'showRoleSelector'])->name('debug.role-selector');
-    Route::post('/debug/switch-role/{role}', [DebugController::class, 'switchRole'])->name('debug.switch-role');
-});
+
 
 // Gestione Dipendenti (Accessibile a Admin e Manager di reparto)
 Route::middleware(['auth', 'role:admin,sales,logistics', 'password.changed'])->group(function () {
@@ -88,7 +84,7 @@ Route::middleware(['auth', 'role:admin,sales', 'password.changed'])->prefix('adm
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 });
 
-Route::middleware(['auth', 'role:sales,admin', 'password.changed'])->prefix('sales')->group(function () {
+Route::middleware(['auth', 'role:sales', 'password.changed'])->prefix('sales')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'sales'])->name('sales.dashboard');
     Route::get('/orders/pending', [OrderController::class, 'pending'])->name('orders.pending');
     Route::post('/orders/{id}/approve', [OrderController::class, 'approve'])->name('orders.approve');
@@ -100,13 +96,18 @@ Route::middleware(['auth', 'role:sales,admin', 'password.changed'])->prefix('sal
 
 
 
+// Rotte Logistica di riepilogo (Accessibili ad Admin e Logistics)
 Route::middleware(['auth', 'role:admin,logistics', 'password.changed'])->prefix('logistics')->group(function () {
     Route::get('/', [App\Http\Controllers\LogisticsController::class, 'index'])->name('logistics.index');
     Route::get('/inventory', [App\Http\Controllers\LogisticsController::class, 'inventory'])->name('logistics.inventory');
-    Route::get('/replenishment', [App\Http\Controllers\LogisticsController::class, 'replenishment'])->name('logistics.replenishment');
     Route::get('/replenishment-history', [App\Http\Controllers\LogisticsController::class, 'replenishmentHistory'])->name('logistics.replenishment-history');
+});
+
+// Rotte Logistica operative (Accessibili solo a Logistics)
+Route::middleware(['auth', 'role:logistics', 'password.changed'])->prefix('logistics')->group(function () {
     Route::get('/update', [App\Http\Controllers\LogisticsController::class, 'updateForm'])->name('logistics.update');
     Route::post('/update-stock', [App\Http\Controllers\LogisticsController::class, 'updateStock'])->name('logistics.update-stock');
+    Route::post('/orders/{id}/ship', [OrderController::class, 'ship'])->name('orders.ship');
 });
 
 
@@ -115,7 +116,6 @@ Route::middleware(['auth', 'password.changed'])->group(function () {
     Route::get('/admin/inventory', [App\Http\Controllers\LogisticsController::class, 'inventory'])->name('inventory.index');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-    Route::post('/orders/{id}/ship', [OrderController::class, 'ship'])->name('orders.ship');
     
     // Notifiche
     Route::get('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'read'])->name('notifications.read');

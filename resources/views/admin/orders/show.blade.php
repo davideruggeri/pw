@@ -36,7 +36,7 @@
                     {{ $ordine->Stato }}
                 </span>
             </div>
-            @if($ordine->Stato === 'In Attesa')
+            @if($ordine->Stato === 'In Attesa' && Auth::user()->isSales())
                 <div class="flex items-center gap-4">
                     <form action="{{ route('orders.approve', $ordine->IDOrdineVendita) }}" method="POST">
                         @csrf
@@ -53,7 +53,7 @@
                         </button>
                     </form>
                 </div>
-            @elseif($ordine->Stato === 'Approvato')
+            @elseif($ordine->Stato === 'Approvato' && Auth::user()->isLogistics())
                 <form action="{{ route('orders.ship', $ordine->IDOrdineVendita) }}" method="POST">
                     @csrf
                     <button type="submit" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-indigo-600/20 hover:bg-indigo-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3 cursor-pointer border-0">
