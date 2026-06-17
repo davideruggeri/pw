@@ -20,9 +20,18 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                'regex:/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$/'
+            ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'address' => ['required', 'string', 'max:255'],
+        ], [
+            'email.regex' => 'L\'email deve essere nel formato parola@parola.parola (es. mario@rossi.it) senza altri punti.',
         ]);
 
         // Genera un Codice Cliente unico (es: CLI + Timestamp)
