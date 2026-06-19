@@ -115,7 +115,7 @@
                     <div class="content-section full">
                         <h3>Cambio Password</h3>
                         <form action="{{ route('account.update-password') }}" method="POST" class="compact-form"
-                            x-data="{ show: false, showConf: false }">
+                            x-data="{ show: false, showConf: false }" onsubmit="return confirm('Sei sicuro di voler modificare la password?')">
                             @csrf
                             <div class="form-group">
                                 <label>Nuova Password</label>

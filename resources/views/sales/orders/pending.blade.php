@@ -177,7 +177,7 @@
                             </div>
                             
                             <div class="flex gap-3">
-                                <form action="{{ route('orders.reject', $ordine->IDOrdineVendita) }}" method="POST">
+                                <form action="{{ route('orders.reject', $ordine->IDOrdineVendita) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler rifiutare questo ordine? (ID: #{{ $ordine->IDOrdineVendita }})')">
                                     @csrf
                                     <button type="submit" class="btn-reject" title="Rifiuta Ordine">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -186,7 +186,7 @@
                                     </button>
                                 </form>
 
-                                <form action="{{ route('orders.approve', $ordine->IDOrdineVendita) }}" method="POST">
+                                <form action="{{ route('orders.approve', $ordine->IDOrdineVendita) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler approvare questo ordine? (ID: #{{ $ordine->IDOrdineVendita }})')">
                                     @csrf
                                     <button type="submit" class="btn-approve flex items-center justify-center text-white transition-all shadow-xl" title="Approva Ordine">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">

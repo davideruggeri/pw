@@ -38,14 +38,14 @@
             </div>
             @if($ordine->Stato === 'In Attesa' && Auth::user()->isSales())
                 <div class="flex items-center gap-4">
-                    <form action="{{ route('orders.approve', $ordine->IDOrdineVendita) }}" method="POST">
+                    <form action="{{ route('orders.approve', $ordine->IDOrdineVendita) }}" method="POST" onsubmit="return confirm('Confermare l\'approvazione dell\'ordine #{{ $ordine->IDOrdineVendita }}?')">
                         @csrf
                         <button type="submit" class="bg-emerald-600 text-white px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-emerald-600/20 hover:bg-emerald-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3 cursor-pointer border-0">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
                             Approva Ordine
                         </button>
                     </form>
-                    <form action="{{ route('orders.reject', $ordine->IDOrdineVendita) }}" method="POST">
+                    <form action="{{ route('orders.reject', $ordine->IDOrdineVendita) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler rifiutare l\'ordine #{{ $ordine->IDOrdineVendita }}?')">
                         @csrf
                         <button type="submit" class="bg-rose-600 text-white px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-rose-600/20 hover:bg-rose-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3 cursor-pointer border-0">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -54,7 +54,7 @@
                     </form>
                 </div>
             @elseif($ordine->Stato === 'Approvato' && Auth::user()->isLogistics())
-                <form action="{{ route('orders.ship', $ordine->IDOrdineVendita) }}" method="POST">
+                <form action="{{ route('orders.ship', $ordine->IDOrdineVendita) }}" method="POST" onsubmit="return confirm('Confermare la spedizione dell\'ordine #{{ $ordine->IDOrdineVendita }}?')">
                     @csrf
                     <button type="submit" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-2xl shadow-indigo-600/20 hover:bg-indigo-500 hover:-translate-y-1 transition-all active:translate-y-0 flex items-center gap-3 cursor-pointer border-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>

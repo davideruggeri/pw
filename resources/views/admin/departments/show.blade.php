@@ -46,7 +46,7 @@
                 @endif
 
                 <!-- Form per cambiare responsabile -->
-                <form action="{{ route('departments.set-responsabile', $reparto->IDReparto) }}" method="POST">
+                <form action="{{ route('departments.set-responsabile', $reparto->IDReparto) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler cambiare il responsabile di questo reparto? Questo aggiornerà i permessi e la visualizzazione del personale.')">
                     @csrf
                     <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">Cambia Responsabile</label>
                     <select name="matricola" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-xl block p-3 mb-4 font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all">

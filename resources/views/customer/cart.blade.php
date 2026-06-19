@@ -39,7 +39,7 @@
 
                         <div class="flex flex-col items-end gap-4">
                             <span class="item-price">€{{ number_format($details['price'] * $details['quantity'], 2) }}</span>
-                            <form action="{{ route('cart.remove', $id) }}" method="POST">
+                            <form action="{{ route('cart.remove', $id) }}" method="POST" onsubmit="return confirm('Rimuovere questo articolo dal carrello?')">
                                 @csrf
                                 <button type="submit" class="text-slate-500 hover:text-red-500 transition text-xs font-bold uppercase tracking-widest">
                                     Rimuovi
@@ -88,7 +88,7 @@
 
                     @if(count($cart ?? []) > 0)
                         @auth
-                            <form action="{{ route('cart.checkout') }}" method="POST">
+                            <form action="{{ route('cart.checkout') }}" method="POST" onsubmit="return confirm('Confermare l\'invio dell\'ordine? Questa azione è vincolante.')">
                                 @csrf
                                 <button type="submit" class="checkout-btn w-full">Procedi all'ordine</button>
                             </form>

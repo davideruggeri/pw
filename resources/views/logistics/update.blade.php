@@ -173,7 +173,7 @@
                 <!-- Form Card -->
                 <div class="lg:col-span-7">
                     <div class="logistics-card p-10">
-                        <form action="{{ route('logistics.update-stock') }}" method="POST" class="space-y-10">
+                        <form action="{{ route('logistics.update-stock') }}" method="POST" class="space-y-10" @submit.prevent="if(confirm('Confermare il ' + (movementType === 'carico' ? 'carico' : 'scarico') + ' di ' + quantity + ' ' + selectedProduct.um + ' per il prodotto ' + selectedProduct.name + '?')) $el.submit()">
                             @csrf
                             <input type="hidden" name="IDProdotto_FK" :value="selectedId">
                             <input type="hidden" name="Tipo" :value="movementType">
