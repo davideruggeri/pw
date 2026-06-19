@@ -15,7 +15,12 @@ class AccountController extends Controller
 
         // Se veniamo da una pagina esterna all'account, salviamola come punto di ritorno
         $previousUrl = url()->previous();
-        if ($previousUrl && !str_contains($previousUrl, '/account') && $previousUrl !== url()->current()) {
+        if ($previousUrl && 
+            !str_contains($previousUrl, '/account') && 
+            !str_contains($previousUrl, '/login') && 
+            !str_contains($previousUrl, '/register') && 
+            $previousUrl !== url()->current()
+        ) {
             session(['account_back_url' => $previousUrl]);
         }
 

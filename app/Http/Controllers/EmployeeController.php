@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Repositories\Interfaces\DipendenteRepositoryInterface;
 use App\Models\Reparto;
 use App\Models\Ruolo;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -46,8 +49,7 @@ class EmployeeController extends Controller
             abort(403);
         }
 
-        $ruoli = Ruolo::all();
-        return view('admin.employees.create', compact('reparti', 'ruoli'));
+        return view('admin.employees.create', compact('reparti'));
     }
 
     public function store(Request $request)
@@ -55,11 +57,14 @@ class EmployeeController extends Controller
         $user = auth()->user();
         
         $request->validate([
-            'Matricola' => 'required|integer|unique:dipendente,Matricola',
+            'Matricola' => 'required|integer|unique:dipendente,Matricola|unique:users,matricola_fk',
             'Nome' => 'required|string|max:50',
             'Cognome' => 'required|string|max:50',
             'IDReparto_FK' => 'required|exists:reparto,IDReparto',
-            'IDRuolo_FK' => 'required|exists:ruolo,IDRuolo',
+        ], [
+            'Matricola.unique' => 'La matricola inserita è già presente nel sistema ed è associata ad un altro collaboratore.',
+            'Matricola.required' => 'Il campo matricola è obbligatorio.',
+            'Matricola.integer' => 'La matricola deve essere un numero intero.',
         ]);
 
         // Protezione extra per i manager
@@ -67,7 +72,39 @@ class EmployeeController extends Controller
             abort(403, 'Puoi creare dipendenti solo per il tuo reparto.');
         }
 
-        $this->employeeRepo->create($request->all());
+        DB::transaction(function () use ($request) {
+            $dipendente = $this->employeeRepo->create($request->all());
+
+            // Generazione email istituzionale automatica (inizialenome.cognome@azienda.it)
+            $iniziale = strtolower(substr($dipendente->Nome, 0, 1));
+            $cognome = strtolower(str_replace(' ', '', $dipendente->Cognome));
+            $baseEmail = "{$iniziale}.{$cognome}";
+            $email = "{$baseEmail}@azienda.it";
+
+            // Gestione omonimi (collisioni)
+            $counter = 1;
+            while (User::where('email', $email)->exists()) {
+                $counter++;
+                $email = "{$baseEmail}{$counter}@azienda.it";
+            }
+
+            // Mapping del ruolo utente basato esclusivamente sul reparto (IDReparto_FK)
+            $role = match ((int)$dipendente->IDReparto_FK) {
+                5       => 'admin',
+                6       => 'sales',
+                4       => 'logistics',
+                default => 'customer',
+            };
+
+            User::create([
+                'name'             => "{$dipendente->Nome} {$dipendente->Cognome}",
+                'email'            => $email,
+                'password'         => Hash::make('Benvenuto2026!'),
+                'role'             => $role,
+                'matricola_fk'     => $dipendente->Matricola,
+                'password_changed' => false,
+            ]);
+        });
 
         return redirect()->route('employees.index')->with('success', 'Dipendente aggiunto con successo.');
     }
@@ -83,19 +120,8 @@ class EmployeeController extends Controller
         }
 
         $reparti = $user->isAdmin() ? Reparto::all() : Reparto::where('IDReparto', $user->dipendente->IDReparto_FK)->get();
-        $ruoli = Ruolo::all();
-        
-        // Mappatura ruoli per reparto (IDReparto => [IDRuolo, ...])
-        $roleMapping = [
-            5 => [14, 16],         // Amministrazione (Contabile, Manager)
-            6 => [15, 16],         // Commerciale (Vendite, Manager)
-            4 => [13, 16],         // Logistica (Addetto, Manager)
-            1 => [10, 11, 12, 16], // Produzione (Tutti + Manager)
-            2 => [10, 11, 12, 16], // Manutenzione
-            3 => [10, 11, 12, 16], // Controllo Qualità
-        ];
 
-        return view('admin.employees.edit', compact('employee', 'reparti', 'ruoli', 'roleMapping'));
+        return view('admin.employees.edit', compact('employee', 'reparti'));
     }
 
     public function update(Request $request, $matricola)
@@ -112,7 +138,6 @@ class EmployeeController extends Controller
             'Nome' => 'required|string|max:50',
             'Cognome' => 'required|string|max:50',
             'IDReparto_FK' => 'required|exists:reparto,IDReparto',
-            'IDRuolo_FK' => 'required|exists:ruolo,IDRuolo',
         ]);
 
         // Impedisci al manager di spostare un dipendente in un altro reparto
@@ -120,7 +145,24 @@ class EmployeeController extends Controller
             abort(403, 'Non puoi spostare dipendenti in altri reparti.');
         }
 
-        $this->employeeRepo->update($matricola, $request->all());
+        DB::transaction(function () use ($matricola, $request, $employee) {
+            $this->employeeRepo->update($matricola, $request->all());
+
+            // Aggiorna anche l'utente correlato se esiste
+            $associatedUser = $employee->user;
+            if ($associatedUser) {
+                $role = match ((int)$request->IDReparto_FK) {
+                    5       => 'admin',
+                    6       => 'sales',
+                    4       => 'logistics',
+                    default => 'customer',
+                };
+                $associatedUser->update([
+                    'name' => "{$request->Nome} {$request->Cognome}",
+                    'role' => $role,
+                ]);
+            }
+        });
 
         return redirect()->route('employees.index')->with('success', 'Dati dipendente aggiornati.');
     }
@@ -135,7 +177,16 @@ class EmployeeController extends Controller
             abort(403, 'Non puoi eliminare dipendenti di altri reparti.');
         }
 
-        $this->employeeRepo->delete($matricola);
+        DB::transaction(function () use ($matricola, $employee) {
+            // Elimina prima l'utente collegato
+            $associatedUser = $employee->user;
+            if ($associatedUser) {
+                $associatedUser->delete();
+            }
+
+            $this->employeeRepo->delete($matricola);
+        });
+
         return redirect()->route('employees.index')->with('success', 'Dipendente rimosso dal sistema.');
     }
 }

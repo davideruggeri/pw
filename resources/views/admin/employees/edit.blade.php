@@ -51,19 +51,6 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div>
-                    <label class="admin-label">Qualifica / Ruolo</label>
-                    <select name="IDRuolo_FK" id="ruolo-select" required class="admin-input cursor-pointer">
-                        @foreach($ruoli as $ruolo)
-                            <option value="{{ $ruolo->IDRuolo }}" 
-                                    data-reparti="{{ json_encode(array_keys(array_filter($roleMapping, fn($ids) => in_array($ruolo->IDRuolo, $ids)))) }}"
-                                    {{ old('IDRuolo_FK', $employee->IDRuolo_FK) == $ruolo->IDRuolo ? 'selected' : '' }}>
-                                {{ $ruolo->NomeRuolo }} (Livello {{ $ruolo->Livello }})
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
             </div>
 
             <div class="flex items-center justify-end gap-4 pt-6 border-t border-slate-50 dark:border-slate-800/50">
@@ -75,37 +62,4 @@
         </form>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const repartoSelect = document.getElementById('reparto-select');
-    const ruoloSelect = document.getElementById('ruolo-select');
-    const allRuoliOptions = Array.from(ruoloSelect.options);
-    const mapping = @json($roleMapping);
-
-    function filterRuoli() {
-        const selectedRepartoId = parseInt(repartoSelect.value);
-        const allowedRuoliIds = mapping[selectedRepartoId] || [];
-        const currentSelectedId = parseInt(ruoloSelect.value);
-
-        ruoloSelect.innerHTML = '';
-        allRuoliOptions.forEach(option => {
-            if (allowedRuoliIds.includes(parseInt(option.value))) {
-                const newOption = option.cloneNode(true);
-                if (parseInt(newOption.value) === currentSelectedId) {
-                    newOption.selected = true;
-                }
-                ruoloSelect.appendChild(newOption);
-            }
-        });
-
-        if (!allowedRuoliIds.includes(parseInt(ruoloSelect.value))) {
-            ruoloSelect.selectedIndex = 0;
-        }
-    }
-
-    repartoSelect.addEventListener('change', filterRuoli);
-    filterRuoli();
-});
-</script>
 @endsection

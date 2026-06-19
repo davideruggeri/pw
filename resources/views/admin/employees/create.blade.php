@@ -50,15 +50,6 @@
                         @endforeach
                     </select>
                 </div>
-                <div>
-                    <label class="admin-label">Ruolo aziendale</label>
-                    <select name="IDRuolo_FK" class="admin-input cursor-pointer" required>
-                        <option value="">-- Seleziona --</option>
-                        @foreach($ruoli as $ruolo)
-                            <option value="{{ $ruolo->IDRuolo }}">{{ $ruolo->NomeRuolo }}</option>
-                        @endforeach
-                    </select>
-                </div>
             </div>
 
             <div class="flex items-center justify-end gap-4 pt-4 border-t border-slate-50 dark:border-slate-800/50">

@@ -70,15 +70,26 @@ class LoginController extends Controller
 
     protected function redirectBasedOnRole($user)
     {
+        if (!$user->password_changed) {
+            // Determina la destinazione finale in base al ruolo dell'utente
+            $finalDestination = match ($user->effective_role) {
+                'admin'     => '/admin/dashboard',
+                'sales'     => '/sales/dashboard',
+                'logistics' => '/logistics',
+                default     => '/customer/dashboard',
+            };
+
+            // Salva in sessione in modo che AccountController sappia dove reindirizzare l'utente dopo il reset
+            session(['account_back_url' => $finalDestination]);
+
+            return redirect()->route('account.index')->with('warning', 'Devi cambiare la password al primo accesso.');
+        }
+
         return match ($user->effective_role) {
-            'admin'       => redirect()->intended('/admin/dashboard'),
-            'sales'       => redirect()->intended('/sales/dashboard'),
-            'logistics'   => redirect()->intended('/logistics'),
-            'production'  => redirect()->intended('/production'),
-            'maintenance' => redirect()->intended('/maintenance'),
-            'quality'     => redirect()->intended('/quality'),
-            'customer'    => redirect()->intended('/customer/dashboard'),
-            default       => redirect()->intended('/'),
+            'admin'     => redirect()->intended('/admin/dashboard'),
+            'sales'     => redirect()->intended('/sales/dashboard'),
+            'logistics' => redirect()->intended('/logistics'),
+            default     => redirect()->intended('/customer/dashboard'),
         };
     }
 }

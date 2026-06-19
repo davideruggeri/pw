@@ -74,10 +74,23 @@
                 
                 @php
                     $role = Auth::user()->effective_role ?? 'customer';
-                    $dashRoute = in_array($role, ['logistics']) ? $role . '.index' : ($role === 'admin' ? 'admin.dashboard' : $role . '.dashboard');
+                    $isRouteActive = false;
+                    if ($role === 'admin') {
+                        $dashUrl = url('/admin/dashboard');
+                        $isRouteActive = request()->is('admin/dashboard');
+                    } elseif ($role === 'sales') {
+                        $dashUrl = url('/sales/dashboard');
+                        $isRouteActive = request()->is('sales/dashboard');
+                    } elseif ($role === 'logistics') {
+                        $dashUrl = url('/logistics');
+                        $isRouteActive = request()->is('logistics');
+                    } else {
+                        $dashUrl = route('customer.dashboard');
+                        $isRouteActive = request()->routeIs('customer.dashboard');
+                    }
                 @endphp
-                <a href="{{ Auth::check() ? route($dashRoute) : route('home') }}"
-                    class="nav-link {{ request()->routeIs($dashRoute) ? 'nav-link-active' : '' }}">
+                <a href="{{ Auth::check() ? $dashUrl : route('home') }}"
+                    class="nav-link {{ $isRouteActive ? 'nav-link-active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
