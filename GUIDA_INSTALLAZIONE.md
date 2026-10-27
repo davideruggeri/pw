@@ -1,6 +1,6 @@
 # 📦 Progetto Gestionale Vendite & Magazzino - Guida Installazione e Demo
 
-Sistema integrato per la gestione aziendale di inventario, acquisti, vendite e personale, sviluppato su stack moderno con **Laravel 11** e **Vite**.
+Sistema integrato per la gestione aziendale di inventario, acquisti, vendite e personale, sviluppato su stack moderno con **Laravel 13** e **Vite**.
 
 ---
 
