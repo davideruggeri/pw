@@ -4,12 +4,16 @@ Applicazione web per la gestione di un'azienda che vende prodotti tech e per uff
 
 Sviluppata in **Laravel (PHP)** su un database **MySQL** progettato a partire da uno schema relazionale esistente. Progetto universitario (Università degli Studi di Brescia) realizzato da **Davide Ruggeri** e **Simone Musatti**.
 
-<!-- Aggiungi qui 2-3 screenshot (dashboard, catalogo, magazzino):
+
 <p align="center">
-  <img width="300" alt="Dashboard" src="..." />
-  <img width="300" alt="Catalogo" src="..." />
+     <img height="200" alt="Login" src="https://github.com/user-attachments/assets/834f4547-9130-4168-885d-a4785370d19d" />
+     <img height="200" alt="Cliente" src="https://github.com/user-attachments/assets/1fd6f63f-d609-412e-8745-8fa3bce9910c" />
+     <img height="200" alt="Admin" src="https://github.com/user-attachments/assets/2306f03a-7e80-452c-820e-fe8a94a99701" />
+     <img height="200" alt="Magazzino" src="https://github.com/user-attachments/assets/eb0af3d2-206d-46fc-a20f-87f3704fc6d6" />
+   
+
 </p>
--->
+
 
 ## Funzionalità
 
